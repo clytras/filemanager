@@ -1,10 +1,10 @@
-<?php namespace Tahq69\ScriptFileManager\Script\Services;
+<?php namespace Crip\Filemanager\App\Services;
 
-use Tahq69\ScriptFileManager\Script\Package;
+use Crip\Filemanager\App\Package;
 
 /**
  * Class ValidateConfig
- * @package Tahq69\ScriptFileManager\Script\Services
+ * @package Crip\Filemanager\App\Services
  */
 class ValidateConfig
 {

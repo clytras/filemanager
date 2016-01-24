@@ -1,21 +1,13 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: IGO-PC
- * Date: 10/13/2015
- * Time: 8:07 PM
- */
-
-namespace Tahq69\ScriptFileManager\Script\Controllers;
+<?php namespace Crip\Filemanager\App\Controllers;
 
 use Illuminate\Routing\Controller;
 use Response;
-use Tahq69\ScriptFileManager\Script\Exceptions\FileManagerException;
-use Tahq69\ScriptFileManager\Script\Package;
+use Crip\Filemanager\App\Exceptions\FilemanagerException;
+use Crip\Filemanager\App\Package;
 
 /**
  * Class BaseFileManagerController
- * @package Tahq69\ScriptFileManager\Script\Controllers
+ * @package Crip\Filemanager\App\Controllers
  */
 class BaseFileManagerController extends Controller
 {
@@ -40,7 +32,7 @@ class BaseFileManagerController extends Controller
     {
         try {
             return Response::json($action());
-        } catch (FileManagerException $exc) {
+        } catch (FilemanagerException $exc) {
             return $this->error($exc->getMessage(), false);
         }
     }

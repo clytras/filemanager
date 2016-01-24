@@ -1,27 +1,19 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: IGO-PC
- * Date: 9/29/2015
- * Time: 9:22 PM
- */
-
-namespace Tahq69\ScriptFileManager\Script\Controllers;
+<?php namespace Crip\Filemanager\App\Controllers;
 
 use Illuminate\Foundation\Application;
 use Input;
-use Tahq69\ScriptFileManager\Script\FileManager;
-use Tahq69\ScriptFileManager\Script\Package;
-use Tahq69\ScriptFileManager\Script\Services\ValidateConfig;
+use Crip\Filemanager\App\Filemanager;
+use Crip\Filemanager\App\Package;
+use Crip\Filemanager\App\Services\ValidateConfig;
 
 /**
  * Class DirectoryController
- * @package Tahq69\ScriptFileManager\Script\Controllers
+ * @package Crip\Filemanager\App\Controllers
  */
 class DirectoryController extends BaseFileManagerController
 {
     /**
-     * @var FileManager
+     * @var Filemanager
      */
     private $manager;
 

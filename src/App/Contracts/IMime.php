@@ -1,18 +1,10 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: IGO-PC
- * Date: 10/17/2015
- * Time: 12:37 PM
- */
+<?php namespace Crip\Filemanager\App\Contracts;
 
-namespace Tahq69\ScriptFileManager\Script\Contracts;
-
-use Tahq69\ScriptFileManager\Script\Exceptions\FileManagerException;
+use Crip\Filemanager\App\Exceptions\FilemanagerException;
 
 /**
  * Interface IMime
- * @package Tahq69\ScriptFileManager\Script\Contracts
+ * @package Crip\Filemanager\App\Contracts
  */
 interface IMime
 {
@@ -28,7 +20,7 @@ interface IMime
      *
      * @param string $mime
      * @return boolean
-     * @throws FileManagerException
+     * @throws FilemanagerException
      */
     function isImage($mime);
 

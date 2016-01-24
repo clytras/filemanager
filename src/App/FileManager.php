@@ -1,15 +1,15 @@
-<?php namespace Tahq69\ScriptFileManager\Script;
+<?php namespace Crip\Filemanager\App;
 
 use File;
 use Illuminate\Foundation\Application;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Tahq69\ScriptFileManager\Script\Contracts\IMime;
-use Tahq69\ScriptFileManager\Script\Exceptions\FileManagerException;
+use Crip\Filemanager\App\Contracts\IMime;
+use Crip\Filemanager\App\Exceptions\FilemanagerException;
 use URL;
 
 /**
  * Class FileManager
- * @package Tahq69\ScriptFileManager\Script
+ * @package Crip\Filemanager\App
  */
 class FileManager
 {
@@ -32,12 +32,12 @@ class FileManager
     /**
      * @var string
      */
-    protected $dir_action = '\Tahq69\ScriptFileManager\Script\Controllers\DirectoryController@dir';
+    protected $dir_action = '\Crip\Filemanager\App\Controllers\DirectoryController@dir';
 
     /**
      * @var string
      */
-    protected $file_action = '\Tahq69\ScriptFileManager\Script\Controllers\FileController@get';
+    protected $file_action = '\Crip\Filemanager\App\Controllers\FileController@get';
 
     /**
      * @param Application $app
@@ -66,17 +66,17 @@ class FileManager
         $this->full_path = $this->trimPath($this->base_path . $this->path) . '/';
 
         if (!File::exists($this->full_path)) {
-            throw new FileManagerException(
+            throw new FilemanagerException(
                 Package::trans('err_path_not_exist', ['path' => $this->path])
             );
         }
         if (File::type($this->full_path) !== 'dir') {
-            throw new FileManagerException(
+            throw new FilemanagerException(
                 Package::trans('err_path_not_dir', ['path' => $this->path])
             );
         }
         if (strpos($this->path, '..') !== false || strpos($this->path, '.\\') || strpos($this->path, './')) {
-            throw new FileManagerException(
+            throw new FilemanagerException(
                 Package::trans('err_incorrect_path', ['path' => $this->path])
             );
         }
@@ -100,7 +100,7 @@ class FileManager
             ]));
         }
 
-        throw new FileManagerException(Package::trans('err_uploading_invalid_file'));
+        throw new FilemanagerException(Package::trans('err_uploading_invalid_file'));
     }
 
     public function create($name)
@@ -110,7 +110,7 @@ class FileManager
         $name = $this->getFolderName($info->name);
         $new_path = $this->full_path . $name;
         if (File::exists($new_path)) {
-            throw new FileManagerException(Package::trans('err_create_dir_exists'));
+            throw new FilemanagerException(Package::trans('err_create_dir_exists'));
         }
         $this->mkdir($new_path);
         return $this->folderResponse($name, false, Package::trans('success_folder_created', [
@@ -159,7 +159,7 @@ class FileManager
         if (File::exists($file_path)) {
             return new FileManagerFile($file_path);
         }
-        throw new FileManagerException(Package::trans('err_file_does_not_exist_in',
+        throw new FilemanagerException(Package::trans('err_file_does_not_exist_in',
             ['path' => $this->relativePath() . $name]));
     }
 
@@ -278,7 +278,7 @@ class FileManager
                 'path' => $relative_path,
             ];
         }
-        throw new FileManagerException(Package::trans('err_cant_delete',
+        throw new FilemanagerException(Package::trans('err_cant_delete',
             ['path' => $relative_path]));
     }
 
@@ -299,10 +299,10 @@ class FileManager
                     'path' => $this->relativePath() . $name,
                 ];
             }
-            throw new FileManagerException(Package::trans('err_cant_delete_file_in',
+            throw new FilemanagerException(Package::trans('err_cant_delete_file_in',
                 ['path' => $relative_path]));
         }
-        throw new FileManagerException(Package::trans('err_file_does_not_exist_in',
+        throw new FilemanagerException(Package::trans('err_file_does_not_exist_in',
             ['path' => $relative_path]));
     }
 
@@ -327,9 +327,9 @@ class FileManager
                     'new' => $name
                 ]));
             }
-            throw new FileManagerException(Package::trans('err_cant_rename_error'));
+            throw new FilemanagerException(Package::trans('err_cant_rename_error'));
         }
-        throw new FileManagerException(Package::trans('err_cant_rename_source_not_found', ['name' => $old->name]));
+        throw new FilemanagerException(Package::trans('err_cant_rename_source_not_found', ['name' => $old->name]));
     }
 
     private function renameFile(FileManagerInfo $old, FileManagerInfo $new)
@@ -365,9 +365,9 @@ class FileManager
                     'new' => $new_name
                 ]));
             }
-            throw new FileManagerException(Package::trans('err_cant_rename_file'));
+            throw new FilemanagerException(Package::trans('err_cant_rename_file'));
         }
-        throw new FileManagerException(Package::trans('err_cant_rename_source_file_not_found'));
+        throw new FilemanagerException(Package::trans('err_cant_rename_source_file_not_found'));
     }
 
     /**

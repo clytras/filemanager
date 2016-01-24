@@ -1,4 +1,4 @@
-<?php namespace Tahq69\ScriptFileManager\Script;
+<?php namespace Crip\Filemanager\App;
 
 use File;
 

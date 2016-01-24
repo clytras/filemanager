@@ -1,8 +1,8 @@
-<?php namespace Tahq69\ScriptFileManager\Script;
+<?php namespace Crip\Filemanager\App;
 
 use File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Tahq69\ScriptFileManager\Script\Exceptions\FileManagerException;
+use Crip\Filemanager\App\Exceptions\FilemanagerException;
 
 /**
  * Class FileManagerInfo
@@ -48,7 +48,7 @@ class FileManagerInfo
         $info = new FileManagerInfo();
 
         if (str_contains($name, '/')) {
-            throw new FileManagerException("TODO: incorrect {$name}");
+            throw new FilemanagerException("TODO: incorrect {$name}");
         }
 
         $info->is_file = str_contains($name, '.');

@@ -1,19 +1,11 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: IGO-PC
- * Date: 9/29/2015
- * Time: 8:00 AM
- */
-
-namespace Tahq69\ScriptFileManager\Script\Facades;
+<?php namespace Crip\Filemanager\App\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Tahq69\ScriptFileManager\Script\Package;
+use Crip\Filemanager\App\Package;
 
 /**
  * Class FileManager
- * @package Tahq69\ScriptFileManager\Script\Facades
+ * @package Crip\Filemanager\App\Facades
  */
 class FileManager extends Facade
 {

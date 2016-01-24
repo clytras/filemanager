@@ -1,16 +1,8 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: IGO-PC
- * Date: 9/29/2015
- * Time: 7:16 AM
- */
-
-namespace Tahq69\ScriptFileManager\Script;
+<?php namespace Crip\Filemanager\App;
 
 /**
  * Class Package
- * @package Tahq69\ScriptFileManager\Script
+ * @package Crip\Filemanager\App
  */
 class Package
 {
@@ -35,7 +27,7 @@ class Package
      */
     public static function public_url()
     {
-        return '/vendor/tahq69/' . self::NAME . '/';
+        return '/vendor/crip/filemanager/';
     }
 
     /**

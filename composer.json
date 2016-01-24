@@ -8,7 +8,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Tahq69\\ScriptFileManager\\": "src"
+      "Crip\\Filemanager\\": "src"
     }
   },
   "license": "MIT",

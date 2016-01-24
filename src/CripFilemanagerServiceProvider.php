@@ -1,20 +1,18 @@
-<?php namespace Tahq69\ScriptFileManager;
+<?php namespace Crip\Filemanager;
 
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
-use Tahq69\ScriptFileManager\Script\Contracts\IMime;
-use Tahq69\ScriptFileManager\Script\Contracts\IUpload;
-use Tahq69\ScriptFileManager\Script\FileManager;
-use Tahq69\ScriptFileManager\Script\Package;
-use Tahq69\ScriptFileManager\Script\Services\Mime;
-use Tahq69\ScriptFileManager\Script\Services\Upload;
+use Crip\Filemanager\App\Contracts\IMime;
+use Crip\Filemanager\App\Filemanager;
+use Crip\Filemanager\App\Package;
+use Crip\Filemanager\App\Services\Mime;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /**
- * Class ScriptFileManagerServiceProvider
- * @package Tahq69\ScriptFileManager
+ * Class CripFilemanagerServiceProvider
+ * @package Crip\Filemanager
  */
-class ScriptFileManagerServiceProvider extends ServiceProvider
+class CripFilemanagerServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -37,7 +35,7 @@ class ScriptFileManagerServiceProvider extends ServiceProvider
 
         // init router (should be initialised after loadViewsFrom if is using views)
         if (!$this->app->routesAreCached()) {
-            require __DIR__ . '/Script/Routes.php';
+            require __DIR__ . '/App/Routes.php';
         }
 
         // This will allow users of your package to easily override your default configuration options after publishing
@@ -64,7 +62,7 @@ class ScriptFileManagerServiceProvider extends ServiceProvider
         $this->app->bind(IMime::class, Mime::class);
 
         $this->app[Package::NAME] = $this->app->share(function ($app) {
-            return new FileManager($app['app'], $this->app->make(IMime::class));
+            return new Filemanager($app['app'], $this->app->make(IMime::class));
         });
 
         // merge package configuration file with the application's copy.
@@ -75,7 +73,7 @@ class ScriptFileManagerServiceProvider extends ServiceProvider
         // Shortcut so developers don't need to add an Alias in app/config/app.php
         $this->app->booting(function () {
             $loader = AliasLoader::getInstance();
-            $loader->alias('FileManager', FileManager::class);
+            $loader->alias('FileManager', Filemanager::class);
             $loader->alias('LaravelLocalization', LaravelLocalization::class);
         });
 

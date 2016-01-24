@@ -38,12 +38,11 @@ cripweb.sass(
 
 // Copy fonts
 cripweb.copy('bower_components/bootstrap-sass/assets/fonts/**/*.*', 'src/public/fonts', 'fonts');
-
-cripweb.copy('src/public/js/**/*.js', '../boilerplate/public/vendor/tahq69/cripfilemanager/js', 'publish-js');
-
-cripweb.copy('src/public/css/**/*.css', '../boilerplate/public/vendor/tahq69/cripfilemanager/css', 'publish-css');
-
-cripweb.copy('src/resources/views/**/*.php', '../boilerplate/resources/views/vendor/cripfilemanager', 'publish-views');
+cripweb.copy('bower_components/bootstrap-sass/assets/fonts/**/*.*', '../../public/vendor/crip/filemanager/fonts', 'publish-fonts');
+cripweb.copy('src/public/js/**/*.js', '../../public/vendor/crip/filemanager/js', 'publish-js');
+cripweb.copy('src/public/css/**/*.css', '../../public/vendor/crip/filemanager/css', 'publish-css');
+cripweb.copy('src/public/*.png', '../../public/vendor/crip/filemanager', 'publish-images');
+cripweb.copy('src/resources/views/**/*.php', '../../resources/views/vendor/crip/filemanager', 'publish-views');
 
 gulp.task('default', function () {
     cripweb.gulp.start('crip-default');

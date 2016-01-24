@@ -1,21 +1,13 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: IGO-PC
- * Date: 10/17/2015
- * Time: 12:37 PM
- */
-
-namespace Tahq69\ScriptFileManager\Script\Services;
+<?php namespace Crip\Filemanager\App\Services;
 
 use Illuminate\Foundation\Application;
-use Tahq69\ScriptFileManager\Script\Contracts\IMime;
-use Tahq69\ScriptFileManager\Script\Exceptions\FileManagerException;
-use Tahq69\ScriptFileManager\Script\Package;
+use Crip\Filemanager\App\Contracts\IMime;
+use Crip\Filemanager\App\Exceptions\FilemanagerException;
+use Crip\Filemanager\App\Package;
 
 /**
  * Class Mime
- * @package Tahq69\ScriptFileManager\Script\Services
+ * @package Crip\Filemanager\App\Services
  */
 class Mime implements IMime
 {
@@ -51,7 +43,7 @@ class Mime implements IMime
      *
      * @param string $mime
      * @return string
-     * @throws FileManagerException
+     * @throws FilemanagerException
      */
     public function getIcon($mime = null)
     {
@@ -74,7 +66,7 @@ class Mime implements IMime
                 return $icons . 'js.png';
 
             case 'text/php':
-                throw new FileManagerException('PHP file in uploads found!');
+                throw new FilemanagerException('PHP file in uploads found!');
 
             case 'application/x-gzip':
             case 'application/x-rar-compressed':

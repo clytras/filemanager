@@ -3,13 +3,13 @@
 /**
  * Package custom router
  */
-use Tahq69\ScriptFileManager\Script\Package;
+use Crip\Filemanager\App\Package;
 
 Route::group(
     [
         // Prefix comes from configuration (default: "filemanager")
         'prefix' => LaravelLocalization::setLocale() . '/' . Package::config('base_url'),
-        'namespace' => 'Tahq69\ScriptFileManager\Script\Controllers'
+        'namespace' => 'Crip\Filemanager\App\Controllers'
     ],
     function (\Illuminate\Routing\Router $router) {
         $router->get('/', 'DirectoryController@index');

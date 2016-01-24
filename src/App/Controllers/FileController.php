@@ -1,19 +1,19 @@
-<?php namespace Tahq69\ScriptFileManager\Script\Controllers;
+<?php namespace Crip\Filemanager\App\Controllers;
 
 use Input;
 use Response;
-use Tahq69\ScriptFileManager\Script\FileManager;
+use Crip\Filemanager\App\Filemanager;
 use Illuminate\Foundation\Application;
-use Tahq69\ScriptFileManager\Script\Package;
+use Crip\Filemanager\App\Package;
 
 /**
  * Class FileController
- * @package Tahq69\ScriptFileManager\Script\Controllers
+ * @package Crip\Filemanager\App\Controllers
  */
 class FileController extends BaseFileManagerController
 {
     /**
-     * @var FileManager
+     * @var Filemanager
      */
     private $manager;
 
@@ -68,9 +68,8 @@ class FileController extends BaseFileManagerController
 
     /**
      * @param $path
-     * @param $name
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Tahq69\ScriptFileManager\Script\Exceptions\FileManagerException
+     * @return $this
+     * @throws \Crip\Filemanager\App\Exceptions\FilemanagerException
      */
     public function get($path)
     {

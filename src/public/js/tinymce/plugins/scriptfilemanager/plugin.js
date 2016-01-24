@@ -1,4 +1,4 @@
-tinymce.PluginManager.add("scriptfilemanager", function (editor) {
+tinymce.PluginManager.add("cripfilemanager", function (editor) {
     function OpenCripFileManager(event) {
         editor.focus(true);
 
@@ -12,7 +12,7 @@ tinymce.PluginManager.add("scriptfilemanager", function (editor) {
         })
     }
 
-    editor.addButton("scriptfilemanager", {
+    editor.addButton("cripfilemanager", {
         icon: false,
         text: 'My button',
         tooltip: "Insert file",
@@ -22,7 +22,7 @@ tinymce.PluginManager.add("scriptfilemanager", function (editor) {
 
     editor.addShortcut("Ctrl+E", "", OpenCripFileManager);
 
-    editor.addMenuItem("scriptfilemanager", {
+    editor.addMenuItem("cripfilemanager", {
         icon: "browse",
         text: "Insert file",
         shortcut: "Ctrl+E",
