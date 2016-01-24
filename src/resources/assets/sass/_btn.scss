@@ -1,0 +1,32 @@
+.btn.img {
+  &.img {
+    padding: 4px 10px;
+  }
+
+  .btn-img {
+    width: 23px;
+    height: 23px;
+  }
+}
+
+.btn.btn-sm {
+  &.img {
+    padding: 5px;
+  }
+
+  &.img-lg {
+    padding: 4px;
+  }
+
+  .btn-img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.input-group-sm,
+.btn-group-sm {
+  .btn {
+    @extend .btn.btn-sm
+  }
+}

@@ -1,0 +1,28 @@
+@import "../../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "mixins";
+@import "variables";
+@import "components/contextmenu";
+@import "components/loadingbar";
+@import "components/notification";
+@import "components/dirItem";
+@import "components/tree";
+@import "components/uploader";
+@import "dropdown-submenu";
+@import "btn";
+
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.folder-content .panel-title {
+  font-size: 18px;
+}
+
+.title {
+  margin-top: $padding-base-vertical;
+}

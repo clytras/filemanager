@@ -1,0 +1,4 @@
+tinymce.addI18n('en_GB', {
+    "Example plugin": "Exempel plugin"
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJsYW5ncy9lbl9HQi5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyJ0aW55bWNlLmFkZEkxOG4oJ2VuX0dCJywge1xyXG4gICAgXCJFeGFtcGxlIHBsdWdpblwiOiBcIkV4ZW1wZWwgcGx1Z2luXCJcclxufSk7Il0sImZpbGUiOiJsYW5ncy9lbl9HQi5qcyIsInNvdXJjZVJvb3QiOiIvc291cmNlLyJ9

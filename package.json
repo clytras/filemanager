@@ -1,0 +1,21 @@
+{
+  "name": "crip-filemanager",
+  "version": "1.0.0",
+  "description": "Laravel - Angular filemanager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "laravel",
+    "angularjs",
+    "filemanager",
+    "upload"
+  ],
+  "author": "Igors Krasjukovs",
+  "license": "MIT",
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "cripweb": "^1.0.0"
+  }
+}

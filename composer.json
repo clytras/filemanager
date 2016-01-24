@@ -1,0 +1,22 @@
+{
+  "name": "crip-laravel/filemanager",
+  "description": "Laravel - Angular filemanager",
+  "require": {
+    "laravel/framework": "^5.1",
+    "intervention/image": "^2.3",
+    "mcamara/laravel-localization": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Tahq69\\ScriptFileManager\\": "src"
+    }
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Igors Krasjukovs",
+      "email": "tahq69@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev"
+}
