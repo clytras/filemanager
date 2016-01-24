@@ -2,6 +2,7 @@
     'use strict';
 
     ng.module('file.manager', [
+        'crip.core',
         'angular-loading-bar',
         'angularFileUpload',
         'ngCookies',

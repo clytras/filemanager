@@ -22,7 +22,7 @@
                        ng-cloak
                        class="form-control"
                        ng-model="item.newName"
-                       c-enter="rename()"
+                       crip-enter="rename()"
                        placeholder="{{item.name}}">
                     <span class="input-group-btn">
                         <span ng-if="item.ext" class="btn btn-default disabled" ng-bind="'.' + item.ext"></span>

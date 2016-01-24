@@ -19,7 +19,7 @@
                     <td>
                         <strong>{{ item.file.name }}</strong>
 
-                        <div ng-show="uploader.isHTML5" c-thumb="{'file': item._file, 'height': 50}"></div>
+                        <div ng-show="uploader.isHTML5" crip-thumb="{'file': item._file, 'height': 50}"></div>
                     </td>
                     <td ng-show="uploader.isHTML5"
                         nowrap>{{item.file.size/1024/1024|number:2}} {!! FileManager::trans('size_mb') !!}</td>

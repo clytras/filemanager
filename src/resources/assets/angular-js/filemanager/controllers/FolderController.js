@@ -89,7 +89,8 @@
         $scope.$on('file-deleted', removeByPath);
         function removeByPath(event, item) {
             $log.log('FolderController -> removeByPath', {event: event, item: item, items: $scope.folder.items});
-            removeFromArr($scope.folder.items, item.path, 'path');
+            $scope.folder.items.removeItem(item.path, 'path');
+            //removeFromArr($scope.folder.items, );
         }
 
         /**

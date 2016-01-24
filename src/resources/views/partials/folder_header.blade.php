@@ -9,7 +9,7 @@
                            ng-cloak
                            name="name"
                            id="create-dir-input"
-                           c-enter="folder.create()"
+                           crip-enter="folder.create()"
                            class="form-control input-sm"
                            ng-model="folder.name"
                            placeholder="{!! FileManager::trans('new_folder_placeholder') !!}">

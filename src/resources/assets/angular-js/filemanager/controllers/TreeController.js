@@ -76,7 +76,7 @@
             $log.log('TreeController -> removeByPath', {event: event, item: item, items: $scope.tree.items});
 
             // TODO: recursively check all child folders
-            removeFromArr($scope.tree.items, item.path, 'path');
+            $scope.tree.items.removeItem(item.path, 'path');
         }
 
         /**
