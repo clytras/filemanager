@@ -21,13 +21,14 @@ cripweb.scripts([
 
 // Concat, uglify and sourcemap application code
 cripweb.scripts([
-    'angular-js/**/*module.js',
-    'angular-js/app.js',
-    'angular-js/**/*.js'
-], 'app', 'scripts-app', 'src/resources/assets', './src/public/js');
+    '**/*module.js',
+    'app.js',
+    'filemanager/**/*.js'
+], 'app', 'scripts-app', 'src/resources/assets/js', './src/public/js');
 
 // Copy and minify scripts, whitch cant be concated
-cripweb.scripts(['**/*.js'], null, 'scripts-copy', 'src/resources/assets/js', './src/public/js');
+cripweb.scripts(['tinymce/plugin.js'], null, 'scripts-copy-plugin', 'src/resources/assets/js', './src/public/js');
+cripweb.scripts(['tinymce/plugins/**/*.js'], null, 'scripts-copy-tinymce', 'src/resources/assets/js', './src/public/js/tinymce/plugins');
 
 // Compile sass in to css
 cripweb.sass(

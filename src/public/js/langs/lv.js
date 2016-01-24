@@ -1,4 +1,0 @@
-tinymce.addI18n('lv', {
-    "Example plugin": "Exempel plugin"
-});
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJsYW5ncy9sdi5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyJ0aW55bWNlLmFkZEkxOG4oJ2x2Jywge1xyXG4gICAgXCJFeGFtcGxlIHBsdWdpblwiOiBcIkV4ZW1wZWwgcGx1Z2luXCJcclxufSk7Il0sImZpbGUiOiJsYW5ncy9sdi5qcyIsInNvdXJjZVJvb3QiOiIvc291cmNlLyJ9

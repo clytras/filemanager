@@ -1,4 +1,0 @@
-tinymce.addI18n('ru', {
-    "Example plugin": "Exempel plugin"
-});
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJsYW5ncy9ydS5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyJ0aW55bWNlLmFkZEkxOG4oJ3J1Jywge1xyXG4gICAgXCJFeGFtcGxlIHBsdWdpblwiOiBcIkV4ZW1wZWwgcGx1Z2luXCJcclxufSk7Il0sImZpbGUiOiJsYW5ncy9ydS5qcyIsInNvdXJjZVJvb3QiOiIvc291cmNlLyJ9
