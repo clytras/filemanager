@@ -4,11 +4,12 @@
  * Package custom router
  */
 use Crip\Filemanager\App\Package;
+use Mcamara\LaravelLocalization\LaravelLocalization;
 
 Route::group(
     [
         // Prefix comes from configuration (default: "filemanager")
-        'prefix' => LaravelLocalization::setLocale() . '/' . Package::config('base_url'),
+        'prefix' => app(LaravelLocalization::class)->setLocale() . '/' . Package::config('base_url'),
         'namespace' => 'Crip\Filemanager\App\Controllers'
     ],
     function (\Illuminate\Routing\Router $router) {

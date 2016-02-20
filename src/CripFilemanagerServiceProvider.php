@@ -1,10 +1,10 @@
 <?php namespace Crip\Filemanager;
 
+use Crip\Core\Support\CripServiceProvider;
+use Crip\Core\Support\PackageBase;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Support\ServiceProvider;
 use Crip\Filemanager\App\Contracts\IMime;
 use Crip\Filemanager\App\Filemanager;
-use Crip\Filemanager\App\Package;
 use Crip\Filemanager\App\Services\Mime;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -12,14 +12,25 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
  * Class CripFilemanagerServiceProvider
  * @package Crip\Filemanager
  */
-class CripFilemanagerServiceProvider extends ServiceProvider
+class CripFilemanagerServiceProvider extends CripServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
+     * @var PackageBase
      */
-    protected $defer = false;
+    private static $package;
+
+    /**
+     * @return PackageBase
+     */
+    private static function package()
+    {
+        if (!self::$package) {
+            self::$package = new PackageBase('cripfilemanager', __DIR__);
+            self::$package->publish_database = false;
+        }
+
+        return self::$package;
+    }
 
     /**
      * Bootstrap the application events.
@@ -28,27 +39,7 @@ class CripFilemanagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // init package translations
-        $this->loadTranslationsFrom(__DIR__ . '/resources/lang', Package::NAME);
-        // init package views
-        $this->loadViewsFrom(__DIR__ . '/resources/views', Package::NAME);
-
-        // init router (should be initialised after loadViewsFrom if is using views)
-        if (!$this->app->routesAreCached()) {
-            require __DIR__ . '/App/Routes.php';
-        }
-
-        // This will allow users of your package to easily override your default configuration options after publishing
-        // php artisan vendor:publish --provider="Tahq69\ScriptFileManager\ScriptFileManagerServiceProvider"
-        $this->publishes([
-            __DIR__ . '/public' => Package::public_path(),
-            __DIR__ . '/resources/views' => base_path('resources/views/vendor/' . Package::NAME),
-        ]);
-
-        // php artisan vendor:publish --provider="Tahq69\ScriptFileManager\ScriptFileManagerServiceProvider" --tag=config
-        $this->publishes([
-            __DIR__ . '/config/' . Package::NAME . '.php' => config_path(Package::NAME . '.php'),
-        ], 'config');
+        $this->cripBoot(self::package());
     }
 
     /**
@@ -58,34 +49,19 @@ class CripFilemanagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->cripRegister(self::package());
+
         // bind IMime upload interface as Mime service
         $this->app->bind(IMime::class, Mime::class);
 
-        $this->app[Package::NAME] = $this->app->share(function ($app) {
+        $this->app[self::package()->name] = $this->app->share(function ($app) {
             return new Filemanager($app['app'], $this->app->make(IMime::class));
         });
-
-        // merge package configuration file with the application's copy.
-        $this->mergeConfigFrom(
-            __DIR__ . '/config/' . Package::NAME . '.php', Package::NAME
-        );
-
-        // Shortcut so developers don't need to add an Alias in app/config/app.php
-        $this->app->booting(function () {
-            $loader = AliasLoader::getInstance();
-            $loader->alias('FileManager', Filemanager::class);
-            $loader->alias('LaravelLocalization', LaravelLocalization::class);
-        });
-
     }
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
+    function aliasLoader(AliasLoader $loader)
     {
-        return array(Package::NAME);
+        $loader->alias('FileManager', Filemanager::class);
+        $loader->alias('LaravelLocalization', LaravelLocalization::class);
     }
 }
