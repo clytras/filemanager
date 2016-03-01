@@ -31,4 +31,22 @@ return [
             'width',
         ],
     ],
+    'icons' => [
+        'path' => '/vendor/crip/filemanager/',
+        'files' => [
+            'js' => 'js.png',
+            'dir' => 'dir.png',
+            'css' => 'css.png',
+            'txt' => 'txt.png',
+            'any' => 'file.png',
+            'img' => 'image.png',
+            'zip' => 'archive.png',
+            'pwp' => 'powerpoint.png',
+            'html' => 'html.png',
+            'word' => 'word.png',
+            'audio' => 'audio.png',
+            'video' => 'video.png',
+            'excel' => 'excel.png',
+        ]
+    ]
 ];
