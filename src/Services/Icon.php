@@ -1,12 +1,14 @@
 <?php namespace Crip\FileManager\Services;
 
+use Crip\Core\Contracts\ICripObject;
+use Crip\Core\Exceptions\BadConfigurationException;
 use Crip\FileManager\FileManager;
 
 /**
  * Class Icon
  * @package Crip\FileManager\Services
  */
-class Icon
+class Icon implements ICripObject
 {
     /**
      * @var string
@@ -50,10 +52,18 @@ class Icon
 
     /**
      * @param $key
+     *
      * @return string
+     *
+     * @throws BadConfigurationException
      */
     private function result($key)
     {
+        if (!isset($this->icon_names[$key])) {
+            $message = sprintf('Configuration file is missing for `%s` file type in `icons.files` array', $key);
+            throw new BadConfigurationException($this, $message);
+        }
+
         return $this->path . $this->icon_names[$key];
     }
 }
