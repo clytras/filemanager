@@ -11,7 +11,12 @@ class Icon
     /**
      * @var string
      */
-    public $path = '';
+    public $path;
+
+    /**
+     * @var bool
+     */
+    private $is_changed = false;
 
     /**
      * @var array
@@ -53,7 +58,8 @@ class Icon
      */
     public function get(Mime $file_mime_type)
     {
-        $this->icon_names = array_merge($this->icon_names, FileManager::package()->config('icons.files', []));
+        $this->change();
+
         switch ($file_mime_type->fileType()) {
             case 'dir':
                 return $this->result('dir');
@@ -115,8 +121,22 @@ class Icon
      */
     private function result($key)
     {
-        $path = FileManager::package()->config('icons.path', $this->path);
+        return $this->path . $this->icon_names[$key];
+    }
 
-        return $path . $this->icon_names[$key];
+    /**
+     * Update icon names from config, if they are not yet updated
+     * Set path from config if it is empty
+     */
+    private function change()
+    {
+        if (!$this->is_changed) {
+            $this->icon_names = array_merge($this->icon_names, FileManager::package()->config('icons.files', []));
+            $this->is_changed = true;
+        }
+
+        if (is_null($this->path)) {
+            $this->setPath(FileManager::package()->config('icons.path', ''));
+        }
     }
 }
