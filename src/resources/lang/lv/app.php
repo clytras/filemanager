@@ -1,7 +1,11 @@
 <?php
 
 return [
-    'context_delete' => 'Dzēst ierakstu',
+    'err_path_not_dir' => 'Ceļš līdz `:path` nav direktorija.',
+    'err_path_not_exist' => 'Ceļš līdz direktorijai `:path` neeksistē.',
+
+    'err_file_upload_invalid_file' => 'Fails nav valīds augšupielādei.'
+    /*'context_delete' => 'Dzēst ierakstu',
     'context_disable_rename' => 'Atslēgt pārsaukšanu',
     'context_image_sizes' => 'Izvēlēties izmeru',
     'context_new_folder' => 'Jauna mape',
@@ -62,5 +66,5 @@ return [
     'order_by_date_title' => 'Kārtot pēc datuma',
     'order_by_name' => 'Nosaukums',
     'order_by_size' => 'Izmērs',
-    'order_by_date' => 'Datums',
+    'order_by_date' => 'Datums',*/
 ];

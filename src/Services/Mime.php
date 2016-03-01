@@ -1,12 +1,13 @@
 <?php namespace Crip\FileManager\Services;
 
+use Crip\Core\Contracts\ICripObject;
 use Crip\FileManager\FileManager;
 
 /**
  * Class Mime
  * @package Crip\FileManager\Services
  */
-class Mime
+class Mime implements ICripObject
 {
     /**
      * @var string
