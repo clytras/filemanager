@@ -48,5 +48,10 @@ return [
             'video' => 'video.png',
             'excel' => 'excel.png',
         ]
+    ],
+    'mime' =>[
+        'js' => [
+            "/^text\/x\-jquery\-tmpl/",
+        ]
     ]
 ];

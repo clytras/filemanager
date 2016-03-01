@@ -1,5 +1,7 @@
 <?php namespace Crip\FileManager\Services;
 
+use Crip\FileManager\FileManager;
+
 /**
  * Class Mime
  * @package Crip\FileManager\Services
@@ -14,30 +16,78 @@ class Mime
     /**
      * @var array
      */
-    protected $document_mimes = [
-        'text/javascript',
-        'text/x-jquery-tmpl',
-        'text/css',
-        'text/plain',
-        'text/html',
-        'application/javascript',
-        'application/json',
-        'application/x-javascript',
-        'application/xhtml+xml',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'application/vnd.ms-powerpoint',
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    protected $mimes = [
+        'js' => [
+            "/^application\/javascript/",
+            "/^application\/json/",
+            "/^application\/x\-javascript/",
+            "/^text\/javascript/",
+        ],
+        'css' => [
+            "/^text\/css/",
+        ],
+        'txt' => [
+            "/^text\/plain/"
+        ],
+        'zip' => [
+            "/^application\/x\-gzip/",
+            "/^application\/x\-rar\-compressed/",
+            "/^application\/x\-7z\-compressed/",
+            "/^application\/zip/",
+        ],
+        'pwp' => [
+            "/^application\/vnd\.ms\-powerpoint",
+            "/^application\/vnd\.openxmlformats\-officedocument\.presentationml*/"
+        ],
+        'html' => [
+            "/^application\/xhtml\+xml/",
+            "/^text\/html/"
+        ],
+        'word' => [
+            "/^application\/msword",
+            "/^application\/vnd\.openxmlformats\-officedocument\.wordprocessingml*/"
+        ],
+        'excel' => [
+            "/^application\/vnd.ms-excel",
+            "/^application\/vnd\.openxmlformats\-officedocument\.spreadsheetml*/"
+        ],
+        'audio' => [
+            "/^audio\/*"
+        ],
+        'video' => [
+            "/^video\/*"
+        ],
+        'img' => [
+            "/^image\/*/"
+        ]
     ];
 
     /**
+     * Not included file types will be a 'file' media type
+     *
+     * @var array
+     */
+    protected $media_mapping = [
+        'dir' => ['dir'],
+        'image' => ['img'],
+        'media' => ['audio', 'video'],
+        'document' => ['excel', 'word', 'pwp', 'html', 'txt', 'js']
+    ];
+
+    /**
+     * @param string $path
      * @param string $mime
      */
-    public function __construct($mime)
+    public function __construct($path, $mime = null)
     {
-        $this->setMime($mime);
+        if ($mime !== null) {
+            $this->setMime($mime);
+        } else {
+            $this->setMime(mime_content_type($path));
+        }
+
+        $this->setFromConfig($this->mimes, 'mime.types');
+        $this->setFromConfig($this->media_mapping, 'mime.media');
     }
 
     /**
@@ -49,27 +99,41 @@ class Mime
     }
 
     /**
-     * Get mime type name
-     * dir, image, media, document or file
+     * Get file type from mime (if empty mime - 'dir', if not found - 'file')
+     * dir, js, css, txt, img, zip, pwp, html, word, audio, video, excel or file
      *
      * @return string
      */
     public function fileType()
     {
-        if (is_null($this->mime)) {
+        if (!$this->mime) {
             return 'dir';
         }
 
-        if ($this->isImage()) {
-            return 'image';
+        foreach ($this->mimes as $mime => $mime_values) {
+            foreach ($mime_values as $mime_value) {
+                if (preg_match($mime_value, $this->mime)) {
+                    return $mime;
+                }
+            }
         }
 
-        if ($this->isMedia()) {
-            return 'media';
-        }
+        return 'file';
+    }
 
-        if ($this->isDocument()) {
-            return 'document';
+    /**
+     * Get mime type name
+     * dir, image, media, document or file
+     *
+     * @return string
+     */
+    public function mediaType()
+    {
+        $file_type = $this->fileType();
+        foreach ($this->media_mapping as $media => $map) {
+            if (in_array($file_type, $map)) {
+                return $media;
+            }
         }
 
         return 'file';
@@ -82,47 +146,13 @@ class Mime
      */
     public function isImage()
     {
-        return substr($this->mime, 0, 5) == 'image';
-    }
+        foreach ($this->mimes['img'] as $img_reg) {
+            if (preg_match($img_reg, $this->mime)) {
+                return true;
+            }
+        }
 
-    /**
-     * Is mime of media file
-     *
-     * @return bool
-     */
-    public function isMedia()
-    {
-        return $this->isAudio() || $this->isVideo();
-    }
-
-    /**
-     * Is mime of audio file
-     *
-     * @return bool
-     */
-    public function isAudio()
-    {
-        return substr($this->mime, 0, 5) == 'audio';
-    }
-
-    /**
-     * Is mime of video file
-     *
-     * @return bool
-     */
-    public function isVideo()
-    {
-        return substr($this->mime, 0, 5) == 'video';
-    }
-
-    /**
-     * Is mime of document
-     *
-     * @return bool
-     */
-    public function isDocument()
-    {
-        return in_array($this->mime, $this->document_mimes);
+        return false;
     }
 
     /**
@@ -135,5 +165,14 @@ class Mime
         $this->mime = $mime;
 
         return $this;
+    }
+
+    /**
+     * @param array $target
+     * @param string $key
+     */
+    protected function setFromConfig(&$target, $key)
+    {
+        $target = array_merge($target, FileManager::package()->config($key, []));
     }
 }
