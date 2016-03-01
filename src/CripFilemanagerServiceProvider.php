@@ -1,11 +1,11 @@
-<?php namespace Crip\Filemanager;
+<?php namespace Crip\FileManager;
 
 use Crip\Core\Support\CripServiceProvider;
 use Crip\Core\Support\PackageBase;
 use Illuminate\Foundation\AliasLoader;
-use Crip\Filemanager\App\Contracts\IMime;
-use Crip\Filemanager\App\Filemanager;
-use Crip\Filemanager\App\Services\Mime;
+use Crip\FileManager\App\Contracts\IMime;
+use Crip\FileManager\App\Filemanager;
+use Crip\FileManager\App\Services\Mime;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /**

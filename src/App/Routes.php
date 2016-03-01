@@ -3,14 +3,14 @@
 /**
  * Package custom router
  */
-use Crip\Filemanager\App\Package;
+use Crip\FileManager\App\Package;
 use Mcamara\LaravelLocalization\LaravelLocalization;
 
 Route::group(
     [
         // Prefix comes from configuration (default: "filemanager")
         'prefix' => app(LaravelLocalization::class)->setLocale() . '/' . Package::config('base_url'),
-        'namespace' => 'Crip\Filemanager\App\Controllers'
+        'namespace' => 'Crip\FileManager\App\Controllers'
     ],
     function (\Illuminate\Routing\Router $router) {
         $router->get('/', 'DirectoryController@index');
@@ -25,5 +25,5 @@ Route::group(
         $router->post('file/rename/{path?}', 'FileController@rename')->where('path', Package::URL_REGEXP);
         $router->post('file/delete/{path?}', 'FileController@delete')->where('path', Package::URL_REGEXP);
 
-        $router->get('file/{path?}', 'FileController@get')->where('path', Package::URL_REGEXP);
+        $router->get('file/{path?}', 'FileController@file')->where('path', Package::URL_REGEXP);
     });

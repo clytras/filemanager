@@ -8,7 +8,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Crip\\Filemanager\\": "src"
+      "Crip\\FileManager\\": "src"
     }
   },
   "license": "MIT",

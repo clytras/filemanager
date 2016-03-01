@@ -1,10 +1,10 @@
-<?php namespace Crip\Filemanager\App;
+<?php namespace Crip\FileManager\App;
 
 use File;
 use Illuminate\Foundation\Application;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Crip\Filemanager\App\Contracts\IMime;
-use Crip\Filemanager\App\Exceptions\FilemanagerException;
+use Crip\FileManager\App\Contracts\IMime;
+use Crip\FileManager\App\Exceptions\FilemanagerException;
 use URL;
 
 /**

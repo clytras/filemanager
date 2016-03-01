@@ -1,4 +1,4 @@
-<?php namespace Crip\Filemanager\App;
+<?php namespace Crip\FileManager\App;
 
 use File;
 

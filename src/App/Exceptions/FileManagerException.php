@@ -1,4 +1,4 @@
-<?php namespace Crip\Filemanager\App\Exceptions;
+<?php namespace Crip\FileManager\App\Exceptions;
 
 /**
  * Class FileManagerException

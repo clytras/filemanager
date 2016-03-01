@@ -1,4 +1,4 @@
-<?php namespace Crip\Filemanager\App\Facades;
+<?php namespace Crip\FileManager\App\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Crip\Filemanager\App\Package;

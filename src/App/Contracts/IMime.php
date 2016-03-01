@@ -1,6 +1,6 @@
-<?php namespace Crip\Filemanager\App\Contracts;
+<?php namespace Crip\FileManager\App\Contracts;
 
-use Crip\Filemanager\App\Exceptions\FilemanagerException;
+use Crip\FileManager\App\Exceptions\FilemanagerException;
 
 /**
  * Interface IMime

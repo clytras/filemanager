@@ -1,10 +1,10 @@
-<?php namespace Crip\Filemanager\App\Controllers;
+<?php namespace Crip\FileManager\App\Controllers;
 
 use Illuminate\Foundation\Application;
 use Input;
-use Crip\Filemanager\App\Filemanager;
-use Crip\Filemanager\App\Package;
-use Crip\Filemanager\App\Services\ValidateConfig;
+use Crip\FileManager\App\Filemanager;
+use Crip\FileManager\App\Package;
+use Crip\FileManager\App\Services\ValidateConfig;
 
 /**
  * Class DirectoryController

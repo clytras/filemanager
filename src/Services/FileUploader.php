@@ -27,19 +27,19 @@ class FileUploader implements ICripObject
 
     /**
      * @param UploadedFile $file
-     * @param string $upload_path
+     * @param PathManager $path
      *
      * @return string Uploaded file name
      *
      * @throws FileManagerException
      */
-    public function upload(UploadedFile $file, $upload_path)
+    public function upload(UploadedFile $file, PathManager $path)
     {
         if ($file->isValid()) {
-            $crip_file = $this->getUniqueName($upload_path, (new CripFile)->readFromFile($file));
-            $file->move($upload_path, $crip_file->fullName());
+            $crip_file = $this->getUniqueName($path, (new CripFile)->readFromFile($file));
+            $file->move($path->fullPath(), $crip_file->fullName());
             if ($crip_file->mime->isImage()) {
-                $this->createThumbs($upload_path, $crip_file);
+                $this->createThumbs($path, $crip_file);
             }
 
             return $crip_file->fullName();
@@ -48,17 +48,17 @@ class FileUploader implements ICripObject
     }
 
     /**
-     * @param string $path
+     * @param PathManager $path
      * @param CripFile $file
      *
      * @return CripFile
      */
-    private function getUniqueName($path, CripFile $file)
+    private function getUniqueName(PathManager $path, CripFile $file)
     {
-        if (CripFile::exists(CripFile::join([$path, $file->fullName()]))) {
+        if (CripFile::exists($path->fullPath($file))) {
             $original_name = $file->name;
             $file->setName($file->name . '-1');
-            for ($i = 2; CripFile::exists(CripFile::join([$path, $file->fullName()])); $i++) {
+            for ($i = 2; CripFile::exists($path->fullPath($file)); $i++) {
                 $file->setName($original_name . '-' . $i);
             }
         }
@@ -67,21 +67,41 @@ class FileUploader implements ICripObject
     }
 
     /**
-     * @param string $upload_path
+     * @param PathManager $path
      * @param CripFile $file
+     *
+     * @return array
      */
-    private function createThumbs($upload_path, CripFile $file)
+    private function createThumbs(PathManager $path, CripFile $file)
     {
         $thumb_sizes = array_merge($this->thumbs, FileManager::package()->config('thumbs', []));
         $thumbs = [];
-        foreach($thumb_sizes as $size_key => $sizes) {
-            $img = app(ImageManager::class)->make(CripFile::join([$upload_path, $file->fullName()]));
-            $path = $this->thumbPath($upload_path, $size_key);
+        foreach ($thumb_sizes as $size_key => $sizes) {
+            $img = app(ImageManager::class)->make($path->fullPath($file));
+            $new_path = $path->thumbPath($size_key);
+            CripFile::mkdir($new_path, 777, true);
+            switch ($sizes[2]) {
+                case 'width':
+                    // resize the image to a width of $sizes[ 0 ] and constrain aspect ratio (auto height)
+                    $img->resize($sizes[0], null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                    break;
+                case 'height':
+                    // resize the image to a height of $sizes[ 1 ] and constrain aspect ratio (auto width)
+                    $img->resize(null, $sizes[1], function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                    break;
+                // 'resize'
+                default:
+                    $img->fit($sizes[0], $sizes[1]);
+                    break;
+            }
+            $img->save(CripFile::join([$new_path, $file->fullName()]));
+            $thumbs[] = UrlManager::get($path, $file, $size_key);
         }
-    }
 
-    private function thumbPath($upload_path, $size_key)
-    {
-
+        return $thumbs;
     }
 }

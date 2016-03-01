@@ -1,9 +1,9 @@
-<?php namespace Crip\Filemanager\App\Controllers;
+<?php namespace Crip\FileManager\App\Controllers;
 
 use Illuminate\Routing\Controller;
 use Response;
-use Crip\Filemanager\App\Exceptions\FilemanagerException;
-use Crip\Filemanager\App\Package;
+use Crip\FileManager\App\Exceptions\FilemanagerException;
+use Crip\FileManager\App\Package;
 
 /**
  * Class BaseFileManagerController

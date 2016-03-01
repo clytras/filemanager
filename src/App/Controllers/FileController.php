@@ -1,10 +1,10 @@
-<?php namespace Crip\Filemanager\App\Controllers;
+<?php namespace Crip\FileManager\App\Controllers;
 
-use Input;
-use Response;
-use Crip\Filemanager\App\Filemanager;
-use Illuminate\Foundation\Application;
+use Crip\FileManager\App\FileManager;
 use Crip\Filemanager\App\Package;
+use Crip\FileManager\Services\FileUploader;
+use Crip\FileManager\Services\PathManager;
+use Input;
 
 /**
  * Class FileController
@@ -12,18 +12,6 @@ use Crip\Filemanager\App\Package;
  */
 class FileController extends BaseFileManagerController
 {
-    /**
-     * @var Filemanager
-     */
-    private $manager;
-
-    /**
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->manager = $app[Package::NAME];
-    }
 
     /**
      * @param $path
@@ -37,50 +25,22 @@ class FileController extends BaseFileManagerController
          */
 
         return $this->tryReturn(function () use ($path) {
-            return $this->manager->changePath($path)
-                ->upload(Input::file('file'));
+            return (new FileUploader)
+                ->upload(
+                    Input::file('file'),
+                    (new PathManager)->goToPath($path)
+                );
         });
     }
 
-    /**
-     * @param $path
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function rename($path = '')
-    {
-        return $this->tryReturn(function () use ($path) {
-            return $this->manager->changePath($path)
-                ->rename(Input::get('old'), Input::get('new'));
-        });
-    }
-
-    /**
-     * @param $path
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function delete($path = '')
-    {
-        return $this->tryReturn(function () use ($path) {
-            return $this->manager->changePath($path)
-                ->delete(Input::get('name'));
-        });
-    }
-
-    /**
-     * @param $path
-     * @return $this
-     * @throws \Crip\Filemanager\App\Exceptions\FilemanagerException
-     */
-    public function get($path)
-    {
+    public function file($path) {
         $name = basename($path);
         $path = substr($path, 0, strlen($path) - strlen($name));
-
         // TODO: wrap into try
-        $file = $this->manager->changePath($path)
+        $manager = app(Package::NAME);
+        $file = $manager->changePath($path)
             ->file($name, Input::get('thumb', null));
-
-        return Response::make($file->file)
+        return \Response::make($file->file)
             ->header('Content-Type', $file->mime);
     }
 }

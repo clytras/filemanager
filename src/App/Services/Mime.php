@@ -1,9 +1,9 @@
-<?php namespace Crip\Filemanager\App\Services;
+<?php namespace Crip\FileManager\App\Services;
 
 use Illuminate\Foundation\Application;
-use Crip\Filemanager\App\Contracts\IMime;
-use Crip\Filemanager\App\Exceptions\FilemanagerException;
-use Crip\Filemanager\App\Package;
+use Crip\FileManager\App\Contracts\IMime;
+use Crip\FileManager\App\Exceptions\FilemanagerException;
+use Crip\FileManager\App\Package;
 
 /**
  * Class Mime

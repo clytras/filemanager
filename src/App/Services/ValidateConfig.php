@@ -1,6 +1,6 @@
-<?php namespace Crip\Filemanager\App\Services;
+<?php namespace Crip\FileManager\App\Services;
 
-use Crip\Filemanager\App\Package;
+use Crip\FileManager\App\Package;
 
 /**
  * Class ValidateConfig
