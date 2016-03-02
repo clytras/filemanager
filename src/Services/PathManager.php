@@ -1,6 +1,7 @@
 <?php namespace Crip\FileManager\Services;
 
 use Crip\Core\Contracts\ICripObject;
+use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Helpers\Str;
 use Crip\FileManager\Exceptions\FileManagerException;
 use Crip\FileManager\FileManager;
@@ -61,11 +62,11 @@ class PathManager implements ICripObject
      */
     private function setPath($path)
     {
-        $this->path = trim(CripFile::canonical($path), '/');
-        if (!CripFile::exists($this->full_path)) {
+        $this->path = trim(FileSystem::canonical($path), '/');
+        if (!FileSystem::exists($this->full_path)) {
             throw new FileManagerException($this, 'err_path_not_exist', ['path' => $this->path]);
         }
-        if (CripFile::type($this->full_path) !== 'dir') {
+        if (FileSystem::type($this->full_path) !== 'dir') {
             throw new FileManagerException($this, 'err_path_not_dir', ['path' => $this->path]);
         }
 
@@ -79,7 +80,7 @@ class PathManager implements ICripObject
     public function fullPath(CripFile $file = null)
     {
         if ($file) {
-            return CripFile::join([$this->full_path, $file->fullName()]);
+            return FileSystem::join([$this->full_path, $file->fullName()]);
         }
 
         return $this->full_path;
@@ -87,11 +88,22 @@ class PathManager implements ICripObject
 
     /**
      * @param $size_key
+     * @param CripFile $file
      * @return string
      */
-    public function thumbPath($size_key)
+    public function thumbPath($size_key, CripFile $file = null)
     {
-        return CripFile::join([$this->full_path, $this->thumb_dir, Str::slug($size_key)]);
+        $path = [
+            $this->full_path,
+            $this->thumb_dir,
+            Str::slug($size_key)
+        ];
+
+        if ($file) {
+            $path[] = $file->fullName();
+        }
+
+        return FileSystem::join($path);
     }
 
     /**
@@ -124,11 +136,11 @@ class PathManager implements ICripObject
     private function setBasePath()
     {
         if (!$this->base_path) {
-            $path = CripFile::canonical($this->pck->config('target_dir'));
+            $path = FileSystem::canonical($this->pck->config('target_dir'));
             $this->base_path = base_path($path);
-            CripFile::mkdir($this->base_path, 777, true);
+            FileSystem::mkdir($this->base_path, 777, true);
         }
 
-        $this->full_path = CripFile::canonical($this->base_path);
+        $this->full_path = FileSystem::canonical($this->base_path);
     }
 }

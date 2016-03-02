@@ -49,9 +49,13 @@ return [
             'excel' => 'excel.png',
         ]
     ],
-    'mime' =>[
+    'mime' => [
         'js' => [
             "/^text\/x\-jquery\-tmpl/",
         ]
+    ],
+    'actions' => [
+        'dir' => '\\Crip\\FileManager\\App\\Controllers\\DirectoryController@dir',
+        'file' => '\\Crip\\FileManager\\App\\Controllers\\FileController@file'
     ]
 ];

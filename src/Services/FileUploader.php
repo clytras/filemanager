@@ -1,6 +1,7 @@
 <?php namespace Crip\FileManager\Services;
 
 use Crip\Core\Contracts\ICripObject;
+use Crip\Core\Helpers\FileSystem;
 use Crip\FileManager\Exceptions\FileManagerException;
 use Crip\FileManager\FileManager;
 use Intervention\Image\ImageManager;
@@ -24,12 +25,24 @@ class FileUploader implements ICripObject
             'resize',
         ]
     ];
+    /**
+     * @var UrlManager
+     */
+    private $url;
+
+    /**
+     * @param UrlManager $url
+     */
+    public function __construct(UrlManager $url)
+    {
+        $this->url = $url;
+    }
 
     /**
      * @param UploadedFile $file
      * @param PathManager $path
      *
-     * @return string Uploaded file name
+     * @return array Uploaded file url and/or thumbs
      *
      * @throws FileManagerException
      */
@@ -38,11 +51,14 @@ class FileUploader implements ICripObject
         if ($file->isValid()) {
             $crip_file = $this->getUniqueName($path, (new CripFile)->readFromFile($file));
             $file->move($path->fullPath(), $crip_file->fullName());
+            $uploaded_file = [
+                'file' => $this->url->getFileUrl($path, $crip_file)
+            ];
             if ($crip_file->mime->isImage()) {
-                $this->createThumbs($path, $crip_file);
+                $uploaded_file['thumbs'] = $this->createThumbs($path, $crip_file);
             }
 
-            return $crip_file->fullName();
+            return $uploaded_file;
         }
         throw new FileManagerException($this, 'err_file_upload_invalid_file');
     }
@@ -55,10 +71,10 @@ class FileUploader implements ICripObject
      */
     private function getUniqueName(PathManager $path, CripFile $file)
     {
-        if (CripFile::exists($path->fullPath($file))) {
+        if (FileSystem::exists($path->fullPath($file))) {
             $original_name = $file->name;
             $file->setName($file->name . '-1');
-            for ($i = 2; CripFile::exists($path->fullPath($file)); $i++) {
+            for ($i = 2; FileSystem::exists($path->fullPath($file)); $i++) {
                 $file->setName($original_name . '-' . $i);
             }
         }
@@ -79,7 +95,7 @@ class FileUploader implements ICripObject
         foreach ($thumb_sizes as $size_key => $sizes) {
             $img = app(ImageManager::class)->make($path->fullPath($file));
             $new_path = $path->thumbPath($size_key);
-            CripFile::mkdir($new_path, 777, true);
+            FileSystem::mkdir($new_path, 777, true);
             switch ($sizes[2]) {
                 case 'width':
                     // resize the image to a width of $sizes[ 0 ] and constrain aspect ratio (auto height)
@@ -98,8 +114,8 @@ class FileUploader implements ICripObject
                     $img->fit($sizes[0], $sizes[1]);
                     break;
             }
-            $img->save(CripFile::join([$new_path, $file->fullName()]));
-            $thumbs[] = UrlManager::get($path, $file, $size_key);
+            $img->save($path->thumbPath($size_key, $file));
+            $thumbs[] = $this->url->getFileUrl($path, $file, $size_key);
         }
 
         return $thumbs;

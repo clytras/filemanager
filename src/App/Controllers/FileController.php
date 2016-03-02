@@ -25,7 +25,7 @@ class FileController extends BaseFileManagerController
          */
 
         return $this->tryReturn(function () use ($path) {
-            return (new FileUploader)
+            return app(FileUploader::class)
                 ->upload(
                     Input::file('file'),
                     (new PathManager)->goToPath($path)
