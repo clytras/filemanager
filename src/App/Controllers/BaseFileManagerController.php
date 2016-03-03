@@ -1,5 +1,6 @@
 <?php namespace Crip\FileManager\App\Controllers;
 
+use Crip\FileManager\FileManager;
 use Illuminate\Routing\Controller;
 use Response;
 use Crip\FileManager\App\Exceptions\FilemanagerException;
@@ -11,6 +12,19 @@ use Crip\FileManager\App\Package;
  */
 class BaseFileManagerController extends Controller
 {
+    /**
+     * @var FileManager
+     */
+    protected $fileManager;
+
+    /**
+     * @param FileManager $manager
+     */
+    public function __construct(FileManager $manager)
+    {
+        $this->fileManager = $manager;
+    }
+
     /**
      * @param $key
      * @param bool|true $as_key

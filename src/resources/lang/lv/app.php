@@ -10,6 +10,9 @@ return [
     'err_file_cant_rename' => 'Faila pārsaukšana neizdevās.',
     'err_file_ext_cant_be_changed' => 'Faila paplašinājums nevar mainīties.',
 
+    'err_folder_not_found' => 'Direktorija netika atrasta.',
+    'err_folder_cant_rename' => 'Direktorijas pārsaukšana neizdevās.',
+
     /*'context_delete' => 'Dzēst ierakstu',
     'context_disable_rename' => 'Atslēgt pārsaukšanu',
     'context_image_sizes' => 'Izvēlēties izmeru',

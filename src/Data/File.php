@@ -1,6 +1,8 @@
 <?php namespace Crip\FileManager\Data;
 
+use Crip\Core\Contracts\IArrayObject;
 use Crip\Core\Contracts\ICripObject;
+use Crip\Core\Contracts\IFileSystemObject;
 use Crip\Core\Helpers\FileSystem;
 use Crip\FileManager\Exceptions\FileManagerException;
 use Crip\FileManager\Services\FileService;
@@ -13,7 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * Class File
  * @package Crip\FileManager\Data
  */
-class File implements ICripObject
+class File implements ICripObject, IArrayObject, IFileSystemObject
 {
     /**
      * @var LaravelFile
@@ -120,6 +122,16 @@ class File implements ICripObject
     }
 
     /**
+     * Get system object name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * @param UploadedFile $file
      *
      * @return File
@@ -170,10 +182,10 @@ class File implements ICripObject
      *
      * @throws FileManagerException
      */
-    public function getFullFilePath()
+    public function getSysPath()
     {
         if ($this->path_manager) {
-            return $this->path_manager->fullPath($this);
+            return $this->path_manager->sysPath($this);
         }
 
         throw new FileManagerException($this, 'err_file_path_is_not_set');
@@ -191,6 +203,7 @@ class File implements ICripObject
         return $this;
     }
 
+
     /**
      * @return PathManager
      */
@@ -198,7 +211,6 @@ class File implements ICripObject
     {
         return $this->path_manager;
     }
-
 
     /**
      * Update all properties with service values
@@ -220,5 +232,4 @@ class File implements ICripObject
         $this->name = $this->service->getName();
         $this->full_name = $this->service->getFullName();
     }
-
 }

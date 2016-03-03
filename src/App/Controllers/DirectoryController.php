@@ -1,8 +1,7 @@
 <?php namespace Crip\FileManager\App\Controllers;
 
-use Illuminate\Foundation\Application;
+use Crip\FileManager\FileManager;
 use Input;
-use Crip\FileManager\App\Filemanager;
 use Crip\FileManager\App\Package;
 use Crip\FileManager\App\Services\ValidateConfig;
 
@@ -12,18 +11,6 @@ use Crip\FileManager\App\Services\ValidateConfig;
  */
 class DirectoryController extends BaseFileManagerController
 {
-    /**
-     * @var Filemanager
-     */
-    private $manager;
-
-    /**
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->manager = $app[Package::NAME];
-    }
 
     /**
      * FileManager general view
@@ -45,8 +32,10 @@ class DirectoryController extends BaseFileManagerController
     public function create($path = '')
     {
         return $this->tryReturn(function () use ($path) {
-            return $this->manager->changePath($path)
-                ->create(Input::get('name'));
+            return $this->fileManager
+                ->in($path)
+                ->createFolder(Input::get('name'))
+                ->toArray();
         });
     }
 
@@ -57,8 +46,10 @@ class DirectoryController extends BaseFileManagerController
     public function rename($path = '')
     {
         return $this->tryReturn(function () use ($path) {
-            return $this->manager->changePath($path)
-                ->rename(Input::get('old'), Input::get('new'));
+            return $this->fileManager
+                ->in($path)
+                ->renameFolder(Input::get('old'), Input::get('new'))
+                ->toArray();
         });
     }
 
@@ -69,8 +60,9 @@ class DirectoryController extends BaseFileManagerController
     public function delete($path = '')
     {
         return $this->tryReturn(function () use ($path) {
-            return $this->manager->changePath($path)
-                ->delete(Input::get('name'));
+            return $this->fileManager
+                ->in($path)
+                ->deleteFolder(Input::get('name'));
         });
     }
 

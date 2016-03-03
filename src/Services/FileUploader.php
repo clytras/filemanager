@@ -70,7 +70,7 @@ class FileUploader implements ICripObject
         if ($uploaded_file->isValid()) {
             $this->file->setPath($path)->setFromUpload($uploaded_file);
             $this->uniqueName->file($this->file);
-            $uploaded_file->move($path->fullPath(), $this->file->full_name);
+            $uploaded_file->move($path->sysPath(), $this->file->full_name);
             $result = [
                 'file' =>  $this->file->toArray()
             ];

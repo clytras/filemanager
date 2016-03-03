@@ -52,8 +52,8 @@ class ThumbManager implements ICripObject
     public function create(PathManager $path, File $file)
     {
         foreach ($this->thumb_sizes as $size_key => $sizes) {
-            $img = app(ImageManager::class)->make($path->fullPath($file));
-            $new_path = $path->thumbPath($size_key);
+            $img = app(ImageManager::class)->make($path->sysPath($file));
+            $new_path = $path->getThumbSysPath($size_key);
             FileSystem::mkdir($new_path, 777, true);
             switch ($sizes[2]) {
                 case 'width':
@@ -73,7 +73,7 @@ class ThumbManager implements ICripObject
                     $img->fit($sizes[0], $sizes[1]);
                     break;
             }
-            $img->save($path->thumbPath($size_key, $file));
+            $img->save($path->getThumbSysPath($size_key, $file));
             $this->thumbs[$size_key] = $this->url->getFileUrl($path, $file, $size_key);
         }
 
@@ -87,8 +87,8 @@ class ThumbManager implements ICripObject
     public function rename(File $old_file, File $new_file)
     {
         foreach (array_keys($this->thumb_sizes) as $size) {
-            $new_path = $new_file->getPathManager()->thumbPath($size, $new_file);
-            $old_path = $old_file->getPathManager()->thumbPath($size, $old_file);
+            $new_path = $new_file->getPathManager()->getThumbSysPath($size, $new_file);
+            $old_path = $old_file->getPathManager()->getThumbSysPath($size, $old_file);
             if (FileSystem::exists($old_path)) {
                 rename($old_path, $new_path);
             }
@@ -103,7 +103,7 @@ class ThumbManager implements ICripObject
     public function delete(File $file)
     {
         foreach (array_keys($this->thumb_sizes) as $size) {
-            $path = $file->getPathManager()->thumbPath($size, $file);
+            $path = $file->getPathManager()->getThumbSysPath($size, $file);
             if (FileSystem::exists($path)) {
                 FileSystem::delete($path);
             }

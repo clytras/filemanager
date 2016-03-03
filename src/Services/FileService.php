@@ -97,7 +97,7 @@ class FileService
         if ($this->is_file && $type !== 'dir') {
             $dir = $path_to_file_dir;
             if($this->path_manager && !$dir) {
-                $dir = $this->path_manager->fullPath();
+                $dir = $this->path_manager->sysPath();
             }
             $full_path = FileSystem::join([$dir, $name]);
             if ($dir && FileSystem::exists($full_path)) {
@@ -164,7 +164,7 @@ class FileService
     public function relativePath()
     {
         if($this->path_manager) {
-            return $this->path_manager->relativePath();
+            return $this->path_manager->getPath();
         }
 
         return '';

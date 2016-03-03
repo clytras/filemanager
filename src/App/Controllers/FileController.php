@@ -12,19 +12,6 @@ class FileController extends BaseFileManagerController
 {
 
     /**
-     * @var FileManager
-     */
-    private $fileManager;
-
-    /**
-     * @param FileManager $manager
-     */
-    public function __construct(FileManager $manager)
-    {
-        $this->fileManager = $manager;
-    }
-
-    /**
      * @param $path
      * @return \Illuminate\Http\JsonResponse
      */

@@ -20,11 +20,11 @@ class PathManager implements ICripObject
     /**
      * @var string
      */
-    private $base_path;
+    private $sys_dir;
     /**
      * @var string
      */
-    private $full_path;
+    private $sys_path;
     /**
      * @var \Crip\Core\Support\PackageBase
      */
@@ -39,7 +39,7 @@ class PathManager implements ICripObject
     {
         $this->pck = FileManager::package();
         $this->thumb_dir = Str::slug($this->pck->config('thumbs_dir', 'thumbs'));
-        $this->setBasePath();
+        $this->setSysPath();
     }
 
     /**
@@ -50,7 +50,7 @@ class PathManager implements ICripObject
      */
     public function goToPath($path)
     {
-        $this->updateFullPath($path);
+        $this->updateSysPath($path);
 
         return $this;
     }
@@ -65,10 +65,10 @@ class PathManager implements ICripObject
     private function setPath($path)
     {
         $this->path = trim(FileSystem::canonical($path), '/');
-        if (!FileSystem::exists($this->full_path)) {
+        if (!FileSystem::exists($this->sys_path)) {
             throw new FileManagerException($this, 'err_path_not_exist', ['path' => $this->path]);
         }
-        if (FileSystem::type($this->full_path) !== 'dir') {
+        if (FileSystem::type($this->sys_path) !== 'dir') {
             throw new FileManagerException($this, 'err_path_not_dir', ['path' => $this->path]);
         }
 
@@ -79,13 +79,13 @@ class PathManager implements ICripObject
      * @param File $file
      * @return string
      */
-    public function fullPath(File $file = null)
+    public function sysPath(File $file = null)
     {
         if ($file) {
-            return FileSystem::join([$this->full_path, $file->full_name]);
+            return FileSystem::join([$this->sys_path, $file->full_name]);
         }
 
-        return $this->full_path;
+        return $this->sys_path;
     }
 
     /**
@@ -93,10 +93,10 @@ class PathManager implements ICripObject
      * @param File $file
      * @return string
      */
-    public function thumbPath($size_key, File $file = null)
+    public function getThumbSysPath($size_key, File $file = null)
     {
         $path = [
-            $this->full_path,
+            $this->sys_path,
             $this->thumb_dir,
             Str::slug($size_key)
         ];
@@ -111,7 +111,7 @@ class PathManager implements ICripObject
     /**
      * @return string
      */
-    public function relativePath()
+    public function getPath()
     {
         return $this->path;
     }
@@ -123,26 +123,26 @@ class PathManager implements ICripObject
      *
      * @throws FileManagerException
      */
-    private function updateFullPath($path = null)
+    private function updateSysPath($path = null)
     {
         if ($path !== null) {
             $this->setPath($path);
         }
 
-        $this->full_path = FileSystem::canonical(FileSystem::join([$this->base_path, $this->path]));
+        $this->sys_path = FileSystem::canonical(FileSystem::join([$this->sys_dir, $this->path]));
     }
 
     /**
      * Sets base path of object
      */
-    private function setBasePath()
+    private function setSysPath()
     {
-        if (!$this->base_path) {
+        if (!$this->sys_dir) {
             $path = FileSystem::canonical($this->pck->config('target_dir'));
-            $this->base_path = base_path($path);
-            FileSystem::mkdir($this->base_path, 777, true);
+            $this->sys_dir = base_path($path);
+            FileSystem::mkdir($this->sys_dir, 777, true);
         }
 
-        $this->updateFullPath();
+        $this->updateSysPath();
     }
 }

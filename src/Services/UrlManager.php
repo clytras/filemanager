@@ -4,6 +4,7 @@ use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Support\PackageBase;
 use Crip\FileManager\Data\File;
+use Crip\FileManager\Data\Folder;
 use Crip\FileManager\FileManager;
 
 /**
@@ -49,14 +50,37 @@ class UrlManager implements ICripObject
             $pos = '?thumb=' . $size_key;
         }
 
-        $dir = $path->relativePath();
+        $dir = $path->getPath();
         $file_path = $file->full_name;
         if ($dir) {
-            $file_path = FileSystem::join([$path->relativePath(), $file->full_name]);
+            $file_path = FileSystem::join([$path->getPath(), $file->full_name]);
         }
 
-        $url = action($this->file_action, $file_path);
+        $url = action($this->file_action, $this->pathToUrl($file_path));
 
         return $url . $pos;
+    }
+
+    /**
+     * @param Folder $folder
+     *
+     * @return string
+     */
+    public function getFolderUrl(Folder $folder)
+    {
+        $dir = $folder->getPath();
+        $url = action($this->dir_action, $this->pathToUrl($dir));
+
+        return $url;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    public function pathToUrl($path)
+    {
+        return trim(join('/', FileSystem::split($path)), '/');
     }
 }

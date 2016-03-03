@@ -4,6 +4,7 @@ use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Support\PackageBase;
 use Crip\FileManager\Data\File;
+use Crip\FileManager\Data\Folder;
 use Crip\FileManager\Exceptions\FileManagerException;
 use Crip\FileManager\Services\FileSystemManager;
 use Crip\FileManager\Services\FileUploader;
@@ -46,9 +47,15 @@ class FileManager implements ICripObject
     private $fileSystem;
 
     /**
+     * @var Folder
+     */
+    private $folder;
+
+    /**
      * @param ThumbManager $thumb
      * @param PathManager $path
      * @param File $file
+     * @param Folder $folder
      * @param FileUploader $uploader
      * @param FileSystemManager $fileSystem
      */
@@ -56,6 +63,7 @@ class FileManager implements ICripObject
         ThumbManager $thumb,
         PathManager $path,
         File $file,
+        Folder $folder,
         FileUploader $uploader,
         FileSystemManager $fileSystem
     ) {
@@ -64,6 +72,7 @@ class FileManager implements ICripObject
         $this->thumb = $thumb;
         $this->path = $path;
         $this->file = $file;
+        $this->folder = $folder;
         $this->uploader = $uploader;
         $this->fileSystem = $fileSystem;
     }
@@ -107,9 +116,9 @@ class FileManager implements ICripObject
      */
     public function get($file_name, $size)
     {
-        $file_path = FileSystem::join([$this->path->fullPath(), $file_name]);
+        $file_path = FileSystem::join([$this->path->sysPath(), $file_name]);
         if ($size AND array_key_exists($size, $this->thumb->getSizes())) {
-            $thumb_path = FileSystem::join([$this->path->thumbPath($size), $file_name]);
+            $thumb_path = FileSystem::join([$this->path->getThumbSysPath($size), $file_name]);
             if (FileSystem::exists($thumb_path)) {
                 $file_path = $thumb_path;
             }
@@ -162,5 +171,49 @@ class FileManager implements ICripObject
         $file = $this->file->setPath($this->path)->setFromString($file_name);
 
         return $this->fileSystem->deleteFile($file);
+    }
+
+    /**
+     * Create folder in file system
+     *
+     * @param string $folder_name The folder name to be created
+     *
+     * @return Folder
+     */
+    public function createFolder($folder_name)
+    {
+        $folder = $this->folder->setPath($this->path)->setName($folder_name);
+
+        return $this->fileSystem->createFolder($folder);
+    }
+
+    /**
+     * Rename folder in file system
+     *
+     * @param string $old_name
+     * @param string $new_name
+     *
+     * @return Folder
+     */
+    public function renameFolder($old_name, $new_name)
+    {
+        $old_folder = app(Folder::class)->setPath($this->path)->setName($old_name);
+        $new_folder = app(Folder::class)->setName($new_name);
+
+        return $this->fileSystem->renameFolder($old_folder, $new_folder);
+    }
+
+    /**
+     * Delete folder from file system
+     *
+     * @param string $folder_name The folder name to be deleted
+     *
+     * @return bool
+     */
+    public function deleteFolder($folder_name)
+    {
+        $folder = $this->folder->setPath($this->path)->setName($folder_name);
+
+        return $this->fileSystem->deleteFolder($folder);
     }
 }
