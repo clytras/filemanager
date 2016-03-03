@@ -16,26 +16,21 @@ class FileController extends BaseFileManagerController
     /**
      * @var PathManager
      */
-    private $path;
+    private $pathManager;
+
     /**
      * @var FileManager
      */
-    private $manager;
-    /**
-     * @var FileUploader
-     */
-    private $uploader;
+    private $fileManager;
 
     /**
      * @param PathManager $path
      * @param FileManager $manager
-     * @param FileUploader $uploader
      */
-    public function __construct(PathManager $path, FileManager $manager, FileUploader $uploader)
+    public function __construct(PathManager $path, FileManager $manager)
     {
-        $this->path = $path;
-        $this->manager = $manager;
-        $this->uploader = $uploader;
+        $this->pathManager = $path;
+        $this->fileManager = $manager;
     }
 
     /**
@@ -50,9 +45,9 @@ class FileController extends BaseFileManagerController
          */
 
         return $this->tryReturn(function () use ($path) {
-            return $this->uploader->upload(
+            return $this->fileManager->upload(
                 Input::file('file'),
-                $this->path->goToPath($path)
+                $this->pathManager->goToPath($path)
             );
         });
     }
@@ -65,16 +60,41 @@ class FileController extends BaseFileManagerController
      */
     public function file($path)
     {
-        list($path, $name) = FileSystem::splitNameFromPath($path);
+        list($dir, $name) = FileSystem::splitNameFromPath($path);
+        $file_path = $this->pathManager->goToPath($dir);
+        $thumb = Input::get('thumb', null);
 
-        // TODO: wrap into try
-        $file = $this->manager->get(
-            $this->path->goToPath($path),
-            $name,
-            Input::get('thumb', null)
-        );
+        $file = $this->fileManager->get($file_path, $name, $thumb);
 
         return \Response::make($file->file)
             ->header('Content-Type', $file->mime->type);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rename($path = '')
+    {
+        return $this->tryReturn(function () use ($path) {
+            $dir = $this->pathManager->goToPath($path);
+
+            return $this->fileManager->renameFile(
+                $dir,
+                Input::get('old'),
+                Input::get('new')
+            )->toArray();
+        });
+    }
+
+    public function delete($path)
+    {
+        return $this->tryReturn(function () use ($path) {
+            list($folder, $name) = FileSystem::splitNameFromPath($path);
+            $dir = $this->pathManager->goToPath($folder);
+
+            return $this->fileManager->deleteFile($dir, $name);
+        });
     }
 }

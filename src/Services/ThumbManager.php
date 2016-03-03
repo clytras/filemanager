@@ -81,6 +81,36 @@ class ThumbManager implements ICripObject
     }
 
     /**
+     * @param File $old_file
+     * @param File $new_file
+     */
+    public function rename(File $old_file, File $new_file)
+    {
+        foreach (array_keys($this->thumb_sizes) as $size) {
+            $new_path = $new_file->getPathManager()->thumbPath($size, $new_file);
+            $old_path = $old_file->getPathManager()->thumbPath($size, $old_file);
+            if (FileSystem::exists($old_path)) {
+                rename($old_path, $new_path);
+            }
+        }
+    }
+
+    /**
+     * Delete file thumbs from filesystem
+     *
+     * @param File $file
+     */
+    public function delete(File $file)
+    {
+        foreach (array_keys($this->thumb_sizes) as $size) {
+            $path = $file->getPathManager()->thumbPath($size, $file);
+            if (FileSystem::exists($path)) {
+                FileSystem::delete($path);
+            }
+        }
+    }
+
+    /**
      * Get all sizes of thumbs
      *
      * @return array

@@ -2,6 +2,7 @@
 
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
+use Crip\FileManager\Exceptions\FileManagerException;
 use Crip\FileManager\Services\FileService;
 use Crip\FileManager\Services\PathManager;
 use Crip\FileManager\Services\UrlManager;
@@ -163,6 +164,41 @@ class File implements ICripObject
 
         return $this;
     }
+
+    /**
+     * @return string File path in system
+     *
+     * @throws FileManagerException
+     */
+    public function getFullFilePath()
+    {
+        if ($this->path_manager) {
+            return $this->path_manager->fullPath($this);
+        }
+
+        throw new FileManagerException($this, 'err_file_path_is_not_set');
+    }
+
+    /**
+     * @param $old_file
+     *
+     * @return File
+     */
+    public function clonePath(File $old_file)
+    {
+        $this->setPath($old_file->getPathManager());
+
+        return $this;
+    }
+
+    /**
+     * @return PathManager
+     */
+    public function getPathManager()
+    {
+        return $this->path_manager;
+    }
+
 
     /**
      * Update all properties with service values

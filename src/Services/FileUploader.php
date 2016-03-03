@@ -1,7 +1,6 @@
 <?php namespace Crip\FileManager\Services;
 
 use Crip\Core\Contracts\ICripObject;
-use Crip\Core\Helpers\FileSystem;
 use Crip\FileManager\Data\File;
 use Crip\FileManager\Exceptions\FileManagerException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -33,21 +32,29 @@ class FileUploader implements ICripObject
      * @var ThumbManager
      */
     private $thumb;
+
     /**
      * @var File
      */
     private $file;
 
     /**
+     * @var UniqueNameService
+     */
+    private $uniqueName;
+
+    /**
      * @param UrlManager $url
      * @param ThumbManager $thumb
      * @param File $file
+     * @param UniqueNameService $uniqueName
      */
-    public function __construct(UrlManager $url, ThumbManager $thumb, File $file)
+    public function __construct(UrlManager $url, ThumbManager $thumb, File $file, UniqueNameService $uniqueName)
     {
         $this->url = $url;
         $this->thumb = $thumb;
         $this->file = $file;
+        $this->uniqueName = $uniqueName;
     }
 
     /**
@@ -61,9 +68,9 @@ class FileUploader implements ICripObject
     public function upload(UploadedFile $uploaded_file, PathManager $path)
     {
         if ($uploaded_file->isValid()) {
-            $this->getUniqueName($path, $this->file->setFromUpload($uploaded_file));
+            $this->file->setPath($path)->setFromUpload($uploaded_file);
+            $this->uniqueName->file($this->file);
             $uploaded_file->move($path->fullPath(), $this->file->full_name);
-            $this->file->setPath($path);
             $result = [
                 'file' =>  $this->file->toArray()
             ];
@@ -74,24 +81,5 @@ class FileUploader implements ICripObject
             return $result;
         }
         throw new FileManagerException($this, 'err_file_upload_invalid_file');
-    }
-
-    /**
-     * @param PathManager $path
-     * @param File $file
-     *
-     * @return File
-     */
-    private function getUniqueName(PathManager $path, File $file)
-    {
-        if (FileSystem::exists($path->fullPath($file))) {
-            $original_name = $file->name;
-            $file->setName($file->name . '-1');
-            for ($i = 2; FileSystem::exists($path->fullPath($file)); $i++) {
-                $file->setName($original_name . '-' . $i);
-            }
-        }
-
-        return $file;
     }
 }
