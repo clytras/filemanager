@@ -127,7 +127,7 @@ class PathManager implements ICripObject
             $this->setPath($path);
         }
 
-        $this->full_path = $this->base_path . DIRECTORY_SEPARATOR . $this->path;
+        $this->full_path = FileSystem::join([$this->base_path, $this->path]);
     }
 
     /**

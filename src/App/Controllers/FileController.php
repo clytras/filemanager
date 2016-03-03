@@ -1,7 +1,7 @@
 <?php namespace Crip\FileManager\App\Controllers;
 
-use Crip\FileManager\App\FileManager;
-use Crip\Filemanager\App\Package;
+use Crip\Core\Helpers\FileSystem;
+use Crip\FileManager\FileManager;
 use Crip\FileManager\Services\FileUploader;
 use Crip\FileManager\Services\PathManager;
 use Input;
@@ -12,6 +12,31 @@ use Input;
  */
 class FileController extends BaseFileManagerController
 {
+
+    /**
+     * @var PathManager
+     */
+    private $path;
+    /**
+     * @var FileManager
+     */
+    private $manager;
+    /**
+     * @var FileUploader
+     */
+    private $uploader;
+
+    /**
+     * @param PathManager $path
+     * @param FileManager $manager
+     * @param FileUploader $uploader
+     */
+    public function __construct(PathManager $path, FileManager $manager, FileUploader $uploader)
+    {
+        $this->path = $path;
+        $this->manager = $manager;
+        $this->uploader = $uploader;
+    }
 
     /**
      * @param $path
@@ -25,22 +50,31 @@ class FileController extends BaseFileManagerController
          */
 
         return $this->tryReturn(function () use ($path) {
-            return app(FileUploader::class)
-                ->upload(
-                    Input::file('file'),
-                    (new PathManager)->goToPath($path)
-                );
+            return $this->uploader->upload(
+                Input::file('file'),
+                $this->path->goToPath($path)
+            );
         });
     }
 
-    public function file($path) {
-        $name = basename($path);
-        $path = substr($path, 0, strlen($path) - strlen($name));
+    /**
+     * @param $path
+     * @return \Response
+     *
+     * @throws \Crip\FileManager\Exceptions\FileManagerException
+     */
+    public function file($path)
+    {
+        list($path, $name) = FileSystem::splitNameFromPath($path);
+
         // TODO: wrap into try
-        $manager = app(Package::NAME);
-        $file = $manager->changePath($path)
-            ->file($name, Input::get('thumb', null));
+        $file = $this->manager->get(
+            $this->path->goToPath($path),
+            $name,
+            Input::get('thumb', null)
+        );
+
         return \Response::make($file->file)
-            ->header('Content-Type', $file->mime);
+            ->header('Content-Type', $file->mime->__toString());
     }
 }

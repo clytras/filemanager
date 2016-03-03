@@ -3,8 +3,6 @@
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
 use Crip\FileManager\Exceptions\FileManagerException;
-use Crip\FileManager\FileManager;
-use Intervention\Image\ImageManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -31,11 +29,18 @@ class FileUploader implements ICripObject
     private $url;
 
     /**
-     * @param UrlManager $url
+     * @var ThumbManager
      */
-    public function __construct(UrlManager $url)
+    private $thumb;
+
+    /**
+     * @param UrlManager $url
+     * @param ThumbManager $thumb
+     */
+    public function __construct(UrlManager $url, ThumbManager $thumb)
     {
         $this->url = $url;
+        $this->thumb = $thumb;
     }
 
     /**
@@ -55,7 +60,7 @@ class FileUploader implements ICripObject
                 'file' => $this->url->getFileUrl($path, $crip_file)
             ];
             if ($crip_file->mime->isImage()) {
-                $uploaded_file['thumbs'] = $this->createThumbs($path, $crip_file);
+                $uploaded_file['thumbs'] = $this->thumb->create($path, $crip_file);
             }
 
             return $uploaded_file;
@@ -80,44 +85,5 @@ class FileUploader implements ICripObject
         }
 
         return $file;
-    }
-
-    /**
-     * @param PathManager $path
-     * @param CripFile $file
-     *
-     * @return array
-     */
-    private function createThumbs(PathManager $path, CripFile $file)
-    {
-        $thumb_sizes = array_merge($this->thumbs, FileManager::package()->config('thumbs', []));
-        $thumbs = [];
-        foreach ($thumb_sizes as $size_key => $sizes) {
-            $img = app(ImageManager::class)->make($path->fullPath($file));
-            $new_path = $path->thumbPath($size_key);
-            FileSystem::mkdir($new_path, 777, true);
-            switch ($sizes[2]) {
-                case 'width':
-                    // resize the image to a width of $sizes[ 0 ] and constrain aspect ratio (auto height)
-                    $img->resize($sizes[0], null, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                    break;
-                case 'height':
-                    // resize the image to a height of $sizes[ 1 ] and constrain aspect ratio (auto width)
-                    $img->resize(null, $sizes[1], function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                    break;
-                // 'resize'
-                default:
-                    $img->fit($sizes[0], $sizes[1]);
-                    break;
-            }
-            $img->save($path->thumbPath($size_key, $file));
-            $thumbs[] = $this->url->getFileUrl($path, $file, $size_key);
-        }
-
-        return $thumbs;
     }
 }

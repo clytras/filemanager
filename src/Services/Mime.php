@@ -174,6 +174,6 @@ class Mime implements ICripObject
      */
     protected function setFromConfig(&$target, $key)
     {
-        $target = array_merge($target, FileManager::package()->config($key, []));
+        $target = array_merge_recursive($target, FileManager::package()->config($key, []));
     }
 }

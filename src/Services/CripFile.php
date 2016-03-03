@@ -1,6 +1,7 @@
 <?php namespace Crip\FileManager\Services;
 
 use Crip\Core\Contracts\ICripObject;
+use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Helpers\Str;
 use Crip\FileManager\Exceptions\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -87,8 +88,8 @@ class CripFile implements ICripObject
             $file_name = pathinfo($name, PATHINFO_FILENAME);
             $this->extension = pathinfo($name, PATHINFO_EXTENSION);
             $this->name = Str::slug($file_name);
-            $full_path = self::canonical($path) . DIRECTORY_SEPARATOR . $name;
-            if ($path && self::exists($full_path)) {
+            $full_path = FileSystem::join([$path, $name]);
+            if ($path && FileSystem::exists($full_path)) {
                 $this->mime = new Mime($full_path);
             }
         } else {

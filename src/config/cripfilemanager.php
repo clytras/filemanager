@@ -50,8 +50,10 @@ return [
         ]
     ],
     'mime' => [
-        'js' => [
-            "/^text\/x\-jquery\-tmpl/",
+        'types' => [
+            'js' => [
+                "/^text\/x\-jquery\-tmpl/",
+            ]
         ]
     ],
     'actions' => [

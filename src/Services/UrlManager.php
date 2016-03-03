@@ -48,7 +48,12 @@ class UrlManager implements ICripObject
             $pos = '?thumb=' . $size_key;
         }
 
-        $file_path = FileSystem::join([$path->relativePath(), $file->fullName()]);
+        $dir = $path->relativePath();
+        $file_path = $file->fullName();
+        if ($dir) {
+            $file_path = FileSystem::join([$path->relativePath(), $file->fullName()]);
+        }
+
         $url = action($this->file_action, $file_path);
 
         return $url . $pos;
