@@ -2,6 +2,7 @@
 
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
+use Crip\FileManager\Data\File;
 use Crip\FileManager\FileManager;
 use Intervention\Image\ImageManager;
 
@@ -37,17 +38,18 @@ class ThumbManager implements ICripObject
      */
     public function __construct(UrlManager $url)
     {
-        $this->thumb_sizes = array_merge_recursive($this->thumb_sizes, FileManager::package()->config('thumbs', []));
         $this->url = $url;
+        $this->pck = FileManager::package();
+        $this->pck->mergeWithConfig($this->thumb_sizes, 'thumbs');
     }
 
     /**
      * @param PathManager $path
-     * @param CripFile $file
+     * @param File $file
      *
      * @return array
      */
-    public function create(PathManager $path, CripFile $file)
+    public function create(PathManager $path, File $file)
     {
         foreach ($this->thumb_sizes as $size_key => $sizes) {
             $img = app(ImageManager::class)->make($path->fullPath($file));

@@ -1,23 +1,24 @@
 <?php namespace Crip\FileManager\Services;
 
 use Crip\Core\Contracts\ICripObject;
+use Crip\Core\Helpers\FileSystem;
 use Crip\FileManager\FileManager;
 
 /**
- * Class Mime
+ * Class MimeService
  * @package Crip\FileManager\Services
  */
-class Mime implements ICripObject
+class MimeService implements ICripObject
 {
     /**
      * @var string
      */
-    protected $mime;
+    private $mime;
 
     /**
      * @var array
      */
-    protected $mimes = [
+    private $mimes = [
         'js' => [
             "/^application\/javascript/",
             "/^application\/json/",
@@ -68,7 +69,7 @@ class Mime implements ICripObject
      *
      * @var array
      */
-    protected $media_mapping = [
+    private $media_mapping = [
         'dir' => ['dir'],
         'image' => ['img'],
         'media' => ['audio', 'video'],
@@ -76,25 +77,47 @@ class Mime implements ICripObject
     ];
 
     /**
-     * @param string $path
-     * @param string $mime
+     * @var \Crip\Core\Support\PackageBase
      */
-    public function __construct($path, $mime = null)
-    {
-        if ($mime !== null) {
-            $this->setMime($mime);
-        } else {
-            $this->setMime(mime_content_type($path));
-        }
+    private $pck;
 
-        $this->setFromConfig($this->mimes, 'mime.types');
-        $this->setFromConfig($this->media_mapping, 'mime.media');
+    public function __construct()
+    {
+        $this->pck = FileManager::package();
+        $this->pck->mergeWithConfig($this->mimes, 'mime.types');
+        $this->pck->mergeWithConfig($this->media_mapping, 'mime.media');
     }
 
     /**
+     * @param $mime
+     *
+     * @return $this
+     */
+    public function setMime($mime)
+    {
+        $this->mime = $mime;
+
+        return $this;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return MimeService
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function setMimeByPath($path)
+    {
+        return $this->setMime(FileSystem::getMimeType($path));
+    }
+
+    /**
+     * Get the file mime type
+     *
      * @return string
      */
-    public function __toString()
+    public function getMimeType()
     {
         return $this->mime;
     }
@@ -105,7 +128,7 @@ class Mime implements ICripObject
      *
      * @return string
      */
-    public function fileType()
+    public function getFileType()
     {
         if (!$this->mime) {
             return 'dir';
@@ -128,9 +151,9 @@ class Mime implements ICripObject
      *
      * @return string
      */
-    public function mediaType()
+    public function getMediaType()
     {
-        $file_type = $this->fileType();
+        $file_type = $this->getFileType();
         foreach ($this->media_mapping as $media => $map) {
             if (in_array($file_type, $map)) {
                 return $media;
@@ -156,24 +179,4 @@ class Mime implements ICripObject
         return false;
     }
 
-    /**
-     * @param $mime
-     *
-     * @return $this
-     */
-    protected function setMime($mime)
-    {
-        $this->mime = $mime;
-
-        return $this;
-    }
-
-    /**
-     * @param array $target
-     * @param string $key
-     */
-    protected function setFromConfig(&$target, $key)
-    {
-        $target = array_merge_recursive($target, FileManager::package()->config($key, []));
-    }
 }

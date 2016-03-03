@@ -3,6 +3,7 @@
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Helpers\Str;
+use Crip\FileManager\Data\File;
 use Crip\FileManager\Exceptions\FileManagerException;
 use Crip\FileManager\FileManager;
 
@@ -33,11 +34,12 @@ class PathManager implements ICripObject
      */
     private $thumb_dir;
 
+
     public function __construct()
     {
         $this->pck = FileManager::package();
-        $this->setBasePath();
         $this->thumb_dir = Str::slug($this->pck->config('thumbs_dir', 'thumbs'));
+        $this->setBasePath();
     }
 
     /**
@@ -74,13 +76,13 @@ class PathManager implements ICripObject
     }
 
     /**
-     * @param CripFile $file
+     * @param File $file
      * @return string
      */
-    public function fullPath(CripFile $file = null)
+    public function fullPath(File $file = null)
     {
         if ($file) {
-            return FileSystem::join([$this->full_path, $file->fullName()]);
+            return FileSystem::join([$this->full_path, $file->full_name]);
         }
 
         return $this->full_path;
@@ -88,10 +90,10 @@ class PathManager implements ICripObject
 
     /**
      * @param $size_key
-     * @param CripFile $file
+     * @param File $file
      * @return string
      */
-    public function thumbPath($size_key, CripFile $file = null)
+    public function thumbPath($size_key, File $file = null)
     {
         $path = [
             $this->full_path,
@@ -100,7 +102,7 @@ class PathManager implements ICripObject
         ];
 
         if ($file) {
-            $path[] = $file->fullName();
+            $path[] = $file->full_name;
         }
 
         return FileSystem::join($path);
@@ -127,7 +129,7 @@ class PathManager implements ICripObject
             $this->setPath($path);
         }
 
-        $this->full_path = FileSystem::join([$this->base_path, $this->path]);
+        $this->full_path = FileSystem::canonical(FileSystem::join([$this->base_path, $this->path]));
     }
 
     /**
@@ -141,6 +143,6 @@ class PathManager implements ICripObject
             FileSystem::mkdir($this->base_path, 777, true);
         }
 
-        $this->full_path = FileSystem::canonical($this->base_path);
+        $this->updateFullPath();
     }
 }

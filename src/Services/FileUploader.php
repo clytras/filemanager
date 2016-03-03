@@ -2,6 +2,7 @@
 
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
+use Crip\FileManager\Data\File;
 use Crip\FileManager\Exceptions\FileManagerException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -32,49 +33,56 @@ class FileUploader implements ICripObject
      * @var ThumbManager
      */
     private $thumb;
+    /**
+     * @var File
+     */
+    private $file;
 
     /**
      * @param UrlManager $url
      * @param ThumbManager $thumb
+     * @param File $file
      */
-    public function __construct(UrlManager $url, ThumbManager $thumb)
+    public function __construct(UrlManager $url, ThumbManager $thumb, File $file)
     {
         $this->url = $url;
         $this->thumb = $thumb;
+        $this->file = $file;
     }
 
     /**
-     * @param UploadedFile $file
+     * @param UploadedFile $uploaded_file
      * @param PathManager $path
      *
      * @return array Uploaded file url and/or thumbs
      *
      * @throws FileManagerException
      */
-    public function upload(UploadedFile $file, PathManager $path)
+    public function upload(UploadedFile $uploaded_file, PathManager $path)
     {
-        if ($file->isValid()) {
-            $crip_file = $this->getUniqueName($path, (new CripFile)->readFromFile($file));
-            $file->move($path->fullPath(), $crip_file->fullName());
-            $uploaded_file = [
-                'file' => $this->url->getFileUrl($path, $crip_file)
+        if ($uploaded_file->isValid()) {
+            $this->getUniqueName($path, $this->file->setFromUpload($uploaded_file));
+            $uploaded_file->move($path->fullPath(), $this->file->full_name);
+            $this->file->setPath($path);
+            $result = [
+                'file' =>  $this->file->toArray()
             ];
-            if ($crip_file->mime->isImage()) {
-                $uploaded_file['thumbs'] = $this->thumb->create($path, $crip_file);
+            if ($this->file->mime->service->isImage()) {
+                $result['thumbs'] = $this->thumb->create($path, $this->file);
             }
 
-            return $uploaded_file;
+            return $result;
         }
         throw new FileManagerException($this, 'err_file_upload_invalid_file');
     }
 
     /**
      * @param PathManager $path
-     * @param CripFile $file
+     * @param File $file
      *
-     * @return CripFile
+     * @return File
      */
-    private function getUniqueName(PathManager $path, CripFile $file)
+    private function getUniqueName(PathManager $path, File $file)
     {
         if (FileSystem::exists($path->fullPath($file))) {
             $original_name = $file->name;

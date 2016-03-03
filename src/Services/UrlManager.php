@@ -3,6 +3,7 @@
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Support\PackageBase;
+use Crip\FileManager\Data\File;
 use Crip\FileManager\FileManager;
 
 /**
@@ -37,11 +38,11 @@ class UrlManager implements ICripObject
 
     /**
      * @param PathManager $path
-     * @param CripFile $file
+     * @param File $file
      * @param string $size_key
      * @return string
      */
-    public function getFileUrl(PathManager $path, CripFile $file, $size_key = null)
+    public function getFileUrl(PathManager $path, File $file, $size_key = null)
     {
         $pos = '';
         if ($size_key) {
@@ -49,9 +50,9 @@ class UrlManager implements ICripObject
         }
 
         $dir = $path->relativePath();
-        $file_path = $file->fullName();
+        $file_path = $file->full_name;
         if ($dir) {
-            $file_path = FileSystem::join([$path->relativePath(), $file->fullName()]);
+            $file_path = FileSystem::join([$path->relativePath(), $file->full_name]);
         }
 
         $url = action($this->file_action, $file_path);

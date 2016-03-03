@@ -2,23 +2,30 @@
 
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Exceptions\BadConfigurationException;
+use Crip\FileManager\Data\Mime;
 use Crip\FileManager\FileManager;
 
 /**
- * Class Icon
+ * Class IconService
  * @package Crip\FileManager\Services
  */
-class Icon implements ICripObject
+class IconService implements ICripObject
 {
+
     /**
      * @var string
      */
-    public $path;
+    private $path;
+
+    /**
+     * @var \Crip\Core\Support\PackageBase
+     */
+    private $pck;
 
     /**
      * @var array
      */
-    protected $icon_names = [
+    private $icon_names = [
         'js' => 'js.png',
         'dir' => 'dir.png',
         'css' => 'css.png',
@@ -36,23 +43,25 @@ class Icon implements ICripObject
 
     public function __construct()
     {
-        $this->icon_names = array_merge($this->icon_names, FileManager::package()->config('icons.files', []));
-        $this->path = FileManager::package()->config('icons.path', '');
+        $this->pck = FileManager::package();
+        $this->path = $this->pck->config('icons.path', '');
+
+        $this->pck->mergeWithConfig($this->icon_names, 'icons.files');
     }
 
     /**
-     * @param Mime $file_mime_type
-     *
+     * @param Mime $mime
      * @return string
+     *
+     * @throws BadConfigurationException
      */
-    public function get(Mime $file_mime_type)
+    public function get(Mime $mime)
     {
-        return $this->result($file_mime_type->fileType());
+        return $this->result($mime->service->getFileType());
     }
 
     /**
-     * @param $key
-     *
+     * @param string $key
      * @return string
      *
      * @throws BadConfigurationException

@@ -75,6 +75,6 @@ class FileController extends BaseFileManagerController
         );
 
         return \Response::make($file->file)
-            ->header('Content-Type', $file->mime->__toString());
+            ->header('Content-Type', $file->mime->type);
     }
 }

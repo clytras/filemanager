@@ -30,15 +30,21 @@ class FileManager implements ICripObject
     private $path;
 
     /**
+     * @var File
+     */
+    private $file;
+
+    /**
      * @param ThumbManager $thumb
      * @param PathManager $path
      */
-    public function __construct(ThumbManager $thumb, PathManager $path)
+    public function __construct(ThumbManager $thumb, PathManager $path, File $file)
     {
         static::package();
 
         $this->thumb = $thumb;
         $this->path = $path;
+        $this->file = $file;
     }
 
     /**
@@ -72,9 +78,8 @@ class FileManager implements ICripObject
             }
         }
 
-        //dd($path->fullPath(), $file_name, $file_path, $thumb, $this->path->thumbPath($thumb));
         if (FileSystem::exists($file_path)) {
-            return new File($file_path);
+            return $this->file->set($file_path);
         }
 
         throw new FileManagerException($this, 'err_file_not_found');
