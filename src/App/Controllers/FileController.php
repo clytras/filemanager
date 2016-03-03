@@ -2,8 +2,6 @@
 
 use Crip\Core\Helpers\FileSystem;
 use Crip\FileManager\FileManager;
-use Crip\FileManager\Services\FileUploader;
-use Crip\FileManager\Services\PathManager;
 use Input;
 
 /**
@@ -14,22 +12,15 @@ class FileController extends BaseFileManagerController
 {
 
     /**
-     * @var PathManager
-     */
-    private $pathManager;
-
-    /**
      * @var FileManager
      */
     private $fileManager;
 
     /**
-     * @param PathManager $path
      * @param FileManager $manager
      */
-    public function __construct(PathManager $path, FileManager $manager)
+    public function __construct(FileManager $manager)
     {
-        $this->pathManager = $path;
         $this->fileManager = $manager;
     }
 
@@ -45,10 +36,9 @@ class FileController extends BaseFileManagerController
          */
 
         return $this->tryReturn(function () use ($path) {
-            return $this->fileManager->upload(
-                Input::file('file'),
-                $this->pathManager->goToPath($path)
-            );
+            return $this->fileManager
+                ->in($path)
+                ->upload(Input::file('file'));
         });
     }
 
@@ -61,10 +51,11 @@ class FileController extends BaseFileManagerController
     public function file($path)
     {
         list($dir, $name) = FileSystem::splitNameFromPath($path);
-        $file_path = $this->pathManager->goToPath($dir);
         $thumb = Input::get('thumb', null);
 
-        $file = $this->fileManager->get($file_path, $name, $thumb);
+        $file = $this->fileManager
+            ->in($dir)
+            ->get($name, $thumb);
 
         return \Response::make($file->file)
             ->header('Content-Type', $file->mime->type);
@@ -78,23 +69,27 @@ class FileController extends BaseFileManagerController
     public function rename($path = '')
     {
         return $this->tryReturn(function () use ($path) {
-            $dir = $this->pathManager->goToPath($path);
 
-            return $this->fileManager->renameFile(
-                $dir,
-                Input::get('old'),
-                Input::get('new')
-            )->toArray();
+            return $this->fileManager
+                ->in($path)
+                ->renameFile(Input::get('old'), Input::get('new'))
+                ->toArray();
         });
     }
 
+    /**
+     * @param $path
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete($path)
     {
         return $this->tryReturn(function () use ($path) {
-            list($folder, $name) = FileSystem::splitNameFromPath($path);
-            $dir = $this->pathManager->goToPath($folder);
+            list($dir, $name) = FileSystem::splitNameFromPath($path);
 
-            return $this->fileManager->deleteFile($dir, $name);
+            return $this->fileManager
+                ->in($dir)
+                ->deleteFile($name);
         });
     }
 }

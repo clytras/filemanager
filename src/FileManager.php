@@ -81,6 +81,20 @@ class FileManager implements ICripObject
     }
 
     /**
+     * Change path
+     *
+     * @param string $path Go to the path
+     *
+     * @return FileManager
+     */
+    public function in($path)
+    {
+        $this->path->goToPath($path);
+
+        return $this;
+    }
+
+    /**
      * Get file from filesystem corresponding size
      *
      * @param PathManager $path The path where file is located
@@ -91,9 +105,9 @@ class FileManager implements ICripObject
      *
      * @throws FileManagerException
      */
-    public function get(PathManager $path, $file_name, $size)
+    public function get($file_name, $size)
     {
-        $file_path = FileSystem::join([$path->fullPath(), $file_name]);
+        $file_path = FileSystem::join([$this->path->fullPath(), $file_name]);
         if ($size AND array_key_exists($size, $this->thumb->getSizes())) {
             $thumb_path = FileSystem::join([$this->path->thumbPath($size), $file_name]);
             if (FileSystem::exists($thumb_path)) {
@@ -110,29 +124,27 @@ class FileManager implements ICripObject
 
     /**
      * @param UploadedFile $uploaded_file
-     * @param PathManager $path
      *
      * @return array
      *
      * @throws FileManagerException
      */
-    public function upload(UploadedFile $uploaded_file, PathManager $path)
+    public function upload(UploadedFile $uploaded_file)
     {
-        return $this->uploader->upload($uploaded_file, $path);
+        return $this->uploader->upload($uploaded_file, $this->path);
     }
 
     /**
      * Rename file name
      *
-     * @param PathManager $dir Path where file exists
      * @param string $old Existing file name
      * @param string $new File name to be renamed
      *
      * @return File New file full information
      */
-    public function renameFile(PathManager $dir, $old, $new)
+    public function renameFile($old, $new)
     {
-        $old_file = app(File::class)->setPath($dir)->setFromString($old);
+        $old_file = app(File::class)->setPath($this->path)->setFromString($old);
         $new_file = app(File::class)->setFromString($new);
 
         return $this->fileSystem->renameFile($old_file, $new_file);
@@ -141,14 +153,13 @@ class FileManager implements ICripObject
     /**
      * Delete file from file system
      *
-     * @param PathManager $path Path to the file
      * @param string $file_name File name to be deleted
      *
      * @return bool Is file deleted
      */
-    public function deleteFile(PathManager $path, $file_name)
+    public function deleteFile($file_name)
     {
-        $file = $this->file->setPath($path)->setFromString($file_name);
+        $file = $this->file->setPath($this->path)->setFromString($file_name);
 
         return $this->fileSystem->deleteFile($file);
     }
