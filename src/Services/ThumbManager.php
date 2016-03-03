@@ -74,7 +74,7 @@ class ThumbManager implements ICripObject
                     break;
             }
             $img->save($path->thumbPath($size_key, $file));
-            $this->thumbs[] = $this->url->getFileUrl($path, $file, $size_key);
+            $this->thumbs[$size_key] = $this->url->getFileUrl($path, $file, $size_key);
         }
 
         return $this->thumbs;

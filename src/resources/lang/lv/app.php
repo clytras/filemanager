@@ -4,7 +4,8 @@ return [
     'err_path_not_dir' => 'Ceļš līdz `:path` nav direktorija.',
     'err_path_not_exist' => 'Ceļš līdz direktorijai `:path` neeksistē.',
 
-    'err_file_upload_invalid_file' => 'Fails nav valīds augšupielādei.'
+    'err_file_upload_invalid_file' => 'Fails nav valīds augšupielādei.',
+    'err_file_not_found' => 'Fails netika atrasts.',
     /*'context_delete' => 'Dzēst ierakstu',
     'context_disable_rename' => 'Atslēgt pārsaukšanu',
     'context_image_sizes' => 'Izvēlēties izmeru',
