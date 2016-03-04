@@ -85,13 +85,15 @@ class File implements ICripObject, IArrayObject, IFileSystemObject
     public function toArray()
     {
         return [
+            'dir' => $this->url->pathToUrl($this->path),
             'mime' => $this->mime->type,
             'name' => $this->name,
             'ext' => $this->ext,
-            'full_name' => $this->full_name,
             'size' => $this->size,
-            'path' => $this->path,
+            'full_name' => $this->full_name,
+            'date' => $this->service->getDate(),
             'url' => $this->url->getFileUrl($this->path_manager, $this),
+            'thumb' => $this->service->getThumb()
         ];
     }
 
@@ -147,13 +149,12 @@ class File implements ICripObject, IArrayObject, IFileSystemObject
     /**
      * @param string $file_name
      * @param string $path_to_file_dir
-     * @param string $type
      *
      * @return File
      */
-    public function setFromString($file_name, $path_to_file_dir = null, $type = null)
+    public function setFromString($file_name, $path_to_file_dir = null)
     {
-        $this->service->setFromName($file_name, $path_to_file_dir, $type);
+        $this->service->setFromName($file_name, $path_to_file_dir);
         $this->serviceFileUpdated();
 
         return $this;

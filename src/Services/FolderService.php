@@ -42,7 +42,11 @@ class FolderService
      */
     public function setName($name)
     {
-        $this->name = Str::slug($name);
+        if ($name !== '..') {
+            $this->name = Str::slug($name);
+        } else {
+            $this->name = null;
+        }
 
         return $this;
     }
@@ -65,6 +69,30 @@ class FolderService
     public function getSysPath(PathManager $path_manager)
     {
         return FileSystem::join($path_manager->sysPath(), $this->name);
+    }
+
+    /**
+     * @param PathManager $path_manager
+     * @return string
+     */
+    public function getDate(PathManager $path_manager)
+    {
+        $full_path = $this->getSysPath($path_manager);
+        $stat = stat($full_path);
+
+        return date('Y-m-d H:i:s', $stat['mtime']);
+    }
+
+    /**
+     * Calculate folder size in bytes
+     *
+     * @param PathManager $path_manager
+     *
+     * @return int
+     */
+    public function getSize(PathManager $path_manager)
+    {
+        return FileSystem::dirSize($this->getSysPath($path_manager), [$path_manager->getThumbDir()]);
     }
 
 }

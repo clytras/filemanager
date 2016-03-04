@@ -62,6 +62,22 @@ class UrlManager implements ICripObject
     }
 
     /**
+     * @param PathManager $dir
+     * @param string $name
+     *
+     * @return string
+     */
+    public function getThumbFor(PathManager $dir, $name)
+    {
+        $file_path = $name;
+        if ($dir->getPath()) {
+            $file_path = FileSystem::join([$dir->getPath(), $name]);
+        }
+
+        return action($this->file_action, $this->pathToUrl($file_path)) . '?thumb=thumb';
+    }
+
+    /**
      * @param Folder $folder
      *
      * @return string

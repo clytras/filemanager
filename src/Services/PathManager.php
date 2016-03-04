@@ -34,7 +34,6 @@ class PathManager implements ICripObject
      */
     private $thumb_dir;
 
-
     public function __construct()
     {
         $this->pck = FileManager::package();
@@ -117,6 +116,14 @@ class PathManager implements ICripObject
     }
 
     /**
+     * @return string
+     */
+    public function getThumbDir()
+    {
+        return $this->thumb_dir;
+    }
+
+    /**
      * Update full path &| set path
      *
      * @param string $path
@@ -144,5 +151,17 @@ class PathManager implements ICripObject
         }
 
         $this->updateSysPath();
+    }
+
+    /**
+     * Determines is path of root upload path
+     *
+     * @param string $sys_path
+     *
+     * @return bool
+     */
+    public function isRoot($sys_path)
+    {
+        return $sys_path === $this->sys_dir;
     }
 }

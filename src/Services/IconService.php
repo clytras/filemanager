@@ -30,10 +30,10 @@ class IconService implements ICripObject
         'dir' => 'dir.png',
         'css' => 'css.png',
         'txt' => 'txt.png',
-        'any' => 'file.png',
         'img' => 'image.png',
         'zip' => 'archive.png',
         'pwp' => 'powerpoint.png',
+        'file' => 'file.png',
         'html' => 'html.png',
         'word' => 'word.png',
         'audio' => 'audio.png',
@@ -46,7 +46,7 @@ class IconService implements ICripObject
         $this->pck = FileManager::package();
         $this->path = $this->pck->config('icons.path', '');
 
-        $this->pck->mergeWithConfig($this->icon_names, 'icons.files');
+        $this->pck->mergeWithConfig($this->icon_names, 'icons.files', [], false);
     }
 
     /**

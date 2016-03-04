@@ -1,6 +1,7 @@
 <?php namespace Crip\FileManager\App\Controllers;
 
 use Crip\FileManager\FileManager;
+use Crip\FileManager\Services\FileSystemManager;
 use Input;
 use Crip\FileManager\App\Package;
 use Crip\FileManager\App\Services\ValidateConfig;
@@ -11,6 +12,21 @@ use Crip\FileManager\App\Services\ValidateConfig;
  */
 class DirectoryController extends BaseFileManagerController
 {
+
+    /**
+     * @var FileSystemManager
+     */
+    private $fileSystem;
+
+    /**
+     * @param FileManager $manager
+     * @param FileSystemManager $fileSystem
+     */
+    public function __construct(FileManager $manager, FileSystemManager $fileSystem)
+    {
+        parent::__construct($manager);
+        $this->fileSystem = $fileSystem;
+    }
 
     /**
      * FileManager general view
@@ -73,8 +89,7 @@ class DirectoryController extends BaseFileManagerController
     public function dir($path = '')
     {
         return $this->tryReturn(function () use ($path) {
-            return $this->manager->changePath($path)
-                ->all();
+            return $this->fileSystem->folder->get($path);
         });
     }
 }

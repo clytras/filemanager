@@ -2,6 +2,7 @@
 
 use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Helpers\Str;
+use Crip\FileManager\Data\Icon;
 use Crip\FileManager\Data\Mime;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -39,13 +40,33 @@ class FileService
      * @var PathManager
      */
     private $path_manager;
+    /**
+     * @var string
+     */
+    private $thumb;
+    /**
+     * @var Icon
+     */
+    private $icon;
+    /**
+     * @var UrlManager
+     */
+    private $url;
+    /**
+     * @var string
+     */
+    private $date;
 
     /**
      * @param Mime $mime
+     * @param Icon $icon
+     * @param UrlManager $url
      */
-    public function __construct(Mime $mime)
+    public function __construct(Mime $mime, Icon $icon, UrlManager $url)
     {
         $this->mime = $mime;
+        $this->icon = $icon;
+        $this->url = $url;
     }
 
     /**
@@ -76,6 +97,8 @@ class FileService
         $this->is_file = true;
         $this->extension = $file->getClientOriginalExtension();
         $this->size = $file->getSize();
+        $this->date = date('Y-m-d H:i:s');
+        $this->setThumb();
 
         return $this;
     }
@@ -83,26 +106,28 @@ class FileService
     /**
      * @param string $file_name
      * @param string $path_to_file_dir
-     * @param string $type
      *
      * @return FileService
      */
-    public function setFromName($file_name, $path_to_file_dir = '', $type = null)
+    public function setFromName($file_name, $path_to_file_dir = '')
     {
         $name = basename($file_name);
         $this->is_file = str_contains($name, '.');
         $this->setName(pathinfo($name, PATHINFO_FILENAME));
         $this->extension = pathinfo($name, PATHINFO_EXTENSION);
 
-        if ($this->is_file && $type !== 'dir') {
+        if ($this->is_file) {
             $dir = $path_to_file_dir;
-            if($this->path_manager && !$dir) {
+            if ($this->path_manager && !$dir) {
                 $dir = $this->path_manager->sysPath();
             }
-            $full_path = FileSystem::join([$dir, $name]);
+            $full_path = FileSystem::canonical(FileSystem::join([$dir, $name]));
             if ($dir && FileSystem::exists($full_path)) {
                 $this->sys_path = $dir;
                 $this->mime->setByPath($full_path);
+                $this->size = filesize($full_path);
+                $this->date = date('Y-m-d H:i:s', filemtime($full_path));
+                $this->setThumb();
             }
         }
 
@@ -163,10 +188,38 @@ class FileService
      */
     public function relativePath()
     {
-        if($this->path_manager) {
+        if ($this->path_manager) {
             return $this->path_manager->getPath();
         }
 
         return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getThumb()
+    {
+        return $this->thumb;
+    }
+
+    /**
+     * Set thumb info for file
+     */
+    private function setThumb()
+    {
+        if ($this->mime->service->isImage() && $this->path_manager) {
+            $this->thumb = $this->url->getThumbFor($this->path_manager, $this->getFullName());
+        } else {
+            $this->thumb = $this->icon->get($this->mime);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }

@@ -5,6 +5,7 @@ use Crip\Core\Helpers\FileSystem;
 use Crip\FileManager\Data\File;
 use Crip\FileManager\Data\Folder;
 use Crip\FileManager\Exceptions\FileManagerException;
+use Illuminate\Support\Collection;
 
 /**
  * Class FileSystemManager
@@ -14,22 +15,31 @@ class FileSystemManager implements ICripObject
 {
 
     /**
+     * @var FolderContentService
+     */
+    public $folder;
+
+    /**
      * @var UniqueNameService
      */
     private $uniqueName;
+
     /**
      * @var ThumbManager
      */
     private $thumb;
 
+
     /**
      * @param UniqueNameService $uniqueName
      * @param ThumbManager $thumb
+     * @param FolderContentService $folder
      */
-    public function __construct(UniqueNameService $uniqueName, ThumbManager $thumb)
+    public function __construct(UniqueNameService $uniqueName, ThumbManager $thumb, FolderContentService $folder)
     {
         $this->uniqueName = $uniqueName;
         $this->thumb = $thumb;
+        $this->folder = $folder;
     }
 
     /**
@@ -109,7 +119,7 @@ class FileSystemManager implements ICripObject
         if (FileSystem::exists($folder->getSysPath())) {
             $this->uniqueName->folder($folder);
         }
-
+        // TODO: deny create folders in root folder with router keywords
         FileSystem::mkdir($folder->getSysPath(), 777, true);
 
         return $folder;

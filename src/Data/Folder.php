@@ -4,6 +4,7 @@ use Crip\Core\Contracts\IArrayObject;
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Contracts\IFileSystemObject;
 use Crip\FileManager\Services\FolderService;
+use Crip\FileManager\Services\IconService;
 use Crip\FileManager\Services\PathManager;
 use Crip\FileManager\Services\UrlManager;
 
@@ -42,15 +43,27 @@ class Folder implements ICripObject, IArrayObject, IFileSystemObject
      * @var UrlManager
      */
     private $url;
+    /**
+     * @var IconService
+     */
+    private $icon;
+    /**
+     * @var Mime
+     */
+    private $mime;
 
     /**
      * @param FolderService $service
      * @param UrlManager $url
+     * @param IconService $icon
+     * @param Mime $mime
      */
-    public function __construct(FolderService $service, UrlManager $url)
+    public function __construct(FolderService $service, UrlManager $url, IconService $icon, Mime $mime)
     {
         $this->service = $service;
         $this->url = $url;
+        $this->icon = $icon;
+        $this->mime = $mime;
     }
 
     /**
@@ -60,10 +73,20 @@ class Folder implements ICripObject, IArrayObject, IFileSystemObject
      */
     public function toArray()
     {
+        $path = $this->service->getSysPath($this->path_manager);
+        $mime = $this->mime->setByPath($path);
+        $name = $this->name === null ? '..' : $this->name;
+
         return [
             'dir' => $this->url->pathToUrl($this->dir),
-            'name' => $this->name,
-            'url' => $this->url->getFolderUrl($this)
+            'mime' => 'dir',
+            'name' => $name,
+            'ext' => '',
+            'size' => $this->service->getSize($this->path_manager),
+            'full_name' => $name,
+            'date' => $this->service->getDate($this->path_manager),
+            'url' => $this->url->getFolderUrl($this),
+            'thumb' => $this->icon->get($mime),
         ];
     }
 

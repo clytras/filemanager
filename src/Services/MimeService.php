@@ -38,7 +38,7 @@ class MimeService implements ICripObject
             "/^application\/zip/",
         ],
         'pwp' => [
-            "/^application\/vnd\.ms\-powerpoint",
+            "/^application\/vnd\.ms\-powerpoint/",
             "/^application\/vnd\.openxmlformats\-officedocument\.presentationml*/"
         ],
         'html' => [
@@ -46,18 +46,18 @@ class MimeService implements ICripObject
             "/^text\/html/"
         ],
         'word' => [
-            "/^application\/msword",
+            "/^application\/msword/",
             "/^application\/vnd\.openxmlformats\-officedocument\.wordprocessingml*/"
         ],
         'excel' => [
-            "/^application\/vnd.ms-excel",
+            "/^application\/vnd.ms-excel/",
             "/^application\/vnd\.openxmlformats\-officedocument\.spreadsheetml*/"
         ],
         'audio' => [
-            "/^audio\/*"
+            "/^audio\/*/"
         ],
         'video' => [
-            "/^video\/*"
+            "/^video\/*/"
         ],
         'img' => [
             "/^image\/*/"
@@ -130,7 +130,7 @@ class MimeService implements ICripObject
      */
     public function getFileType()
     {
-        if (!$this->mime) {
+        if (!$this->mime || $this->mime === 'directory' || $this->mime === 'dir') {
             return 'dir';
         }
 
