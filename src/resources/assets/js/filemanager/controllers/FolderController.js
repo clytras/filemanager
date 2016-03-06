@@ -1,8 +1,7 @@
-(function (angular, $) {
+(function (ng, crip) {
     'use strict';
 
-    angular
-        .module('file.manager')
+    crip.fileM
         .controller('FolderController', FolderController);
 
     FolderController.$inject = [
@@ -10,7 +9,7 @@
     ];
 
     function FolderController($log, $scope, $cookies, focus, Dir, DirService, Settings) {
-        $log.log('FolderController controller <- started');
+        //$log.log('FolderController controller <- started');
 
         activate();
 
@@ -29,6 +28,7 @@
                 order: {
                     func: order,
                     change: changeOrder,
+                    // order by property
                     by: 'name',
                     reverse: false,
                     name: true,
@@ -63,9 +63,9 @@
             if (!__canLoad())
                 return;
 
-            $log.log('FolderController -> changeFolder', {event: event, folder: folder});
+            //$log.log('FolderController -> changeFolder', {event: event, folder: folder});
             $scope.folder.loading = true;
-            Dir.query({path: folder.path || '/'}, function (r) {
+            Dir.query(folder, function (r) {
                 $scope._success(r);
                 onFolderChanged(r, folder);
             }, $scope._error);
@@ -73,14 +73,14 @@
 
         $scope.$on('folder-changed', onFolderExternallyChanged);
         function onFolderExternallyChanged(event, items) {
-            $log.log('FolderController -> onFolderExternallyChanged', {event: event, items: items});
+            //$log.log('FolderController -> onFolderExternallyChanged', {event: event, items: items});
             $scope.folder.loading = false;
             $scope.folder.items = items;
         }
 
         $scope.$on('file-uploaded', addNewFile);
         function addNewFile(event, file) {
-            $log.log('FolderController -> addNewFile', {event: event, file: file});
+            //$log.log('FolderController -> addNewFile', {event: event, file: file});
             DirService.extendItem(file, $scope.folder.items.length);
             $scope.folder.items.unshift(file);
         }
@@ -88,8 +88,9 @@
         $scope.$on('folder-deleted', removeByPath);
         $scope.$on('file-deleted', removeByPath);
         function removeByPath(event, item) {
-            $log.log('FolderController -> removeByPath', {event: event, item: item, items: $scope.folder.items});
-            $scope.folder.items.removeItem(item.path, 'path');
+            // TODO: now we dont have path property, find a way to remove item from ui when deleted
+            //$log.log('FolderController -> removeByPath', {event: event, item: item, items: $scope.folder.items});
+            //$scope.folder.items.removeItem(item.path, 'path');
             //removeFromArr($scope.folder.items, );
         }
 
@@ -101,7 +102,7 @@
          * @param array
          */
         function folderFilter(value, index, array) {
-            if (angular.isDefined(value.type)) {
+            if (ng.isDefined(value.type)) {
                 if (value.type == 'dir')
                     return true;
 
@@ -144,7 +145,7 @@
         function refresh() {
             if (!__canLoad())
                 return;
-            $log.log('FolderController -> refresh', {manager: $scope.manager});
+            //$log.log('FolderController -> refresh', {manager: $scope.manager});
             $scope.folder.loading = true;
             $scope.manager.path = $scope.manager.path.replace(/^\/|\/$/g, '');
             Dir.query({path: $scope.manager.path || '/'}, function (r) {
@@ -193,4 +194,4 @@
             $scope.fireBroadcast('folder-created', folder);
         }
     }
-})(angular, jQuery);
+})(angular, window.crip || (window.crip = {}));

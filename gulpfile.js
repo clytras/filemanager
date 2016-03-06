@@ -16,7 +16,7 @@ cripweb.scripts([
     '/angular-contextmenu/dist/contextmenu.js',
     '/angular-loading-bar/build/loading-bar.js',
     '/angular-cookies/angular-cookies.js',
-    '/crip-angular-core/build/angular-script-core.js'
+    '/crip-angular-core/build/crip-core.js'
 ], 'core', 'scripts-core', 'bower_components', './src/public/js');
 
 // Concat, uglify and sourcemap application code

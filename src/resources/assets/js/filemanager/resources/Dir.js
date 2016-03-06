@@ -1,8 +1,7 @@
-(function (angular, $) {
+(function (crip) {
     'use strict';
 
-    angular
-        .module('file.manager')
+    crip.fileM
         .service('Dir', Dir);
 
     Dir.$inject = [
@@ -10,10 +9,11 @@
     ];
 
     function Dir($log, $resource, $rootScope) {
-        $log.log('Dir resource <- started');
+        //$log.log('Dir resource <- started');
 
-        return $resource($rootScope.baseUrl() + 'dir/:path', {
-            path: '@path'
+        return $resource($rootScope.baseUrl() + 'dir/:dir/:name', {
+            dir: '@dir',
+            name: '@name'
         });
     }
-})(angular, jQuery);
+})(window.crip || (window.crip = {}));

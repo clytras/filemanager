@@ -1,8 +1,7 @@
-(function (angular, $) {
+(function (angular, crip) {
     'use strict';
 
-    angular
-        .module('file.manager')
+    crip.fileM
         .service('FileService', FileService);
 
     FileService.$inject = [
@@ -10,30 +9,47 @@
     ];
 
     function FileService($log, $rootScope, $http) {
-        $log.log('FileService service <- started');
+        //$log.log('FileService service <- started');
 
         return {
             rename: rename,
             'delete': deleteFile
         };
 
-        function rename(path, oldName, newName, onSuccess, onError) {
-            $log.log('FileService -> rename', {path: path, oldName: oldName, newName: newName});
+        /**
+         * Rename file
+         *
+         * @param dir
+         * @param oldName
+         * @param newName
+         * @param onSuccess
+         * @param onError
+         */
+        function rename(dir, oldName, newName, onSuccess, onError) {
+            $log.log('FileService -> rename', {dir: dir, oldName: oldName, newName: newName});
 
-            var url = $rootScope.baseUrl() + 'file/rename/' + path;
+            var url = $rootScope.baseUrl() + 'file/rename/' + dir;
             $http.post(url, {
                 'old': oldName,
                 'new': newName
             }).then(onSuccess, onError);
         }
 
-        function deleteFile(path, name, onSuccess, onError) {
-            $log.log('FileService -> delete', {path: path, name: name});
+        /**
+         * Delete file
+         *
+         * @param dir
+         * @param name
+         * @param onSuccess
+         * @param onError
+         */
+        function deleteFile(dir, name, onSuccess, onError) {
+            $log.log('FileService -> delete', {dir: dir, name: name});
 
-            var url = $rootScope.baseUrl() + 'file/delete/' + path;
+            var url = $rootScope.baseUrl() + 'file/delete/' + dir;
             $http.post(url, {
                 'name': name
             }).then(onSuccess, onError);
         }
     }
-})(angular, jQuery);
+})(angular, window.crip || (window.crip = {}));

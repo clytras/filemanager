@@ -1,11 +1,8 @@
-(function (ng, $) {
+(function (ng, $, crip) {
     'use strict';
 
-    ng
-        .module('file.manager')
+    crip.fileM
         .service('Settings', Settings);
-
-    Settings.$inject = [];
 
     function Settings() {
         var $settings = $('#settings'), params = false;
@@ -51,4 +48,4 @@
     function strFromJson(str) {
         return ng.fromJson(fixSerializableStr(str));
     }
-})(angular, jQuery);
+})(angular, jQuery, window.crip || (window.crip = {}));

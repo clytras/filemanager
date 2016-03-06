@@ -1,8 +1,7 @@
-(function (angular, $) {
+(function (angular, crip) {
     'use strict';
 
-    angular
-        .module('file.manager')
+    crip.fileM
         .service('DirService', DirService);
 
     DirService.$inject = [
@@ -10,15 +9,15 @@
     ];
 
     function DirService($log, $rootScope, $http) {
-        $log.log('DirService service <- started');
+        //$log.log('DirService service <- started');
 
         return {
-            extend: extend,
-            extendItem: extendItem,
-            rename: rename,
-            create: create,
+            'extend': extend,
+            'extendItem': extendItem,
+            'rename': rename,
+            'create': create,
             'delete': deleteDir,
-            idGen: idGen
+            'idGen': idGen
         };
 
         function extend(data) {
@@ -26,10 +25,15 @@
                 return;
 
             angular.extend(data, {
+                /**
+                 * Used for file tree where folder up is not required
+                 *
+                 * @returns {Array}
+                 */
                 dirs: function () {
                     var folders = [];
                     angular.forEach(data, function (value, key) {
-                        if (value.type == 'dir' && value.name != '..') {
+                        if (value.mime === 'dir' && value.full_name != '..') {
                             extendItem(value, key);
                             this.push(value);
                         }
@@ -37,6 +41,11 @@
 
                     return folders;
                 },
+                /**
+                 * Append each item with required data
+                 *
+                 * @returns {Array}
+                 */
                 items: function () {
                     var items = [];
                     angular.forEach(data, function (value, key) {
@@ -54,40 +63,68 @@
         /**
          * Renames path last part nto new name
          *
-         * @param path "path to rename"
+         * @param dir "path to rename"
          * @param oldName
          * @param newName "new name for path last element"
          * @param onSuccess "callback for successful rename"
          * @param onError "callback for error"
          */
-        function rename(path, oldName, newName, onSuccess, onError) {
-            var url = $rootScope.baseUrl() + 'dir/rename/' + path;
+        function rename(dir, oldName, newName, onSuccess, onError) {
+            var url = $rootScope.baseUrl() + 'dir/rename/' + dir;
             $http.post(url, {
                 'old': oldName,
                 'new': newName
             }).then(onSuccess, onError);
         }
 
-        function create(path, name, onSuccess, onError) {
-            var url = $rootScope.baseUrl() + 'dir/create/' + path;
+        /**
+         * Create new directory
+         *
+         * @param dir
+         * @param name
+         * @param onSuccess
+         * @param onError
+         */
+        function create(dir, name, onSuccess, onError) {
+            var url = $rootScope.baseUrl() + 'dir/create/' + dir;
             $http.post(url, {
                 'name': name
             }).then(onSuccess, onError);
         }
 
-        function deleteDir(path, name, onSuccess, onError) {
-            var url = $rootScope.baseUrl() + 'dir/delete/' + path;
+        /**
+         * Delete existing directory
+         *
+         * @param dir
+         * @param name
+         * @param onSuccess
+         * @param onError
+         */
+        function deleteDir(dir, name, onSuccess, onError) {
+            var url = $rootScope.baseUrl() + 'dir/delete/' + dir;
             $http.post(url, {
                 'name': name
             }).then(onSuccess, onError);
         }
 
+        /**
+         * Generate unique item id property
+         *
+         * @param key array key
+         * @returns {string} item id
+         */
         function idGen(key) {
             return 'list-item-' + key;
         }
 
+        /**
+         * Add id parameter to item
+         *
+         * @param item
+         * @param key
+         */
         function extendItem(item, key) {
             item.id = idGen(key);
         }
     }
-})(angular, jQuery);
+})(angular, window.crip || (window.crip = {}));

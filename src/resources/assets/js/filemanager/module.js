@@ -1,7 +1,7 @@
-(function(ng){
+(function(ng, crip){
     'use strict';
 
-    ng.module('file.manager', [
+    crip.fileM = ng.module('file.manager', [
         'crip.core',
         'angular-loading-bar',
         'angularFileUpload',
@@ -13,4 +13,4 @@
         'io.dennis.contextmenu'
     ]);
 
-})(angular);
+})(angular, window.crip || (window.crip = {}));

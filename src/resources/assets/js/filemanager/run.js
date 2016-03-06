@@ -1,9 +1,9 @@
-(function (angular, $) {
+(function (angular, $, crip) {
     'use strict';
 
-    angular
-        .module('file.manager')
+    crip.fileM
         .run(Run);
+
     Run.$inject = [
         '$rootScope'
     ];
@@ -19,4 +19,4 @@
             return $settings.data('base-url');
         };
     }
-})(angular, jQuery);
+})(angular, jQuery, window.crip || (window.crip = {}));

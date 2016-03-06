@@ -1,8 +1,7 @@
-(function (angular, $) {
+(function (ng, crip) {
     'use strict';
 
-    angular
-        .module('file.manager')
+    crip.fileM
         .controller('BaseController', BaseController);
 
     BaseController.$inject = [
@@ -10,7 +9,7 @@
     ];
 
     function BaseController($log, $scope, $cookies, Notification, DirService, Dir) {
-        $log.log('BaseController controller <- started');
+        //$log.log('BaseController controller <- started');
 
         activate();
 
@@ -18,7 +17,7 @@
             $scope.isDir = isDir;
             $scope.isDirUp = isDirUp;
 
-            // only for subcontroller usage
+            // only for sub-controller usage
             $scope._error = _error;
             $scope._warning = _warning;
             $scope._success = _success;
@@ -38,7 +37,7 @@
          * @returns {*|boolean}
          */
         function isDir(item) {
-            return item && angular.isDefined(item.type) && item.type === 'dir';
+            return item && ng.isDefined(item.mime) && item.mime === 'dir';
         }
 
         /**
@@ -53,16 +52,16 @@
         function __resolveMessage(response) {
             var notification = false;
 
-            if (angular.isDefined(response.notification))
+            if (ng.isDefined(response.notification))
                 notification = response.notification;
 
-            if (angular.isDefined(response.data) && angular.isDefined(response.data.notification))
+            if (ng.isDefined(response.data) && ng.isDefined(response.data.notification))
                 notification = response.data.notification;
 
             if (notification)
                 return {hasMessage: true, message: notification};
 
-            $log.error('Cant get user friendly message from response', {response: response});
+            //$log.error('Cant get user friendly message from response', {response: response});
             return {hasMessage: false};
         }
 
@@ -92,17 +91,17 @@
          * @param response
          */
         function onInitialDirLoaded(response) {
-            $log.log('BaseController -> onInitialDirLoaded', {response: response});
+            //$log.log('BaseController -> onInitialDirLoaded', {response: response});
 
             DirService.extend(response);
 
             $scope.fireBroadcast('tree-changed', response.dirs());
             $scope.fireBroadcast('folder-changed', response.items());
 
-            $log.log('FolderCache', {path: $cookies.get('path')});
-            if (!($cookies.get('path') === '/' || typeof $cookies.get('path') === 'undefined')) {
-                $scope.fireBroadcast('change-folder', {path: $cookies.get('path')});
-            }
+            //$log.log('FolderCache', {path: $cookies.get('path')});
+            //if (!($cookies.get('path') === '/' || typeof $cookies.get('path') === 'undefined')) {
+            //    $scope.fireBroadcast('change-folder', {path: $cookies.get('path')});
+            //}
         }
     }
-})(angular, jQuery);
+})(angular, window.crip || (window.crip = {}));

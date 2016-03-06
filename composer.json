@@ -4,7 +4,8 @@
   "require": {
     "laravel/framework": "^5.1",
     "intervention/image": "^2.3",
-    "mcamara/laravel-localization": "^1.0"
+    "mcamara/laravel-localization": "^1.0",
+    "crip/core": "^1.0"
   },
   "autoload": {
     "psr-4": {

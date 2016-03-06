@@ -87,6 +87,7 @@ class File implements ICripObject, IArrayObject, IFileSystemObject
         return [
             'dir' => $this->url->pathToUrl($this->path),
             'mime' => $this->mime->type,
+            'type' => $this->mime->service->getMediaType(),
             'name' => $this->name,
             'ext' => $this->ext,
             'size' => $this->size,
