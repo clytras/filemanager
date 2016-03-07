@@ -7,7 +7,7 @@ return [
     'thumbs' => [
         'thumb' => [
             205,
-            205,
+            100,
             'resize',
         ],
         'xs' => [
@@ -31,9 +31,9 @@ return [
             'width',
         ],
     ],
-    'public_href' => '/vendor/crip/filemanager',
+    'public_href' => '/vendor/crip/cripfilemanager',
     'icons' => [
-        'path' => '/vendor/crip/filemanager/images/',
+        'path' => '/vendor/crip/cripfilemanager/images/',
         'files' => [
             'js' => 'js.png',
             'dir' => 'dir.png',

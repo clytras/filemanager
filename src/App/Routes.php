@@ -8,7 +8,7 @@ use Mcamara\LaravelLocalization\LaravelLocalization;
 Route::group(
     [
         // Prefix comes from configuration (default: "filemanager")
-        'prefix' => app(LaravelLocalization::class)->setLocale() . '/' . config('cripfilemanager::app.base_url'),
+        'prefix' => app(LaravelLocalization::class)->setLocale() . '/' . config('cripfilemanager.base_url'),
         'namespace' => 'Crip\FileManager\App\Controllers'
     ],
     function (\Illuminate\Routing\Router $router) {

@@ -5,7 +5,7 @@
         .service('Dir', Dir);
 
     Dir.$inject = [
-        '$log', '$resource', '$rootScope'
+        '$resource', '$rootScope'
     ];
 
     function Dir($resource, $rootScope) {

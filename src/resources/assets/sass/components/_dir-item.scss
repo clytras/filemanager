@@ -1,0 +1,59 @@
+.manager-item-wrapper {
+
+  background-color: $img-bg-color;
+  height: 139px;
+
+  &:hover {
+    .text {
+      bottom: 39px;
+    }
+  }
+
+  .manager-img {
+    margin: 0 auto;
+    cursor: pointer;
+  }
+
+  .item-footer {
+
+    position: relative;
+
+    .text {
+      height: 39px;
+      background-color: white;
+      padding: 10px;
+      position: absolute;
+      width: 100%;
+    }
+
+    .item-actions {
+
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      height: 39px;
+
+      > li {
+        display: inline-block;
+        height: 100%;
+
+        > a {
+          display: inline-block;
+          height: 100%;
+          padding: 10px 5px;
+
+          &:hover {
+            background-color: white;
+          }
+
+          > img {
+            height: 19px;
+          }
+        }
+      }
+
+    }
+
+  }
+
+}

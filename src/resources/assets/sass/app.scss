@@ -1,10 +1,10 @@
+@import "variables";
 @import "../../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "mixins";
-@import "variables";
 @import "components/contextmenu";
 @import "components/loadingbar";
 @import "components/notification";
-@import "components/dirItem";
+@import "components/dir-item";
 @import "components/tree";
 @import "components/uploader";
 @import "dropdown-submenu";
@@ -19,10 +19,3 @@
   margin: 0 !important;
 }
 
-.folder-content .panel-title {
-  font-size: 18px;
-}
-
-.title {
-  margin-top: $padding-base-vertical;
-}

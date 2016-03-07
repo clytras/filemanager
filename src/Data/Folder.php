@@ -75,16 +75,15 @@ class Folder implements ICripObject, IArrayObject, IFileSystemObject
     {
         $path = $this->service->getSysPath($this->path_manager);
         $mime = $this->mime->setByPath($path);
-        $name = $this->name === null ? '..' : $this->name;
 
         return [
             'dir' => $this->url->pathToUrl($this->dir),
             'mime' => 'dir',
             'type' => 'dir',
-            'name' => '',
+            'name' => $this->name,
             'ext' => '',
             'size' => $this->service->getSize($this->path_manager),
-            'full_name' => $name,
+            'full_name' => $this->name === null ? '..' : $this->name,
             'date' => $this->service->getDate($this->path_manager),
             'url' => $this->url->getFolderUrl($this),
             'thumb' => $this->icon->get($mime),

@@ -1,12 +1,22 @@
-/*BOOTSTRAP VARIABLES*/
-@import '../../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300&subset=latin,cyrillic);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,300,700&subset=latin,cyrillic);
+
 
 /*CUSTOMIZE BOOTSTRAP VARIABLES*/
 $body-bg: #f7f7f7;
 $icon-font-path: '/vendor/crip/filemanager/fonts/bootstrap/';
+$font-family-sans-serif: 'Roboto', sans-serif;
+$font-family-base: $font-family-sans-serif;
+$font-family-monospace: 'Roboto Mono', monospace;
+$border-radius-base: 0;
+
+/*BOOTSTRAP VARIABLES*/
+@import '../../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss';
+
 
 // #loading-bar
 $loading-bar-color: $brand-primary;
 
-// uploader
-$uploader-padding-left: 35px;
+// Manager
+$img-bg-color: #efefef;

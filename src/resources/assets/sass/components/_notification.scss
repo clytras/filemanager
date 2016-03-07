@@ -6,22 +6,18 @@
  * @license MIT
  */
 .ui-notification {
+  @include vendor-prefix(transition, all ease .5s);
+  @include vendor-prefix(box-shadow, 5px 5px 10px rgba(0, 0, 0, .3));
   position: fixed;
   z-index: 9999;
   width: 300px;
   cursor: pointer;
-  -webkit-transition: all ease .5s;
-  -o-transition: all ease .5s;
-  transition: all ease .5s;
   color: #fff;
   background: #337ab7;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, .3)
 }
 
 .ui-notification.killed {
-  -webkit-transition: opacity ease 1s;
-  -o-transition: opacity ease 1s;
-  transition: opacity ease 1s;
+  @include vendor-prefix(transition, opacity ease 1s);
   opacity: 0
 }
 

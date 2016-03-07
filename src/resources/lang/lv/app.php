@@ -19,6 +19,7 @@ return [
 
     // master
     'title' => 'Crip File Manager',
+    'item_title_open_dir' => 'Atvērt direktoriju',
     '' => '',
 
     /*'context_delete' => 'Dzēst ierakstu',

@@ -9,10 +9,10 @@ use Crip\FileManager\App\Services\Mime;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /**
- * Class CripFilemanagerServiceProvider
+ * Class CripFileManagerServiceProvider
  * @package Crip\Filemanager
  */
-class CripFilemanagerServiceProvider extends CripServiceProvider
+class CripFileManagerServiceProvider extends CripServiceProvider
 {
     /**
      * @var PackageBase
@@ -20,6 +20,8 @@ class CripFilemanagerServiceProvider extends CripServiceProvider
     private static $package;
 
     /**
+     * php artisan vendor:publish --provider="Crip\FileManager\CripFileManagerServiceProvider"
+     *
      * @return PackageBase
      */
     private static function package()
@@ -40,6 +42,7 @@ class CripFilemanagerServiceProvider extends CripServiceProvider
     public function boot()
     {
         $this->cripBoot(self::package());
+        require_once __DIR__ . '/App/helpers.php';
     }
 
     /**
@@ -50,18 +53,12 @@ class CripFilemanagerServiceProvider extends CripServiceProvider
     public function register()
     {
         $this->cripRegister(self::package());
-
-        // bind IMime upload interface as Mime service
-        $this->app->bind(IMime::class, Mime::class);
-
-        $this->app[self::package()->name] = $this->app->share(function ($app) {
-            return new Filemanager($app['app'], $this->app->make(IMime::class));
-        });
     }
 
+    /**
+     * @param AliasLoader $loader
+     */
     function aliasLoader(AliasLoader $loader)
     {
-        $loader->alias('FileManager', Filemanager::class);
-        $loader->alias('LaravelLocalization', LaravelLocalization::class);
     }
 }
