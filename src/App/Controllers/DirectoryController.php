@@ -35,14 +35,11 @@ class DirectoryController extends BaseFileManagerController
      */
     public function index()
     {
-        if (!ValidateConfig::isValid()) {
-            return Package::view('error')->with('errors', ValidateConfig::$errors);
-        }
-        return Package::view('index');
+        return $this->fileManager->package()->view('master');
     }
 
     /**
-     * @param null $path
+     * @param string $path
      * @return \Illuminate\Http\JsonResponse
      */
     public function create($path = '')

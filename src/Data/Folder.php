@@ -81,7 +81,7 @@ class Folder implements ICripObject, IArrayObject, IFileSystemObject
             'dir' => $this->url->pathToUrl($this->dir),
             'mime' => 'dir',
             'type' => 'dir',
-            'name' => $name,
+            'name' => '',
             'ext' => '',
             'size' => $this->service->getSize($this->path_manager),
             'full_name' => $name,

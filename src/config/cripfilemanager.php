@@ -31,8 +31,9 @@ return [
             'width',
         ],
     ],
+    'public_href' => '/vendor/crip/filemanager',
     'icons' => [
-        'path' => '/vendor/crip/filemanager/',
+        'path' => '/vendor/crip/filemanager/images/',
         'files' => [
             'js' => 'js.png',
             'dir' => 'dir.png',

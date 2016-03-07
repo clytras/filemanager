@@ -40,10 +40,12 @@ class FileManager implements ICripObject
     /**
      * @var FileUploader
      */
+
     private $uploader;
     /**
      * @var FileSystemManager
      */
+
     private $fileSystem;
 
     /**

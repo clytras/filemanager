@@ -102,10 +102,10 @@
          * @param array
          */
         function folderFilter(value, index, array) {
-            if (ng.isDefined(value.type)) {
-                if (value.type == 'dir')
-                    return true;
+            if ($scope.isDir(value))
+                return true;
 
+            if (ng.isDefined(value.type)) {
                 if (isFiltersEnabled())
                     return $scope.folder.filters[value.type];
 
@@ -148,7 +148,7 @@
             //$log.log('FolderController -> refresh', {manager: $scope.manager});
             $scope.folder.loading = true;
             $scope.manager.path = $scope.manager.path.replace(/^\/|\/$/g, '');
-            Dir.query({path: $scope.manager.path || '/'}, function (r) {
+            Dir.query({dir: $scope.manager.path || '/'}, function (r) {
                 onFolderChanged(r, $scope.manager);
             }, $scope._error);
         }
@@ -160,13 +160,13 @@
          * @param folder
          */
         function onFolderChanged(response, folder) {
-            $log.log('FolderController -> changeFolder -> onFolderChanged',
-                {response: response, folder: folder});
+            //$log.log('FolderController -> changeFolder -> onFolderChanged',
+            //    {response: response, folder: folder});
             DirService.extend(response);
             $scope.folder.items = response.items();
             $scope.folder.loading = false;
-            $scope.manager.path = '/' + (folder.path || '');
-            $cookies.put('path', (folder.path || ''));
+            $scope.manager.path = folder.dir + '/' + folder.name;
+            $cookies.put('path', $scope.manager.path);
         }
 
         function enableCreate() {
@@ -183,7 +183,7 @@
         }
 
         function onFolderCreated(response) {
-            $log.log('FolderController -> create -> onFolderCreated', {response: response});
+            //$log.log('FolderController -> create -> onFolderCreated', {response: response});
 
             $scope._success(response);
             $scope.folder.creating = false;

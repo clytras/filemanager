@@ -1,8 +1,7 @@
-(function (angular, $, top, w, O) {
+(function (ng, $, top, w, O, crip) {
     'use strict';
 
-    angular
-        .module('file.manager')
+    crip.fileM
         .controller('FolderItemController', FolderItemController);
 
     FolderItemController.$inject = [
@@ -10,7 +9,7 @@
     ];
 
     function FolderItemController($log, $scope, focus, DirService, FileService, Settings) {
-        $log.log('FolderItemController controller <- started');
+        //$log.log('FolderItemController controller <- started');
 
         activate();
 
@@ -36,7 +35,7 @@
                 return;
             }
 
-            $log.log('FolderItemController -> click', {item: item});
+            //$log.log('FolderItemController -> click', {item: item});
 
             if ($scope.isDir(item)) {
                 $scope.fireBroadcast('change-folder', item);
@@ -81,7 +80,7 @@
         }
 
         function getItemNewName(item) {
-            if (angular.isDefined(item.ext) && item.ext.length)
+            if (ng.isDefined(item.ext) && item.ext.length)
                 return item.newName + '.' + item.ext;
             return item.newName;
         }
@@ -93,7 +92,7 @@
         function onFolderRenamed(response) {
             $log.log('FolderItemController -> onFolderRenamed', {response: response, item: $scope.item});
             $scope._success(response);
-            var copy = angular.copy($scope.item);
+            var copy = ng.copy($scope.item);
             $scope.item.rename = false;
             // TODO: create item automapper
             $scope.item.path = response.data.path;
@@ -165,7 +164,7 @@
         }
 
         function hasThumbs(item) {
-            return !!item && angular.isDefined(item.thumbs) && O.keys(item.thumbs).length > 1;
+            return !!item && ng.isDefined(item.thumbs) && O.keys(item.thumbs).length > 1;
         }
 
         function thumbName(thumbIndex, width, height) {
@@ -180,4 +179,4 @@
             return template.supplant(params);
         }
     }
-})(angular, jQuery, top, window, Object);
+})(angular, jQuery, top, window, Object, window.crip || (window.crip = {}));

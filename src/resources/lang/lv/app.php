@@ -1,17 +1,25 @@
 <?php
 
 return [
+    // Path errors
     'err_path_not_dir' => 'Ceļš līdz `:path` nav direktorija.',
     'err_path_not_exist' => 'Ceļš līdz direktorijai `:path` neeksistē.',
-
+    // File errors
     'err_file_upload_invalid_file' => 'Fails nav valīds augšupielādei.',
     'err_file_not_found' => 'Fails netika atrasts.',
     'err_file_path_is_not_set' => 'Faila atrasšanās vieta nav nosakāma.',
     'err_file_cant_rename' => 'Faila pārsaukšana neizdevās.',
     'err_file_ext_cant_be_changed' => 'Faila paplašinājums nevar mainīties.',
-
+    // Dir errors
     'err_folder_not_found' => 'Direktorija netika atrasta.',
     'err_folder_cant_rename' => 'Direktorijas pārsaukšana neizdevās.',
+    /**
+     * UI translations
+     */
+
+    // master
+    'title' => 'Crip File Manager',
+    '' => '',
 
     /*'context_delete' => 'Dzēst ierakstu',
     'context_disable_rename' => 'Atslēgt pārsaukšanu',

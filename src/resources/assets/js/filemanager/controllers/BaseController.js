@@ -99,9 +99,9 @@
             $scope.fireBroadcast('folder-changed', response.items());
 
             //$log.log('FolderCache', {path: $cookies.get('path')});
-            //if (!($cookies.get('path') === '/' || typeof $cookies.get('path') === 'undefined')) {
-            //    $scope.fireBroadcast('change-folder', {path: $cookies.get('path')});
-            //}
+            if (!($cookies.get('path') === '/' || typeof $cookies.get('path') === 'undefined')) {
+                $scope.fireBroadcast('change-folder', {dir: $cookies.get('path')});
+            }
         }
     }
 })(angular, window.crip || (window.crip = {}));
