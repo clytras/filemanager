@@ -79,7 +79,7 @@
                 manager.name = name;
             }
 
-            $log.debug({getManagerCookieOrDefault: manager});
+            //$log.debug({getManagerCookieOrDefault: manager});
 
             return manager;
         }

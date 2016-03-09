@@ -7,6 +7,7 @@
 @import "components/dir-item";
 @import "components/tree";
 @import "components/uploader";
+@import "components/actions";
 @import "dropdown-submenu";
 @import "btn";
 
@@ -17,5 +18,9 @@
 
 .no-margin {
   margin: 0 !important;
+}
+
+.breadcrumb {
+  margin-bottom: 0;
 }
 

@@ -20,6 +20,7 @@ return [
     // master
     'title' => 'Crip File Manager',
     'item_title_open_dir' => 'Atvērt direktoriju',
+    'actions_new_dir' => 'Jauna direktorija',
     '' => '',
 
     /*'context_delete' => 'Dzēst ierakstu',

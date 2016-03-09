@@ -5,10 +5,10 @@
         .controller('DirContentController', DirContentController);
 
     DirContentController.$inject = [
-        '$scope', 'focus', 'Dir'
+        '$log', '$scope', 'focus', 'Dir'
     ];
 
-    function DirContentController($scope, focus, Dir) {
+    function DirContentController($log, $scope, focus, Dir) {
         activate();
 
         function activate() {
@@ -39,6 +39,7 @@
                 text = '0 {field}';
             }
 
+            //$log.info($scope.order.field, text.supplant({field: item[$scope.order.field]}), item);
             return text.supplant({field: item[$scope.order.field]});
         }
 

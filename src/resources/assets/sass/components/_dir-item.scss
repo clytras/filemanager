@@ -2,16 +2,25 @@
 
   background-color: $img-bg-color;
   height: 139px;
+  overflow: hidden;
 
   &:hover {
-    .text {
-      bottom: 39px;
+    .item-footer .text {
+      /*top: -39px;*/
+      display: none;
     }
   }
 
-  .manager-img {
-    margin: 0 auto;
+  .img-wrapper {
     cursor: pointer;
+    height: 100px;
+    overflow: hidden;
+    width: 100%;
+
+    .manager-img {
+      margin: 0 auto;
+    }
+
   }
 
   .item-footer {
@@ -20,18 +29,20 @@
 
     .text {
       height: 39px;
-      background-color: white;
       padding: 10px;
       position: absolute;
+      background-color: white;
+      top: 0;
       width: 100%;
     }
 
     .item-actions {
 
+      height: 39px;
+      list-style-type: none;
+      background-color: white;
       margin: 0;
       padding: 0;
-      list-style-type: none;
-      height: 39px;
 
       > li {
         display: inline-block;
@@ -43,13 +54,16 @@
           padding: 10px 5px;
 
           &:hover {
-            background-color: white;
+            background-color: $img-bg-color;
+            /*background-color: white;*/
           }
 
           > img {
             height: 19px;
           }
+
         }
+
       }
 
     }

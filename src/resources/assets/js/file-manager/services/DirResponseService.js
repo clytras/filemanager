@@ -60,7 +60,7 @@
          * @returns {boolean}
          */
         function isDirUp(item) {
-            return isDir(item) && item.name == '';
+            return isDir(item) && (item.name == '' || item.name == null);
         }
 
         /**

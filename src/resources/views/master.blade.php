@@ -21,8 +21,24 @@
 
 <body>
 
-<div ng-cloak class="container-fluid">
-    <div class="row" ng-controller="RootController">
+<div ng-cloak class="container-fluid" ng-controller="RootController">
+    <div class="row folder-actions" ng-controller="ActionsController">
+        <div class="col-xs-12">
+            <ul class="list">
+                <li>
+                    <a href ng-click="actions.newDir('{!! trans("cripfilemanager::app.actions_new_dir") !!}')"
+                       class="action-vertical"
+                       title="{!! trans('cripfilemanager::app.actions_new_dir') !!}">
+                        <img class="action-large"
+                             src="{!! icon('add-folder') !!}"
+                             alt="{!! trans('cripfilemanager::app.actions_new_dir') !!}">
+                        <span class="action-text">{!! trans('cripfilemanager::app.actions_new_dir') !!}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-xs-12">
             <div class="col-xs-4 col-md-3 col-lg-2">
                 Here will be sidebar
@@ -30,13 +46,17 @@
             <div class="col-xs-8 col-md-9 col-lg-10">
                 <div class="row">
                     <div class="col-xs-12">
-                        <ol class="breadcrumb">
+                        <ol class="breadcrumb" ng-controller="BreadcrumbController">
                             <li></li>
-                            <li ng-if="folder.manager.dir != ''" class="active">
-                                <a href ng-click="folder.goTo({dir: folder.manager.dir, name: ''})"
-                                   ng-bind="folder.manager.dir"></a>
+                            <li ng-if="breadcrumb.length < 1"></li>
+                            <li ng-repeat="breadcrumbItem in breadcrumb" ng-class="{'active': breadcrumbItem.isActive}">
+                                <span ng-if="breadcrumbItem.isActive"
+                                      ng-bind="breadcrumbItem.name"></span>
+
+                                <a href ng-if="!breadcrumbItem.isActive"
+                                   ng-click="folder.goTo(breadcrumbItem)"
+                                   ng-bind="breadcrumbItem.name"></a>
                             </li>
-                            <li ng-if="folder.manager.name != ''" class="active" ng-bind="folder.manager.name"></li>
                         </ol>
                     </div>
                 </div>
@@ -49,9 +69,10 @@
                                  ng-controller="DirItemController"
                                  class="manager-item-wrapper">
 
-                                <img src ng-src="{{item.thumb}}"
-                                     class="img-responsive manager-img"
-                                     ng-click="click(item)">
+                                <div ng-click="click(item)" class="img-wrapper">
+                                    <img src ng-src="{{item.thumb}}" alt="{{item.full_name}}"
+                                         class="img-responsive manager-img">
+                                </div>
 
                                 <div class="item-footer">
                                     <div class="text" ng-bind="item.full_name"></div>
