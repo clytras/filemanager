@@ -4,16 +4,26 @@
     crip.filemanager
         .controller('DirItemController', DirItemController);
 
-    DirItemController.$inject = ['$scope'];
+    DirItemController.$inject = ['$log', '$scope'];
 
-    function DirItemController($scope) {
+    function DirItemController($log, $scope) {
         activate();
 
         function activate() {
             $scope.click = click;
+            $scope.dblclick = dblclick;
         }
 
-        function click(item) {
+        function click(e, item) {
+            e.stopPropagation();
+            $scope.folder.selected = item;
+            $log.info('click', item);
+        }
+
+        function dblclick(e, item) {
+            e.stopPropagation();
+            $log.info('dblclick', item);
+
             if (item.isDir) {
                 $scope.folder.goTo(item);
             }

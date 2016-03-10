@@ -9,9 +9,12 @@
     ];
 
     function Dir($resource, $rootScope) {
-        return $resource($rootScope.dirUrl(':dir/:name'), {
+        return $resource($rootScope.dirUrl(':action/:dir/:name'), {
             dir: '@dir',
-            name: '@name'
+            name: '@name',
+            action: '@action'
+        }, {
+            create: {method: 'POST', params: {action: 'create'}}
         });
     }
 })(window.crip || (window.crip = {}));

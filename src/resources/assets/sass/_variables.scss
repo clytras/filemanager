@@ -4,7 +4,11 @@
 
 
 /*CUSTOMIZE BOOTSTRAP VARIABLES*/
-$body-bg: #f7f7f7;
+$text-color: #536e7a;
+$link-hover-color: #0273d4;
+$link-hover-decoration: none;
+$help-color: #afbec5;
+$body-bg: #eceff1;
 $icon-font-path: '/vendor/crip/filemanager/fonts/bootstrap/';
 $font-family-sans-serif: 'Roboto', sans-serif;
 $font-family-base: $font-family-sans-serif;
@@ -20,3 +24,4 @@ $loading-bar-color: $brand-primary;
 
 // Manager
 $img-bg-color: #efefef;
+$manager-border-color: #CFD8DC;

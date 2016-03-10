@@ -17,7 +17,11 @@
                 loading: true,
                 items: [],
                 manager: getManagerCookieOrDefault(),
-                goTo: doFolderChange
+                goTo: doFolderChange,
+                selected: false,
+                deselect: deselect,
+                isSelected: isSelected,
+                currentPath: getCurrentPath
             };
 
             doFolderChange($scope.folder.manager);
@@ -73,7 +77,7 @@
             if (ng.isDefined(cookieDir) && cookieDir != '') {
                 manager.dir = cookieDir;
 
-                if (!name || name === 'null') {
+                if (!name || name === 'null' || name === null) {
                     name = '';
                 }
                 manager.name = name;
@@ -93,6 +97,7 @@
             //$log.info(response);
             $scope.folder.items = response.getItems();
             $scope.folder.loading = false;
+            deselect();
             //$log.info($scope.folder);
         }
 
@@ -108,6 +113,50 @@
             $cookies.put('manager-dir-name', folder.name || '');
             //$log.debug(folder);
             $scope.folder.manager = folder;
+        }
+
+        /**
+         * Detect is passed this item is selected
+         *
+         * @param {object} item
+         * @returns {boolean}
+         */
+        function isSelected(item) {
+            if (!$scope.folder.selected)
+                return false;
+
+            //$log.info('isSelected', item, $scope.folder.selected);
+
+            return ng.equals(item, $scope.folder.selected);
+        }
+
+        /**
+         * Deselect selected folder item;
+         */
+        function deselect() {
+            //$log.info('deselect', $scope.folder.selected);
+            $scope.folder.selected = false;
+
+            return true;
+        }
+
+        function getCurrentPath() {
+            var dir = $scope.folder.manager.dir,
+                name = $scope.folder.manager.name,
+                path = '';
+
+            if (dir && dir != '') {
+                path = dir;
+            }
+
+            if (name && name != '') {
+                if (path != '')
+                    path += '/' + name;
+                else
+                    path = name;
+            }
+
+            return path;
         }
     }
 })(angular, window.crip || (window.crip = {}));
