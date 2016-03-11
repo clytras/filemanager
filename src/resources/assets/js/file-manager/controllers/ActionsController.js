@@ -18,6 +18,7 @@
                 newDir: createNewDir,
                 canRename: canRename,
                 rename: rename,
+                applyRename: applyRename,
                 canDelete: canDelete,
                 'delete': deleteItem
             };
@@ -106,6 +107,14 @@
             //$log.debug('rename', item);
         }
 
+
+        function applyRename(item) {
+            if (!canRename())
+                return;
+
+            item.update();
+        }
+
         function canDelete() {
             if (!$scope.folder.selected)
                 return false;
@@ -118,6 +127,7 @@
                 return;
 
             e.stopPropagation();
+            $scope.removeItem(item);
             item.delete();
         }
     }

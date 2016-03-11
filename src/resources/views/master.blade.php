@@ -102,9 +102,8 @@
                             <input type="text"
                                    name="name"
                                    onfocus="this.select();"
-                                   onmouseup="return false;"
-                                   ng-model="item.name"
-                                   ng-click="$event.stopPropagation()">
+                                   crip-enter="applyRename(item)"
+                                   ng-model="item.name">
                         </div>
                     </div>
                 </div>

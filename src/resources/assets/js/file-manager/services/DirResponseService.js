@@ -71,6 +71,7 @@
          */
         function extendItem(item, key) {
             ng.extend(item, {
+                crip_extended: true,
                 rename: false,
                 identifier: idGen(key),
                 isDir: isDir(item),
@@ -85,6 +86,8 @@
         function update() {
             if (this.rename)
                 this.saveNewName();
+
+            return this;
         }
 
         function getFullName() {
@@ -98,17 +101,16 @@
             var self = this;
             if (self.full_name !== self.getFullName())
                 self.$rename({
-                    'name': null,
                     'old': self.full_name,
                     'new': self.getFullName()
                 }, function (response) {
-                    $log.debug('saveNewName', response);
+                    //$log.debug('saveNewName', response);
                     ng.extend(self, response);
                 })
         }
 
         function deleteItem() {
-            this.$delete({name: null});
+            this.$delete({name: this.full_name});
         }
     }
 })(angular, window.crip || (window.crip = {}));

@@ -13,6 +13,9 @@
         activate();
 
         function activate() {
+            $scope.addItem = addItem;
+            $scope.removeItem = removeItem;
+
             $scope.folder = {
                 loading: true,
                 items: [],
@@ -164,7 +167,12 @@
             var params = arguments;
             ng.forEach($scope.folder.items, function (item) {
                 // update item if it has any changes
-                item.update();
+                if (ng.isDefined(item.update)) {
+                    item.update();
+                } else {
+                    $log.error('Item has no method `update`');
+                }
+
                 for (var i = 0; i < params.length; i++) {
                     if (item.hasOwnProperty(params[i]) && typeof item[params[i]] === 'boolean') {
                         //$log.debug('disableItemsProp', item.identifier, params[i]);
@@ -172,6 +180,18 @@
                     }
                 }
             });
+        }
+
+        function removeItem(item) {
+            $scope.folder.items.splice($scope.folder.items.indexOf(item), 1);
+        }
+
+        function addItem(item) {
+            if (!ng.isDefined(item.crip_extended)) {
+                DirResponseService.extendItem(item);
+            }
+
+            $scope.folder.items.push(item);
         }
     }
 })(angular, window.crip || (window.crip = {}));
