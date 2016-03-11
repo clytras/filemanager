@@ -16,12 +16,13 @@
             $scope.folder = {
                 loading: true,
                 items: [],
+                disableItemsProp: disableItemsProp,
                 manager: getManagerCookieOrDefault(),
                 goTo: doFolderChange,
                 selected: false,
                 deselect: deselect,
                 isSelected: isSelected,
-                currentPath: getCurrentPath
+                isSelectedAny: isSelectedAny
             };
 
             doFolderChange($scope.folder.manager);
@@ -131,32 +132,46 @@
         }
 
         /**
+         * Determines is there selected item
+         *
+         * @returns {boolean}
+         */
+        function isSelectedAny() {
+            return !!$scope.folder.selected;
+        }
+
+        /**
          * Deselect selected folder item;
          */
         function deselect() {
             //$log.info('deselect', $scope.folder.selected);
-            $scope.folder.selected = false;
+            if ($scope.folder.selected !== false) {
+                // update selected item all changes if they are presented
+                $scope.folder.selected.update();
+
+                $scope.folder.selected = false;
+            }
 
             return true;
         }
 
-        function getCurrentPath() {
-            var dir = $scope.folder.manager.dir,
-                name = $scope.folder.manager.name,
-                path = '';
-
-            if (dir && dir != '') {
-                path = dir;
-            }
-
-            if (name && name != '') {
-                if (path != '')
-                    path += '/' + name;
-                else
-                    path = name;
-            }
-
-            return path;
+        /**
+         * Disable all item property by its name
+         *
+         * @param {...string} prop
+         */
+        function disableItemsProp(prop) {
+            var params = arguments;
+            ng.forEach($scope.folder.items, function (item) {
+                // update item if it has any changes
+                item.update();
+                for (var i = 0; i < params.length; i++) {
+                    if (item.hasOwnProperty(params[i]) && typeof item[params[i]] === 'boolean') {
+                        //$log.debug('disableItemsProp', item.identifier, params[i]);
+                        item[params[i]] = false;
+                    }
+                }
+            });
         }
     }
 })(angular, window.crip || (window.crip = {}));

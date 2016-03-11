@@ -1,21 +1,25 @@
-(function (ng, crip) {
+(function (ng, $, crip) {
     'use strict';
 
     crip.filemanager
         .controller('ActionsController', ActionsController);
 
     ActionsController.$inject = [
-        '$log', '$scope', 'Dir', 'DirResponseService'
+        '$log', '$scope', 'focus', 'Dir', 'DirResponseService'
     ];
 
-    function ActionsController($log, $scope, Dir, DirResponseService) {
+    function ActionsController($log, $scope, focus, Dir, DirResponseService) {
         activate();
 
         function activate() {
             $scope.actions = {
                 enabled: {},
                 isEnabled: actionIsEnabled,
-                newDir: createNewDir
+                newDir: createNewDir,
+                canRename: canRename,
+                rename: rename,
+                canDelete: canDelete,
+                'delete': deleteItem
             };
 
             enable('new_dir');
@@ -39,6 +43,11 @@
             $scope.actions.enabled[actionName] = false;
         }
 
+        /**
+         * Create new dir in file system
+         *
+         * @param {string} name
+         */
         function createNewDir(name) {
             if (!actionIsEnabled('new_dir'))
                 return;
@@ -50,6 +59,11 @@
             Dir.create($scope.folder.manager, {name: name}, onNewDirCompleted);
         }
 
+        /**
+         * Callback on new dir response from server
+         *
+         * @param {object} response
+         */
         function onNewDirCompleted(response) {
             // Enable new dir create action when server responded with previous request
             enable('new_dir');
@@ -69,5 +83,42 @@
         function actionIsEnabled(actionName) {
             return $scope.actions.enabled.hasOwnProperty(actionName) && $scope.actions.enabled[actionName];
         }
+
+        /**
+         * Determines is selected item can be renamed
+         *
+         * @returns {boolean}
+         */
+        function canRename() {
+            if (!$scope.folder.selected)
+                return false;
+
+            return !$scope.folder.selected.isDirUp
+        }
+
+        function rename(e, item) {
+            if (!canRename())
+                return;
+
+            e.stopPropagation();
+            item.rename = true;
+            focus('#{id} input[name="name"]'.supplant({id: item.identifier}));
+            //$log.debug('rename', item);
+        }
+
+        function canDelete() {
+            if (!$scope.folder.selected)
+                return false;
+
+            return !$scope.folder.selected.isDirUp
+        }
+
+        function deleteItem(e, item) {
+            if (!canDelete())
+                return;
+
+            e.stopPropagation();
+            item.delete();
+        }
     }
-})(angular, window.crip || (window.crip = {}));
+})(angular, jQuery, window.crip || (window.crip = {}));

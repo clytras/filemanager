@@ -5,10 +5,10 @@
         .service('DirResponseService', DirResponseService);
 
     DirResponseService.$inject = [
-        '$rootScope'
+        '$log', '$rootScope'
     ];
 
-    function DirResponseService($rootScope) {
+    function DirResponseService($log, $rootScope) {
         return {
             'extend': extend,
             'extendItem': extendItem
@@ -70,9 +70,45 @@
          * @param key
          */
         function extendItem(item, key) {
-            item.identifier = idGen(key);
-            item.isDir = isDir(item);
-            item.isDirUp = isDirUp(item);
+            ng.extend(item, {
+                rename: false,
+                identifier: idGen(key),
+                isDir: isDir(item),
+                isDirUp: isDirUp(item),
+                update: update,
+                delete: deleteItem,
+                getFullName: getFullName,
+                saveNewName: saveNewName
+            });
+        }
+
+        function update() {
+            if (this.rename)
+                this.saveNewName();
+        }
+
+        function getFullName() {
+            if (this.isDir || this.ext === '')
+                return this.name;
+            else
+                return '{name}.{ext}'.supplant(this);
+        }
+
+        function saveNewName() {
+            var self = this;
+            if (self.full_name !== self.getFullName())
+                self.$rename({
+                    'name': null,
+                    'old': self.full_name,
+                    'new': self.getFullName()
+                }, function (response) {
+                    $log.debug('saveNewName', response);
+                    ng.extend(self, response);
+                })
+        }
+
+        function deleteItem() {
+            this.$delete({name: null});
         }
     }
 })(angular, window.crip || (window.crip = {}));

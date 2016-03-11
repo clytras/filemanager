@@ -16,8 +16,9 @@
 
         function click(e, item) {
             e.stopPropagation();
+            $scope.folder.disableItemsProp('rename');
             $scope.folder.selected = item;
-            $log.info('click', item);
+            //$log.info('click', item);
         }
 
         function dblclick(e, item) {

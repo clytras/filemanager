@@ -11,6 +11,6 @@ if (!function_exists('icon')) {
      */
     function icon($name)
     {
-        return config('cripfilemanager.public_href') . sprintf('/images/%s.png', $name);
+        return sprintf('%s/images/%s.png', config('cripfilemanager.public_href'), $name);
     }
 }

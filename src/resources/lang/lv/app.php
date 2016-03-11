@@ -21,6 +21,8 @@ return [
     'title' => 'Crip File Manager',
     'item_title_open_dir' => 'Atvērt direktoriju',
     'actions_new_dir' => 'Jauna direktorija',
+    'actions_rename' => 'Pārsaukt',
+    'actions_delete' => 'Dzēst',
     '' => '',
 
     /*'context_delete' => 'Dzēst ierakstu',

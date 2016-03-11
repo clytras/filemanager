@@ -14,10 +14,9 @@
   }
 
   .action-vertical, .action-horizontal {
-    display: block;
+    display: inline-block;
     margin: 5px;
     padding: 5px;
-    position: relative;
 
     &:hover {
       outline: 1px solid transparentize($link-color, .5);

@@ -37,6 +37,28 @@
                         <span class="action-text">{!! trans('cripfilemanager::app.actions_new_dir') !!}</span>
                     </a>
                 </li>
+                <li>
+                    <a href
+                       class="action-vertical"
+                       title="{!! trans('cripfilemanager::app.actions_delete') !!}"
+                       ng-class="{'disabled': !actions.canDelete()}"
+                       ng-click="actions.delete($event, folder.selected)">
+                        <img class="action-large"
+                             src="{!! icon('cancel') !!}"
+                             alt="{!! trans('cripfilemanager::app.actions_delete') !!}">
+                        <span class="action-text">{!! trans('cripfilemanager::app.actions_delete') !!}</span>
+                    </a>
+                    <a href
+                       class="action-vertical"
+                       title="{!! trans('cripfilemanager::app.actions_rename') !!}"
+                       ng-class="{'disabled': !actions.canRename()}"
+                       ng-click="actions.rename($event, folder.selected)">
+                        <img class="action-large"
+                             src="{!! icon('rename') !!}"
+                             alt="{!! trans('cripfilemanager::app.actions_rename') !!}">
+                        <span class="action-text">{!! trans('cripfilemanager::app.actions_rename') !!}</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -74,7 +96,17 @@
                              alt="{{item.full_name}}"
                              class="img-responsive manager-img">
                     </div>
-                    <div class="item-footer" ng-bind="item.full_name"></div>
+                    <div class="item-footer">
+                        <div class="text" ng-bind="item.full_name" ng-if="!item.rename"></div>
+                        <div class="rename" ng-if="item.rename">
+                            <input type="text"
+                                   name="name"
+                                   onfocus="this.select();"
+                                   onmouseup="return false;"
+                                   ng-model="item.name"
+                                   ng-click="$event.stopPropagation()">
+                        </div>
+                    </div>
                 </div>
 
             </div>
