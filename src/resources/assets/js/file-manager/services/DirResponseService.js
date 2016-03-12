@@ -110,6 +110,7 @@
         function saveNewName() {
             var self = this,
                 key = getKey(self.identifier);
+            self.rename = false;
             if (self.full_name !== self.getFullName()) {
                 var method = self.isDir ? '$renameDir' : '$renameFile';
                 self[method]({
