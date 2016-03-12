@@ -70,8 +70,8 @@
 
             DirResponseService.extendItem(response, $scope.folder.items.length);
             $scope.folder.items.push(response);
-
-            $log.info('onNewDirCompleted', response);
+            $scope.folder.selected = response;
+            rename({stopPropagation: ng.noop});
         }
 
         /**
