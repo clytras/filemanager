@@ -29,6 +29,12 @@
     padding: 10px 10px 0 10px;
     width: 100%;
 
+    .text {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
     .rename input {
       width: 100%;
     }

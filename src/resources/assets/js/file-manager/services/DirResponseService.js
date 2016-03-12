@@ -44,6 +44,16 @@
         }
 
         /**
+         * Get key from identifier (reverse method from idGen)
+         *
+         * @param {string} identifier
+         * @returns {string}
+         */
+        function getKey(identifier) {
+            return identifier.substring(10);
+        }
+
+        /**
          * Determine is item a folder
          *
          * @param item
@@ -98,19 +108,22 @@
         }
 
         function saveNewName() {
-            var self = this;
-            if (self.full_name !== self.getFullName())
-                self.$rename({
+            var self = this,
+                key = getKey(self.identifier);
+            if (self.full_name !== self.getFullName()) {
+                var method = self.isDir ? '$renameDir' : '$renameFile';
+                self[method]({
                     'old': self.full_name,
                     'new': self.getFullName()
                 }, function (response) {
-                    //$log.debug('saveNewName', response);
-                    ng.extend(self, response);
+                    ng.extend(self, extendItem(response, key));
                 })
+            }
         }
 
         function deleteItem() {
-            this.$delete({name: this.full_name});
+            var method = this.isDir ? '$deleteDir' : '$deleteFile';
+            this[method]({name: this.full_name});
         }
     }
 })(angular, window.crip || (window.crip = {}));

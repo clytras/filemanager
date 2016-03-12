@@ -12,16 +12,15 @@
         activate();
 
         function activate() {
-            $scope.actions = {
+            ng.extend($scope.actions, {
                 enabled: {},
                 isEnabled: actionIsEnabled,
                 newDir: createNewDir,
                 canRename: canRename,
                 rename: rename,
-                applyRename: applyRename,
                 canDelete: canDelete,
                 'delete': deleteItem
-            };
+            });
 
             enable('new_dir');
         }
@@ -97,22 +96,15 @@
             return !$scope.folder.selected.isDirUp
         }
 
-        function rename(e, item) {
+        function rename(e) {
             if (!canRename())
                 return;
 
             e.stopPropagation();
+            var item = $scope.folder.selected;
             item.rename = true;
             focus('#{id} input[name="name"]'.supplant({id: item.identifier}));
             //$log.debug('rename', item);
-        }
-
-
-        function applyRename(item) {
-            if (!canRename())
-                return;
-
-            item.update();
         }
 
         function canDelete() {
@@ -122,13 +114,13 @@
             return !$scope.folder.selected.isDirUp
         }
 
-        function deleteItem(e, item) {
+        function deleteItem(e) {
             if (!canDelete())
                 return;
 
             e.stopPropagation();
-            $scope.removeItem(item);
-            item.delete();
+            $scope.removeItem($scope.folder.selected);
+            $scope.folder.selected.delete();
         }
     }
 })(angular, jQuery, window.crip || (window.crip = {}));

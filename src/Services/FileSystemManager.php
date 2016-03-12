@@ -77,7 +77,7 @@ class FileSystemManager implements ICripObject
                 $this->thumb->rename($old_file, $new_file);
             }
 
-            return $new_file;
+            return $old_file->setName($new_file->getName());
         }
 
         throw new FileManagerException($this, 'err_file_cant_rename');

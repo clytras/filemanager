@@ -22,11 +22,16 @@
                 disableItemsProp: disableItemsProp,
                 manager: getManagerCookieOrDefault(),
                 goTo: doFolderChange,
+                /**
+                 * @var {object|boolean} selected
+                 */
                 selected: false,
                 deselect: deselect,
                 isSelected: isSelected,
                 isSelectedAny: isSelectedAny
             };
+
+            $scope.actions = {};
 
             doFolderChange($scope.folder.manager);
         }
@@ -37,7 +42,7 @@
          * @param {object} folder
          * @param {string} folder.dir
          * @param {string} folder.name
-         * @param {callable|Array} [onSuccess]
+         * @param {function|Array} [onSuccess]
          */
         function doFolderChange(folder, onSuccess) {
             Dir.query(folder, function (r) {

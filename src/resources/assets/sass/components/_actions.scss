@@ -35,6 +35,23 @@
     }
   }
 
+  .actions-horizontal {
+    display: inline-block;
+    vertical-align: top;
+
+    .action-horizontal {
+      display: block;
+      margin: 3px 5px 0 0;
+      padding: 3px 5px 0 0;
+
+      img {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
   .action-vertical img {
     display: block;
     width: 50px;

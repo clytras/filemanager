@@ -42,7 +42,7 @@
                        class="action-vertical"
                        title="{!! trans('cripfilemanager::app.actions_delete') !!}"
                        ng-class="{'disabled': !actions.canDelete()}"
-                       ng-click="actions.delete($event, folder.selected)">
+                       ng-click="actions.delete($event)">
                         <img class="action-large"
                              src="{!! icon('cancel') !!}"
                              alt="{!! trans('cripfilemanager::app.actions_delete') !!}">
@@ -52,20 +52,48 @@
                        class="action-vertical"
                        title="{!! trans('cripfilemanager::app.actions_rename') !!}"
                        ng-class="{'disabled': !actions.canRename()}"
-                       ng-click="actions.rename($event, folder.selected)">
+                       ng-click="actions.rename($event)">
                         <img class="action-large"
                              src="{!! icon('rename') !!}"
                              alt="{!! trans('cripfilemanager::app.actions_rename') !!}">
                         <span class="action-text">{!! trans('cripfilemanager::app.actions_rename') !!}</span>
                     </a>
                 </li>
+                <li>
+                    <a href
+                       class="action-vertical"
+                       title="{!! trans('cripfilemanager::app.actions_properties') !!}"
+                       ng-class="{'disabled': !actions.hasProperties()}"
+                       ng-click="actions.properties($event)">
+                        <img class="action-large"
+                             src="{!! icon('view-details') !!}"
+                             alt="{!! trans('cripfilemanager::app.actions_properties') !!}">
+                        <span class="action-text">{!! trans('cripfilemanager::app.actions_properties') !!}</span>
+                    </a>
+                    <div class="actions-horizontal">
+                        <a href
+                           class="action-horizontal"
+                           title="{!! trans('cripfilemanager::app.actions_open') !!}"
+                           ng-class="{'disabled': !actions.canOpen()}"
+                           ng-click="actions.open($event)">
+                            <img class="action-small"
+                                 src="{!! icon('open-folder') !!}"
+                                 alt="{!! trans('cripfilemanager::app.actions_open') !!}">
+                            <span class="action-text">{!! trans('cripfilemanager::app.actions_open') !!}</span>
+                        </a>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
     <div class="row">
         <ol class="breadcrumb" ng-controller="BreadcrumbController">
-            <li></li>
-            <li ng-if="breadcrumb.length < 1"></li>
+            <li>
+                <a href
+                   title="{!! trans('cripfilemanager::app.breadcrumb_go_to_root') !!}"
+                   ng-click="folder.goTo({dir:'', name:''})">{!! trans('cripfilemanager::app.breadcrumb_root') !!}</a>
+            </li>
+            <li ng-if="breadcrumb.length == 0"></li>
             <li ng-repeat="breadcrumbItem in breadcrumb" ng-class="{'active': breadcrumbItem.isActive}">
                 <span ng-if="breadcrumbItem.isActive"
                       ng-bind="breadcrumbItem.name"></span>
@@ -84,6 +112,7 @@
             <div class="col-xs-8 col-md-9 col-lg-10" ng-controller="DirContentController">
 
                 <div id="{{item.identifier}}"
+                     title="{{item.full_name}}"
                      class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center manager-item-wrapper"
                      ng-click="click($event, item)"
                      ng-dblclick="dblclick($event, item)"
@@ -97,12 +126,16 @@
                              class="img-responsive manager-img">
                     </div>
                     <div class="item-footer">
-                        <div class="text" ng-bind="item.full_name" ng-if="!item.rename"></div>
+                        <div class="text"
+                             ng-if="!item.rename"
+                             ng-bind="item.full_name"
+                             ng-dblclick="actions.rename($event)"></div>
                         <div class="rename" ng-if="item.rename">
                             <input type="text"
                                    name="name"
                                    onfocus="this.select();"
-                                   crip-enter="applyRename(item)"
+                                   crip-enter="item.saveNewName()"
+                                   ng-click="$event.stopPropagation()"
                                    ng-model="item.name">
                         </div>
                     </div>

@@ -23,6 +23,10 @@ return [
     'actions_new_dir' => 'Jauna direktorija',
     'actions_rename' => 'Pārsaukt',
     'actions_delete' => 'Dzēst',
+    'actions_properties' => 'Detaļas',
+    'actions_open' => 'Atvērt',
+    'breadcrumb_root' => 'Galvenā',
+    'breadcrumb_go_to_root' => 'Pāriet uz galveno direktoriju',
     '' => '',
 
     /*'context_delete' => 'Dzēst ierakstu',

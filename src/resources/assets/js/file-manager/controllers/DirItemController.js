@@ -26,7 +26,7 @@
             $log.info('dblclick', item);
 
             if (item.isDir) {
-                $scope.folder.goTo(item);
+                $scope.folder.goTo({dir: item.dir, name: item.name});
             }
         }
     }

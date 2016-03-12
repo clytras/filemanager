@@ -22,13 +22,18 @@
          * @returns {string}
          */
         $rootScope.dirUrl = function (dir, action) {
-            var path = 'dir/';
-            if (ng.isDefined(action)) {
-                path += action + '/'
-            }
-            path += dir;
+            return actionUrl('dir', dir, action);
+        };
 
-            return baseUrl(path);
+        /**
+         * Get plugin file action url
+         *
+         * @param {string} dir
+         * @param {string} [action]
+         * @returns {string}
+         */
+        $rootScope.fileUrl = function (dir, action) {
+            return actionUrl('file', dir, action);
         };
 
         /**
@@ -39,6 +44,22 @@
          */
         function broadcast(eventName, args) {
             $rootScope.$broadcast(eventName, args);
+        }
+
+        /**
+         * @param {string} root
+         * @param {string} dir
+         * @param {string} [action]
+         * @returns {string}
+         */
+        function actionUrl(root, dir, action) {
+            var path = root + '/';
+            if (ng.isDefined(action)) {
+                path += action + '/'
+            }
+            path += dir;
+
+            return baseUrl(path);
         }
 
         /**
