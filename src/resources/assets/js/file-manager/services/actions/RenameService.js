@@ -4,71 +4,56 @@
     crip.filemanager
         .service('RenameService', RenameService);
 
-    RenameService.$inject = ['focus'];
-
-    function RenameService(focus) {
+    function RenameService() {
         return {
-            'extend': extend
+            canRename: canRename,
+            enableRename: enableRename,
+            rename: rename
         };
 
-        function extend(actions) {
-            ng.extend(actions, {
-                canRename: canRenameItem,
-                enableRename: enableRenameItem,
-                rename: renameItem
-            });
 
-            /**
-             * Check is the item can be renamed
-             *
-             * @param {boolean|object} item
-             * @param {boolean} item.isDirUp
-             * @returns {boolean}
-             */
-            function canRenameItem(item) {
-                if (!item)
-                    return false;
+        /**
+         * Check is the item can be renamed
+         *
+         * @param {boolean|object} item
+         * @param {boolean} item.isDirUp
+         * @returns {boolean}
+         */
+        function canRename(item) {
+            if (!item)
+                return false;
 
-                return !item.isDirUp;
-            }
-
-            /**
-             * Enable item rename
-             *
-             * @param {boolean|object} item
-             * @param {string} item.identifier
-             * @param {boolean} item.rename
-             * @param {object} [event]
-             * @returns {boolean}
-             */
-            function enableRenameItem(item, event) {
-                if (!actions.canRenameItem(item))
-                    return false;
-
-                // if event is presented, stop it propagation
-                if (ng.isDefined(event) && ng.isDefined(event.stopPropagation)) {
-                    event.stopPropagation();
-                }
-
-                item.rename = true;
-                focus('#{identifier} input[name="name"]'.supplant(item));
-
-                return true;
-            }
-
-            /**
-             * Rename item
-             *
-             * @param {boolean|object} item
-             * @param {function} item.update
-             * @returns {boolean}
-             */
-            function renameItem(item) {
-                if (!actions.canRenameItem(item))
-                    return false;
-
-                return item.update();
-            }
+            return !item.isDirUp;
         }
+
+        /**
+         * Enable item rename
+         *
+         * @param {boolean|object} item
+         * @param {string} item.identifier
+         * @param {boolean} item.rename
+         * @returns {boolean}
+         */
+        function enableRename(item) {
+            if (!canRename(item))
+                return false;
+
+            return (item.rename = true);
+        }
+
+        /**
+         * Rename item
+         *
+         * @param {boolean|object} item
+         * @param {function} item.update
+         * @returns {boolean}
+         */
+        function rename(item) {
+            if (!canRename(item))
+                return false;
+
+            return item.update();
+        }
+
     }
 })(angular, window.crip);

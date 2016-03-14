@@ -5,20 +5,20 @@
         .controller('DirContentController', DirContentController);
 
     DirContentController.$inject = [
-        '$log', '$scope', 'focus', 'Dir'
+        '$log', '$scope', 'CripManagerContent'
     ];
 
-    function DirContentController($log, $scope, focus, Dir) {
+    function DirContentController($log, $scope, Content) {
         activate();
 
         function activate() {
             $scope.folderFilter = folderFilter;
             $scope.order = {
                 by: orderBy,
-                field: 'name',
+                field: 'full_name',
                 isReverse: false,
 
-                name: true,
+                full_name: true,
                 size: false,
                 date: false
             };
@@ -28,6 +28,10 @@
                 document: true,
                 file: true
             };
+
+            $scope.getContent = function() {
+                return Content.get();
+            }
         }
 
         function orderBy(item) {

@@ -4,54 +4,51 @@
     crip.filemanager
         .service('CreateFolderService', CreateFolderService);
 
-    CreateFolderService.$inject = ['$rootScope', 'Dir', 'Breadcrumb'];
+    CreateFolderService.$inject = [
+        'Dir', 'CripManagerBreadcrumb', 'CripManagerContent', 'RenameService'
+    ];
 
-    function CreateFolderService($rootScope, Dir, Breadcrumb) {
-        return {
-            'extend': extend
+    function CreateFolderService(Dir, Breadcrumb, Content, Rename) {
+        var create = {
+            _createInProgress: false,
+            canCreateFolder: canCreateFolder,
+            createFolder: createFolder
         };
 
+        return create;
+
         /**
-         * Add crete dir functionality for actions object
-         * (RenameService should be applied before this)
+         * Check is folder can be created
          *
-         * @param {object} actions
-         * @param {function} actions.enableRename
+         * @returns {boolean}
          */
-        function extend(actions) {
-            ng.extend(actions, {
-                _createInProgress: false,
-                canCreateFolder: canCreateFolder,
-                createFolder: createFolder
-            });
-
-            /**
-             * Check is folder can be created
-             *
-             * @returns {boolean}
-             */
-            function canCreateFolder() {
-                return !actions._createInProgress
-            }
-
-            /**
-             * Create new folder
-             *
-             * @param {string} name
-             */
-            function createFolder(name) {
-                actions._createInProgress = true;
-
-                Dir.create(Breadcrumb.current(), {name: name}, function (response) {
-                    actions._createInProgress = false;
-
-                    // Notify controllers to handle UI changes
-                    $rootScope.fireBroadcast('folder-item-add', [response]);
-                    $rootScope.fireBroadcast('folder-item-select', [response]);
-
-                    actions.enableRename(response);
-                });
-            }
+        function canCreateFolder() {
+            return !create._createInProgress
         }
+
+        /**
+         * Create new folder
+         *
+         * @param {string} name
+         * @param {function} [callback]
+         */
+        function createFolder(name, callback) {
+            if (!canCreateFolder())
+                return false;
+
+            create._createInProgress = true;
+
+            Dir.create(Breadcrumb.current(), {name: name}, function (r) {
+                create._createInProgress = false;
+
+                // Notify controllers to handle UI changes
+                Content.add(r);
+                Content.selectSingle(r);
+                if (ng.isDefined(callback) && ng.isFunction(callback)) {
+                    callback(r);
+                }
+            });
+        }
+
     }
 })(angular, window.crip);

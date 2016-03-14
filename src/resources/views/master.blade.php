@@ -21,7 +21,7 @@
 
 <body>
 
-<div ng-cloak class="container-fluid" ng-controller="RootController" ng-click="folder.deselect()">
+<div ng-cloak class="container-fluid" ng-controller="RootController" ng-click="deselect()">
     <div class="row folder-actions" ng-controller="ActionsController">
         <div class="col-xs-12">
             <ul class="list">
@@ -29,8 +29,8 @@
                     <a href
                        class="action-vertical"
                        title="{!! trans('cripfilemanager::app.actions_new_dir') !!}"
-                       ng-class="{'disabled': !actions.isEnabled('new_dir')}"
-                       ng-click="actions.newDir('{!! trans("cripfilemanager::app.actions_new_dir") !!}')">
+                       ng-class="{'disabled': !canCreateFolder()}"
+                       ng-click="createFolder('{!! trans("cripfilemanager::app.actions_new_dir") !!}')">
                         <img class="action-large"
                              src="{!! icon('add-folder') !!}"
                              alt="{!! trans('cripfilemanager::app.actions_new_dir') !!}">
@@ -41,8 +41,8 @@
                     <a href
                        class="action-vertical"
                        title="{!! trans('cripfilemanager::app.actions_delete') !!}"
-                       ng-class="{'disabled': !actions.canDelete()}"
-                       ng-click="actions.delete($event)">
+                       ng-class="{'disabled': !canDeleteSelected()}"
+                       ng-click="deleteSelected($event)">
                         <img class="action-large"
                              src="{!! icon('cancel') !!}"
                              alt="{!! trans('cripfilemanager::app.actions_delete') !!}">
@@ -51,8 +51,8 @@
                     <a href
                        class="action-vertical"
                        title="{!! trans('cripfilemanager::app.actions_rename') !!}"
-                       ng-class="{'disabled': !actions.canRename()}"
-                       ng-click="actions.rename($event)">
+                       ng-class="{'disabled': !canRenameSelected()}"
+                       ng-click="enableRenameSelected($event)">
                         <img class="action-large"
                              src="{!! icon('rename') !!}"
                              alt="{!! trans('cripfilemanager::app.actions_rename') !!}">
@@ -91,16 +91,16 @@
             <li>
                 <a href
                    title="{!! trans('cripfilemanager::app.breadcrumb_go_to_root') !!}"
-                   ng-click="folder.goTo({dir:'', name:''})">{!! trans('cripfilemanager::app.breadcrumb_root') !!}</a>
+                   ng-click="goToRoot()">{!! trans('cripfilemanager::app.breadcrumb_root') !!}</a>
             </li>
-            <li ng-if="breadcrumb.length == 0"></li>
-            <li ng-repeat="breadcrumbItem in breadcrumb" ng-class="{'active': breadcrumbItem.isActive}">
-                <span ng-if="breadcrumbItem.isActive"
-                      ng-bind="breadcrumbItem.name"></span>
+            <li ng-if="!breadcrumbHasItems()"></li>
+            <li ng-repeat="bdItem in getBreadcrumbItems()" ng-class="{'active': bdItem.isActive}">
+                <span ng-if="bdItem.isActive"
+                      ng-bind="bdItem.name"></span>
 
-                <a href ng-if="!breadcrumbItem.isActive"
-                   ng-click="folder.goTo(breadcrumbItem)"
-                   ng-bind="breadcrumbItem.name"></a>
+                <a href ng-if="!bdItem.isActive"
+                   ng-click="goTo(bdItem)"
+                   ng-bind="bdItem.name"></a>
             </li>
         </ol>
     </div>
@@ -117,8 +117,8 @@
                      ng-click="click($event, item)"
                      ng-dblclick="dblclick($event, item)"
                      ng-controller="DirItemController"
-                     ng-class="{'active': folder.isSelected(item)}"
-                     ng-repeat="item in folder.items|filter:folderFilter|orderBy:order.by:order.isReverse">
+                     ng-class="{'active': isSelected(item)}"
+                     ng-repeat="item in getContent()|filter:folderFilter|orderBy:order.by:order.isReverse">
                     <div class="img-wrapper">
                         <img src
                              ng-src="{{item.thumb}}"
@@ -129,7 +129,7 @@
                         <div class="text"
                              ng-if="!item.rename"
                              ng-bind="item.full_name"
-                             ng-dblclick="actions.rename($event)"></div>
+                             ng-dblclick="enableRename($event)"></div>
                         <div class="rename" ng-if="item.rename">
                             <input type="text"
                                    name="name"

@@ -5,62 +5,53 @@
         .controller('BreadcrumbController', BreadcrumbController);
 
     BreadcrumbController.$inject = [
-        '$log', '$scope'
+        '$scope', 'CripManagerBreadcrumb', 'CripManagerLocation'
     ];
 
-    function BreadcrumbController($log, $scope) {
+    function BreadcrumbController($scope, Breadcrumb, Location) {
         activate();
 
         function activate() {
-            $scope.breadcrumb = [];
+            $scope.goTo = goTo;
+            $scope.goToRoot = goToRoot;
+            $scope.breadcrumbHasItems = breadcrumbHasItems;
+            $scope.getBreadcrumbItems = getBreadcrumbItems;
         }
-
-        // watch RootController folder.manager property
-        $scope.$watch('folder.manager', onManagerChange);
 
         /**
-         * Update breadcrumb array when manager property is changed
+         * Go to specified folder
          *
-         * @param {object} val
-         * @param {string} val.dir
-         * @param {string} val.name
+         * @param {object} folder
+         * @param {string} folder.dir
+         * @param {string} folder.name
          */
-        function onManagerChange(val) {
-            var string_value = val.dir,
-                breadcrumb = [];
+        function goTo(folder) {
+            Location.change(folder);
+        }
 
-            if (val.name !== '' && val.name !== null) {
-                string_value += '/' + val.name;
-            }
+        /**
+         * Go to root folder location
+         */
+        function goToRoot() {
+            goTo();
+        }
 
+        /**
+         * Determines is Breadcrumb any item
+         *
+         * @returns {boolean}
+         */
+        function breadcrumbHasItems() {
+            return Breadcrumb.hasItems();
+        }
 
-            ng.forEach(string_value.split('\/'), function (v, k) {
-                if (v !== '' && v !== null) {
-
-                    // create current dir from previous item, if it exists
-                    var dir = '';
-                    if(breadcrumb.length > 0) {
-                        // if only one previous item, use it`s name
-                        if(breadcrumb.length === 1) {
-                            dir = breadcrumb[0].name;
-                        }
-                        // other way, concat prev dir with name
-                        else {
-                            dir = '{dir}/{name}'.supplant(breadcrumb[breadcrumb.length - 1]);
-                        }
-                    }
-
-                    breadcrumb.push({name: v, dir: dir, isActive: false});
-                }
-            });
-
-            // mark last item as active, this will help mark item as active
-            if (breadcrumb.length > 0) {
-                breadcrumb[breadcrumb.length - 1].isActive = true;
-            }
-
-            $scope.breadcrumb = breadcrumb;
-            //$log.info($scope.breadcrumb);
+        /**
+         * Get Breadcrumb item collection
+         *
+         * @returns {Array}
+         */
+        function getBreadcrumbItems() {
+            return Breadcrumb.items;
         }
     }
-})(angular, window.crip || (window.crip = {}));
+})(angular, window.crip);

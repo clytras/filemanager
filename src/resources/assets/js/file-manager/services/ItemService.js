@@ -2,13 +2,13 @@
     'use strict';
 
     crip.filemanager
-        .service('DirResponseService', DirResponseService);
+        .service('ItemService', ItemService);
 
-    DirResponseService.$inject = [
+    ItemService.$inject = [
         '$log', '$rootScope'
     ];
 
-    function DirResponseService($log, $rootScope) {
+    function ItemService($log, $rootScope) {
         return {
             'extend': extend,
             'extendItem': extendItem
@@ -81,7 +81,7 @@
          */
         function extendItem(item, key) {
             ng.extend(item, {
-                crip_extended: true,
+                is_extended: true,
                 rename: false,
                 identifier: idGen(key),
                 isDir: isDir(item),
