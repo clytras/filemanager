@@ -5,10 +5,10 @@
         .controller('ActionsController', ActionsController);
 
     ActionsController.$inject = [
-        '$scope', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation'
+        '$scope', '$uibModal', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation'
     ];
 
-    function ActionsController($scope, focus, Actions, Content, Location) {
+    function ActionsController($scope, $uibModal, focus, Actions, Content, Location) {
         activate();
 
         function activate() {
@@ -23,6 +23,9 @@
 
             $scope.canOpenSelected = canOpenSelected;
             $scope.openSelected = openSelected;
+
+            $scope.hasProperties = hasProperties;
+            $scope.openProperties = openProperties;
         }
 
         /**
@@ -112,6 +115,36 @@
                 return;
 
             Location.change(Content.getSelectedItem());
+        }
+
+        /**
+         * Determines is selected item can provide properties
+         *
+         * @returns {boolean}
+         */
+        function hasProperties() {
+            var item = Content.getSelectedItem();
+
+            return item && !item.isDirUp;
+        }
+
+        function openProperties($event) {
+            if (!hasProperties())
+                return;
+
+            $event.stopPropagation();
+
+            $uibModal.open({
+                animation: true,
+                templateUrl: 'item-properties-modal.html',
+                controller: 'ItemPropertiesController',
+                size: 'lg',
+                resolve: {
+                    item: function () {
+                        return Content.getSelectedItem();
+                    }
+                }
+            });
         }
     }
 })(angular, jQuery, window.crip || (window.crip = {}));

@@ -5,10 +5,10 @@
         .service('ItemService', ItemService);
 
     ItemService.$inject = [
-        '$log', '$rootScope'
+        '$log', '$rootScope', 'CripManagerTrans'
     ];
 
-    function ItemService($log, $rootScope) {
+    function ItemService($log, $rootScope, Trans) {
         return {
             'extend': extend,
             'extendItem': extendItem
@@ -89,10 +89,16 @@
                 update: update,
                 delete: deleteItem,
                 getFullName: getFullName,
-                saveNewName: saveNewName
+                saveNewName: saveNewName,
+                getSize: getSize
             });
         }
 
+        /**
+         * Update item changes if they are presented
+         *
+         * @returns {item}
+         */
         function update() {
             if (this.rename)
                 this.saveNewName();
@@ -100,6 +106,11 @@
             return this;
         }
 
+        /**
+         * Get item name (ignoring full_name property value)
+         *
+         * @returns {string}
+         */
         function getFullName() {
             if (this.isDir || this.ext === '')
                 return this.name;
@@ -107,6 +118,9 @@
                 return '{name}.{ext}'.supplant(this);
         }
 
+        /**
+         * Save item name if it is changed
+         */
         function saveNewName() {
             var self = this,
                 key = getKey(self.identifier);
@@ -122,9 +136,19 @@
             }
         }
 
+        /**
+         * Delete item detecting it type (file or dir)
+         */
         function deleteItem() {
             var method = this.isDir ? '$deleteDir' : '$deleteFile';
             this[method]({name: this.full_name});
+        }
+
+        /**
+         * Get user friendly item size
+         */
+        function getSize() {
+            return this.size.toBytes();
         }
     }
 })(angular, window.crip || (window.crip = {}));

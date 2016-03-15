@@ -8,7 +8,7 @@
     <meta id="settings"
           data-sizes="{!! str_replace('"', '\'', json_encode(config('cripfilemanager.thumbs'))) !!}"
           data-params="{!! str_replace('"', '\'', json_encode(Input::all())) !!}"
-          data-base-url="/{!! trim(config('cripfilemanager.base_url'), '/\\') !!}/">
+          data-base-url="/{!! App::getLocale() !!}/{!! trim(config('cripfilemanager.base_url'), '/\\') !!}/">
     <title>{!! trans('cripfilemanager::app.title') !!}</title>
 
     <link href="{!! config('cripfilemanager.public_href') !!}/css/file-manager.css" rel="stylesheet">
@@ -63,8 +63,8 @@
                     <a href
                        class="action-vertical"
                        title="{!! trans('cripfilemanager::app.actions_properties') !!}"
-                       ng-class="{'disabled': !actions.hasProperties()}"
-                       ng-click="actions.properties($event)">
+                       ng-class="{'disabled': !hasProperties()}"
+                       ng-click="openProperties($event)">
                         <img class="action-large"
                              src="{!! icon('view-details') !!}"
                              alt="{!! trans('cripfilemanager::app.actions_properties') !!}">
@@ -148,5 +148,18 @@
 
 <script src="{!! config('cripfilemanager.public_href') !!}/js/vendor.js"></script>
 <script src="{!! config('cripfilemanager.public_href') !!}/js/file-manager.js"></script>
+<script type="text/ng-template" id="item-properties-modal.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()">&times;</button>
+        <h3 class="modal-title">{!! trans('cripfilemanager::app.item_properties_modal_title') !!}</h3>
+    </div>
+    <div class="modal-body">
+        <ul>
+            <li ng-repeat="prop in item">
+                {{prop.name}}: {{prop.value}}
+            </li>
+        </ul>
+    </div>
+</script>
 </body>
 </html>

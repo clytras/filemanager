@@ -27,6 +27,12 @@ return [
     'actions_open' => 'Atvērt',
     'breadcrumb_root' => 'Galvenā',
     'breadcrumb_go_to_root' => 'Pāriet uz galveno direktoriju',
+    'item_properties_modal_title' => 'Detaļas',
+    'item_properties_modal_name' => 'Nosaukums',
+    'item_properties_modal_date' => 'Pēdējais modifikācijas datums',
+    'item_properties_modal_item_type' => 'Tips',
+    'item_properties_modal_folder' => 'Mape',
+    'item_properties_modal_size' => 'Izmērs',
     '' => '',
 
     /*'context_delete' => 'Dzēst ierakstu',

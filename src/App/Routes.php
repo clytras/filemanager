@@ -3,6 +3,7 @@
 /**
  * Package custom router
  */
+use Illuminate\Http\JsonResponse;
 use Mcamara\LaravelLocalization\LaravelLocalization;
 
 Route::group(
@@ -16,6 +17,9 @@ Route::group(
         $url_regex = '[a-zA-Z0-9.\-\/\(\)\_ ]+';
 
         $router->get('/', 'DirectoryController@index');
+        $router->get('translations', function () {
+            return JsonResponse::create(trans('cripfilemanager::app'));
+        });
 
         $router->any('dir/create/{path?}', 'DirectoryController@create')->where('path', $url_regex);
         $router->any('dir/rename/{path?}', 'DirectoryController@rename')->where('path', $url_regex);
