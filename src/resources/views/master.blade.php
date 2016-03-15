@@ -74,8 +74,8 @@
                         <a href
                            class="action-horizontal"
                            title="{!! trans('cripfilemanager::app.actions_open') !!}"
-                           ng-class="{'disabled': !actions.canOpen()}"
-                           ng-click="actions.open($event)">
+                           ng-class="{'disabled': !canOpenSelected()}"
+                           ng-click="openSelected()">
                             <img class="action-small"
                                  src="{!! icon('open-folder') !!}"
                                  alt="{!! trans('cripfilemanager::app.actions_open') !!}">

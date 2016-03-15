@@ -4,18 +4,25 @@
     crip.filemanager
         .controller('ActionsController', ActionsController);
 
-    ActionsController.$inject = ['$scope', 'focus', 'CripManagerActions', 'CripManagerContent'];
+    ActionsController.$inject = [
+        '$scope', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation'
+    ];
 
-    function ActionsController($scope, focus, Actions, Content) {
+    function ActionsController($scope, focus, Actions, Content, Location) {
         activate();
 
         function activate() {
-            $scope.canDeleteSelected = canDeleteSelectedItem;
-            $scope.deleteSelected = deleteSelectedItem;
+            $scope.canDeleteSelected = canDeleteSelected;
+            $scope.deleteSelected = deleteSelected;
+
             $scope.canCreateFolder = canCreateFolder;
             $scope.createFolder = createFolder;
-            $scope.canRenameSelected = canRenameSelectedItem;
-            $scope.enableRenameSelected = enableRenameSelectedItem;
+
+            $scope.canRenameSelected = canRenameSelected;
+            $scope.enableRenameSelected = enableRenameSelected;
+
+            $scope.canOpenSelected = canOpenSelected;
+            $scope.openSelected = openSelected;
         }
 
         /**
@@ -23,7 +30,7 @@
          *
          * @returns {boolean}
          */
-        function canDeleteSelectedItem() {
+        function canDeleteSelected() {
             return Actions.canDelete(Content.getSelectedItem());
         }
 
@@ -32,7 +39,7 @@
          *
          * @param $event
          */
-        function deleteSelectedItem($event) {
+        function deleteSelected($event) {
             // if event is presented, stop it propagation
             if (ng.isDefined($event) && ng.isDefined($event.stopPropagation)) {
                 $event.stopPropagation();
@@ -57,7 +64,7 @@
          * @param {string} name
          */
         function createFolder(name) {
-            Actions.createFolder(name, enableRenameSelectedItem);
+            Actions.createFolder(name, enableRenameSelected);
         }
 
         /**
@@ -65,7 +72,7 @@
          *
          * @returns {boolean}
          */
-        function canRenameSelectedItem() {
+        function canRenameSelected() {
             return Actions.canRename(Content.getSelectedItem());
         }
 
@@ -74,7 +81,7 @@
          *
          * @param $event
          */
-        function enableRenameSelectedItem($event) {
+        function enableRenameSelected($event) {
             var item = Content.getSelectedItem();
 
             // if event is presented, stop it propagation
@@ -86,6 +93,25 @@
                 Actions.enableRename(item);
                 focus('#{identifier} input[name="name"]'.supplant(item));
             }
+        }
+
+        /**
+         * Determines if can open selected item
+         *
+         * @returns {boolean}
+         */
+        function canOpenSelected() {
+            return Content.getSelectedItem().isDir;
+        }
+
+        /**
+         * Open selected directory
+         */
+        function openSelected() {
+            if (!canOpenSelected())
+                return;
+
+            Location.change(Content.getSelectedItem());
         }
     }
 })(angular, jQuery, window.crip || (window.crip = {}));
