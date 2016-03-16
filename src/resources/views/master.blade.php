@@ -116,7 +116,7 @@
                      class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center manager-item-wrapper"
                      ng-click="click($event, item)"
                      ng-dblclick="dblclick($event, item)"
-                     ng-controller="DirItemController"
+                     ng-controller="ItemController"
                      ng-class="{'active': isSelected(item)}"
                      ng-repeat="item in getContent()|filter:folderFilter|orderBy:order.by:order.isReverse">
                     <div class="img-wrapper">
@@ -151,7 +151,10 @@
 <script type="text/ng-template" id="item-properties-modal.html">
     <div class="modal-header">
         <button type="button" class="close" ng-click="close()">&times;</button>
-        <h3 class="modal-title">{!! trans('cripfilemanager::app.item_properties_modal_title') !!}</h3>
+        <h3 class="modal-title">
+            <img src ng-src="{{thumb}}" class="thumb">
+            <span>{!! trans('cripfilemanager::app.item_properties_modal_title') !!}</span>
+        </h3>
     </div>
     <div class="modal-body">
         <ul>

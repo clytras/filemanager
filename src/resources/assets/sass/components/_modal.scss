@@ -1,0 +1,14 @@
+.modal-content {
+  border-radius: 0;
+  padding: 5px 10px;
+
+  .modal-header {
+    .close {
+      margin-top: 6px;
+    }
+    .thumb {
+      height: 29px;
+      width: 29px;
+    }
+  }
+}

@@ -13,6 +13,7 @@
         function activate() {
             $log.info(item);
             $scope.item = resolveItemDetails(item);
+            $scope.thumb = item.thumb;
 
             $scope.close = close;
         }

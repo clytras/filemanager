@@ -2,11 +2,13 @@
     'use strict';
 
     crip.filemanager
-        .controller('DirItemController', DirItemController);
+        .controller('ItemController', ItemController);
 
-    DirItemController.$inject = ['$log', '$scope', 'CripManagerContent', 'CripManagerLocation', 'CripManagerActions'];
+    ItemController.$inject = [
+        '$log', '$scope', 'focus', 'CripManagerContent', 'CripManagerLocation', 'CripManagerActions'
+    ];
 
-    function DirItemController($log, $scope, Content, Location, Actions) {
+    function ItemController($log, $scope, focus, Content, Location, Actions) {
         activate();
 
         function activate() {
@@ -62,7 +64,9 @@
          */
         function enableRename($event) {
             $event.stopPropagation();
-            Actions.enableRename(Content.getSelectedItem());
+            var item = Content.getSelectedItem();
+            Actions.enableRename(item);
+            focus('#{identifier} input[name="name"]'.supplant(item));
         }
     }
 })(angular, window.crip || (window.crip = {}));
