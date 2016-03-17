@@ -54,7 +54,23 @@ return [
         'types' => [
             'js' => [
                 "/^text\/x\-jquery\-tmpl/",
-            ]
+            ],
+            'css' => [],
+            'txt' => [],
+            'img' => [],
+            'zip' => [],
+            'pwp' => [],
+            'html' => [],
+            'word' => [],
+            'audio' => [],
+            'video' => [],
+            'excel' => []
+        ],
+        'media' => [
+            'dir' => ['dir'],
+            'image' => ['img'],
+            'media' => ['audio', 'video'],
+            'document' => ['excel', 'word', 'pwp', 'html', 'txt', 'js']
         ]
     ],
     'actions' => [

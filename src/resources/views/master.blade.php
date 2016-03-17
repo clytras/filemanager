@@ -153,13 +153,13 @@
         <button type="button" class="close" ng-click="close()">&times;</button>
         <h3 class="modal-title">
             <img src ng-src="{{thumb}}" class="thumb">
-            <span>{!! trans('cripfilemanager::app.item_properties_modal_title') !!}</span>
+            <span>{{name}}</span>
         </h3>
     </div>
     <div class="modal-body">
         <ul>
             <li ng-repeat="prop in item">
-                {{prop.name}}: {{prop.value}}
+                <span ng-bind="prop.name"></span>: <span ng-bind-html="prop.value"></span>
             </li>
         </ul>
     </div>

@@ -9,10 +9,13 @@
     ];
 
     function Run($rootScope) {
-        var $settings = $('#settings');
+        var $settings = $('#settings'),
+            base_url = $settings.data('base-url'),
+            img_sizes = JSON.parse($settings.data('sizes').replaceAll("'", '"'));
 
         $rootScope.fireBroadcast = broadcast;
         $rootScope.baseUrl = baseUrl;
+        $rootScope.imgSizes = imgSizes;
 
         /**
          * Get plugin dir action url
@@ -69,8 +72,11 @@
          * @returns {string}
          */
         function baseUrl(path) {
-            return $settings.data('base-url') + path;
+            return base_url + path;
         }
 
+        function imgSizes() {
+            return img_sizes;
+        }
     }
 })(angular, jQuery, window.crip || (window.crip = {}));
