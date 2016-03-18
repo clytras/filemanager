@@ -81,7 +81,7 @@ class FolderContentService implements ICripObject
         if ($this->pathManager->isRoot($this->sys_path)) {
             // Root folder can't contain folders with file manger router keywords
             // they can't be created, but user can create them manually in file system
-            $exclude = array_merge($exclude, ['create', 'delete', 'rename']);
+            $exclude = array_merge($exclude, ['create', 'delete', 'rename', 'null']);
         } else {
             $this->addFolderBack();
         }
@@ -120,7 +120,7 @@ class FolderContentService implements ICripObject
     private function addFile($item_name)
     {
         $file = app(File::class)
-            ->setPath($this->pathManager)
+            ->setPathManager($this->pathManager)
             ->setFromString($item_name);
 
         $this->content->push($file);

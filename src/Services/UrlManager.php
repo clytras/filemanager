@@ -3,6 +3,7 @@
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Support\PackageBase;
+use Crip\FileManager\Contracts\IManagerPath;
 use Crip\FileManager\Data\File;
 use Crip\FileManager\Data\Folder;
 use Crip\FileManager\FileManager;
@@ -11,70 +12,53 @@ use Crip\FileManager\FileManager;
  * Class UrlManager
  * @package Crip\FileManager\Services
  */
-class UrlManager implements ICripObject
+class UrlManager implements ICripObject, IManagerPath
 {
 
     /**
      * @var string
      */
     protected $dir_action;
+
     /**
      * @var string
      */
     protected $file_action;
-    /**
-     * @var PackageBase
-     */
-    protected $pck;
 
+    /**
+     * @var PathManager
+     */
+    private $path_manager;
+
+    /**
+     * Initialise new instance of UrlManager
+     */
     public function __construct()
     {
-        $this->pck = FileManager::package();
+        $pck = FileManager::package();
 
-        $this->dir_action = $this->pck->config('actions.dir',
+        $this->dir_action = $pck->config('actions.dir',
             '\\Crip\\FileManager\\App\\Controllers\\DirectoryController@dir');
-        $this->file_action = $this->pck->config('actions.file',
+        $this->file_action = $pck->config('actions.file',
             '\\Crip\\FileManager\\App\\Controllers\\FileController@file');
     }
 
     /**
-     * @param PathManager $path
      * @param File $file
      * @param string $size_key
      * @return string
      */
-    public function getFileUrl(PathManager $path, File $file, $size_key = null)
+    public function getFileUrl(File $file, $size_key = null)
     {
         $pos = '';
         if ($size_key) {
             $pos = '?thumb=' . $size_key;
         }
 
-        $dir = $path->getPath();
-        $file_path = $file->full_name;
-        if ($dir) {
-            $file_path = FileSystem::join([$path->getPath(), $file->full_name]);
-        }
-
+        $file_path = FileSystem::join([$file->getPathManager()->getPath(), $file->full_name]);
         $url = action($this->file_action, $this->pathToUrl($file_path));
 
         return $url . $pos;
-    }
-
-    /**
-     * @param PathManager $dir
-     * @param string $name
-     *
-     * @return string
-     */
-    public function getThumbFor(PathManager $dir, $name)
-    {
-        $file_path = $name;
-        if ($dir->getPath()) {
-            $file_path = FileSystem::join([$dir->getPath(), $name]);
-        }
-
-        return action($this->file_action, $this->pathToUrl($file_path)) . '?thumb=thumb';
     }
 
     /**
@@ -98,5 +82,28 @@ class UrlManager implements ICripObject
     public function pathToUrl($path)
     {
         return trim(join('/', FileSystem::split($path)), '/');
+    }
+
+    /**
+     * Set path manager
+     *
+     * @param PathManager $manager
+     * @return $this
+     */
+    public function setPathManager(PathManager $manager)
+    {
+        $this->path_manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Get current path manager
+     *
+     * @return PathManager
+     */
+    public function getPathManager()
+    {
+        return $this->path_manager;
     }
 }

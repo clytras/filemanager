@@ -92,11 +92,11 @@ class PathManager implements ICripObject
      * @param File $file
      * @return string
      */
-    public function getThumbSysPath($size_key, File $file = null)
+    public function thumbSysPath($size_key, File $file = null)
     {
         $path = [
             $this->sys_path,
-            $this->thumb_dir,
+            $this->getThumbDir(),
             Str::slug($size_key)
         ];
 

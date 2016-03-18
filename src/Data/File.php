@@ -4,6 +4,7 @@ use Crip\Core\Contracts\IArrayObject;
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Contracts\IFileSystemObject;
 use Crip\Core\Helpers\FileSystem;
+use Crip\FileManager\Contracts\IManagerPath;
 use Crip\FileManager\Exceptions\FileManagerException;
 use Crip\FileManager\Services\FileService;
 use Crip\FileManager\Services\PathManager;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * Class File
  * @package Crip\FileManager\Data
  */
-class File implements ICripObject, IArrayObject, IFileSystemObject
+class File implements ICripObject, IArrayObject, IFileSystemObject, IManagerPath
 {
     /**
      * @var LaravelFile
@@ -93,9 +94,9 @@ class File implements ICripObject, IArrayObject, IFileSystemObject
             'size' => $this->size,
             'full_name' => $this->full_name,
             'date' => $this->service->getDate(),
-            'url' => $this->url->getFileUrl($this->path_manager, $this),
+            'url' => $this->url->getFileUrl($this),
             'thumb' => $this->service->getThumb(),
-            'dimensions' => $this->getDimensions()
+            'thumbs' => $this->getThumbs()
         ];
     }
 
@@ -206,15 +207,6 @@ class File implements ICripObject, IArrayObject, IFileSystemObject
         return $this;
     }
 
-
-    /**
-     * @return PathManager
-     */
-    public function getPathManager()
-    {
-        return $this->path_manager;
-    }
-
     /**
      * Update all properties with service values
      */
@@ -237,17 +229,42 @@ class File implements ICripObject, IArrayObject, IFileSystemObject
     }
 
     /**
-     * Get image dimensions or an empty array
+     * Get image thumbs if they are presented
      *
      * @return array
      * @throws FileManagerException
      */
-    private function getDimensions()
+    private function getThumbs()
     {
         if ($this->mime->service->isImage()) {
             return array_values(getimagesize($this->getSysPath()));
         }
 
         return [];
+    }
+
+    /**
+     * Set path manager
+     *
+     * @param PathManager $manager
+     * @return $this
+     */
+    public function setPathManager(PathManager $manager)
+    {
+        $this->path_manager = $manager;
+        $this->service->setPathManager($manager);
+        $this->url->setPathManager($manager);
+
+        return $this;
+    }
+
+    /**
+     * Get current path manager
+     *
+     * @return PathManager
+     */
+    public function getPathManager()
+    {
+        return $this->path_manager;
     }
 }

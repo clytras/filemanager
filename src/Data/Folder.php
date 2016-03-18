@@ -73,7 +73,7 @@ class Folder implements ICripObject, IArrayObject, IFileSystemObject
      */
     public function toArray()
     {
-        $path = $this->service->getSysPath($this->path_manager);
+        $path = $this->service->sysPath($this->path_manager);
         $mime = $this->mime->setByPath($path);
 
         return [
@@ -121,7 +121,7 @@ class Folder implements ICripObject, IArrayObject, IFileSystemObject
      */
     public function getPath()
     {
-        return $this->service->getPath($this->path_manager);
+        return $this->service->path($this->path_manager);
     }
 
     /**
@@ -131,7 +131,7 @@ class Folder implements ICripObject, IArrayObject, IFileSystemObject
      */
     public function getSysPath()
     {
-        return $this->service->getSysPath($this->path_manager);
+        return $this->service->sysPath($this->path_manager);
     }
 
     /**

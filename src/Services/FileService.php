@@ -2,6 +2,7 @@
 
 use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Helpers\Str;
+use Crip\FileManager\Contracts\IManagerPath;
 use Crip\FileManager\Data\Icon;
 use Crip\FileManager\Data\Mime;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * Class FileService
  * @package Crip\FileManager\Services
  */
-class FileService
+class FileService implements IManagerPath
 {
     /**
      * @var string
@@ -209,7 +210,7 @@ class FileService
     private function setThumb()
     {
         if ($this->mime->service->isImage() && $this->path_manager) {
-            $this->thumb = $this->url->getThumbFor($this->path_manager, $this->getFullName());
+            $this->thumb = $this->url->getThumbUrl($this->path_manager, $this->getFullName());
         } else {
             $this->thumb = $this->icon->get($this->mime);
         }
@@ -221,5 +222,28 @@ class FileService
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Set path manager
+     *
+     * @param PathManager $manager
+     * @return $this
+     */
+    public function setPathManager(PathManager $manager)
+    {
+        $this->path_manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Get current path manager
+     *
+     * @return PathManager
+     */
+    public function getPathManager()
+    {
+        return $this->path_manager;
     }
 }

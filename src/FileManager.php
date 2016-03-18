@@ -31,7 +31,7 @@ class FileManager implements ICripObject
     /**
      * @var PathManager
      */
-    private $path;
+    private $path_manager;
 
     /**
      * @var File
@@ -72,7 +72,7 @@ class FileManager implements ICripObject
         static::package();
 
         $this->thumb = $thumb;
-        $this->path = $path;
+        $this->path_manager = $path;
         $this->file = $file;
         $this->folder = $folder;
         $this->uploader = $uploader;
@@ -100,7 +100,12 @@ class FileManager implements ICripObject
      */
     public function in($path)
     {
-        $this->path->goToPath($path);
+        $this->path_manager->goToPath($path);
+        $this->thumb->setPathManager($this->path_manager);
+        $this->file->setPathManager($this->path_manager);
+        $this->folder->setPathManager($this->path_manager);
+        $this->uploader->setPathManager($this->path_manager);
+        $this->fileSystem->setPathManager($this->path_manager);
 
         return $this;
     }
@@ -108,7 +113,6 @@ class FileManager implements ICripObject
     /**
      * Get file from filesystem corresponding size
      *
-     * @param PathManager $path The path where file is located
      * @param string $file_name File name to get
      * @param string $size The thumb size
      *
@@ -118,9 +122,9 @@ class FileManager implements ICripObject
      */
     public function get($file_name, $size)
     {
-        $file_path = FileSystem::join([$this->path->sysPath(), $file_name]);
+        $file_path = FileSystem::join([$this->path_manager->sysPath(), $file_name]);
         if ($size AND array_key_exists($size, $this->thumb->getSizes())) {
-            $thumb_path = FileSystem::join([$this->path->getThumbSysPath($size), $file_name]);
+            $thumb_path = FileSystem::join([$this->path_manager->thumbSysPath($size), $file_name]);
             if (FileSystem::exists($thumb_path)) {
                 $file_path = $thumb_path;
             }
@@ -142,7 +146,7 @@ class FileManager implements ICripObject
      */
     public function upload(UploadedFile $uploaded_file)
     {
-        return $this->uploader->upload($uploaded_file, $this->path);
+        return $this->uploader->upload($uploaded_file);
     }
 
     /**
@@ -155,7 +159,7 @@ class FileManager implements ICripObject
      */
     public function renameFile($old, $new)
     {
-        $old_file = app(File::class)->setPath($this->path)->setFromString($old);
+        $old_file = app(File::class)->setPath($this->path_manager)->setFromString($old);
         $new_file = app(File::class)->setFromString($new);
 
         return $this->fileSystem->renameFile($old_file, $new_file);
@@ -170,7 +174,9 @@ class FileManager implements ICripObject
      */
     public function deleteFile($file_name)
     {
-        $file = $this->file->setPath($this->path)->setFromString($file_name);
+        $file = $this->file
+            ->setPath($this->path_manager)
+            ->setFromString($file_name);
 
         return $this->fileSystem->deleteFile($file);
     }
@@ -184,7 +190,7 @@ class FileManager implements ICripObject
      */
     public function createFolder($folder_name)
     {
-        $folder = $this->folder->setPath($this->path)->setName($folder_name);
+        $folder = $this->folder->setPath($this->path_manager)->setName($folder_name);
 
         return $this->fileSystem->createFolder($folder);
     }
@@ -199,7 +205,7 @@ class FileManager implements ICripObject
      */
     public function renameFolder($old_name, $new_name)
     {
-        $old_folder = app(Folder::class)->setPath($this->path)->setName($old_name);
+        $old_folder = app(Folder::class)->setPath($this->path_manager)->setName($old_name);
         $new_folder = app(Folder::class)->setName($new_name);
 
         return $this->fileSystem->renameFolder($old_folder, $new_folder);
@@ -214,7 +220,7 @@ class FileManager implements ICripObject
      */
     public function deleteFolder($folder_name)
     {
-        $folder = $this->folder->setPath($this->path)->setName($folder_name);
+        $folder = $this->folder->setPath($this->path_manager)->setName($folder_name);
 
         return $this->fileSystem->deleteFolder($folder);
     }

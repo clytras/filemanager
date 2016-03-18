@@ -76,16 +76,11 @@ class MimeService implements ICripObject
         'document' => ['excel', 'word', 'pwp', 'html', 'txt', 'js']
     ];
 
-    /**
-     * @var \Crip\Core\Support\PackageBase
-     */
-    private $pck;
-
     public function __construct()
     {
-        $this->pck = FileManager::package();
-        $this->pck->mergeWithConfig($this->mimes, 'mime.types');
-        $this->pck->mergeWithConfig($this->media_mapping, 'mime.media');
+        $pck = FileManager::package();
+        $pck->mergeWithConfig($this->mimes, 'mime.types');
+        $pck->mergeWithConfig($this->media_mapping, 'mime.media');
     }
 
     /**

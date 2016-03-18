@@ -12,8 +12,9 @@ class UniqueNameService
 {
 
     /**
-     * @param File $file
+     * Set unique name for file
      *
+     * @param File $file
      * @return File
      */
     public function file(File $file)
@@ -30,8 +31,9 @@ class UniqueNameService
     }
 
     /**
-     * @param Folder $folder
+     * Set unique name for folder
      *
+     * @param Folder $folder
      * @return Folder
      */
     public function folder(Folder $folder)

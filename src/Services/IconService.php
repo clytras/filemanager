@@ -18,11 +18,6 @@ class IconService implements ICripObject
     private $path;
 
     /**
-     * @var \Crip\Core\Support\PackageBase
-     */
-    private $pck;
-
-    /**
      * @var array
      */
     private $icon_names = [
@@ -43,10 +38,9 @@ class IconService implements ICripObject
 
     public function __construct()
     {
-        $this->pck = FileManager::package();
-        $this->path = $this->pck->config('icons.path', '');
-
-        $this->pck->mergeWithConfig($this->icon_names, 'icons.files', [], false);
+        $pck = FileManager::package();
+        $this->path = $pck->config('icons.path', '');
+        $pck->mergeWithConfig($this->icon_names, 'icons.files', [], false);
     }
 
     /**

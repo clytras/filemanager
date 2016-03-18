@@ -1,13 +1,15 @@
 <?php namespace Crip\FileManager\Services;
 
+use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Helpers\Str;
+use Crip\FileManager\Contracts\IManagerPath;
 
 /**
  * Class FolderService
  * @package Crip\FileManager\Services
  */
-class FolderService
+class FolderService implements ICripObject, IManagerPath
 {
     /**
      * @var string
@@ -15,17 +17,9 @@ class FolderService
     private $name;
 
     /**
-     * @var UniqueNameService
+     * @var PathManager
      */
-    private $uniqueName;
-
-    /**
-     * @param UniqueNameService $uniqueName
-     */
-    public function __construct(UniqueNameService $uniqueName)
-    {
-        $this->uniqueName = $uniqueName;
-    }
+    private $path_manager;
 
     /**
      * @return mixed
@@ -52,33 +46,27 @@ class FolderService
     }
 
     /**
-     * @param PathManager $path_manager
-     *
      * @return string
      */
-    public function getPath(PathManager $path_manager)
+    public function path()
     {
-        return FileSystem::join($path_manager->getPath(), $this->name);
+        return FileSystem::join($this->getPathManager()->getPath(), $this->name);
     }
 
     /**
-     * @param PathManager $path_manager
-     *
      * @return string
      */
-    public function getSysPath(PathManager $path_manager)
+    public function sysPath()
     {
-        return FileSystem::join($path_manager->sysPath(), $this->name);
+        return FileSystem::join($this->getPathManager()->sysPath(), $this->name);
     }
 
     /**
-     * @param PathManager $path_manager
      * @return string
      */
-    public function getDate(PathManager $path_manager)
+    public function getDate()
     {
-        $full_path = $this->getSysPath($path_manager);
-        $stat = stat($full_path);
+        $stat = stat($this->sysPath());
 
         return date('Y-m-d H:i:s', $stat['mtime']);
     }
@@ -86,13 +74,33 @@ class FolderService
     /**
      * Calculate folder size in bytes
      *
-     * @param PathManager $path_manager
-     *
      * @return int
      */
-    public function getSize(PathManager $path_manager)
+    public function getSize()
     {
-        return FileSystem::dirSize($this->getSysPath($path_manager), [$path_manager->getThumbDir()]);
+        return FileSystem::dirSize($this->sysPath(), [$this->getPathManager()->getThumbDir()]);
     }
 
+    /**
+     * Set path manager
+     *
+     * @param PathManager $manager
+     * @return $this
+     */
+    public function setPathManager(PathManager $manager)
+    {
+        $this->path_manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Get current path manager
+     *
+     * @return PathManager
+     */
+    public function getPathManager()
+    {
+        return $this->path_manager;
+    }
 }
