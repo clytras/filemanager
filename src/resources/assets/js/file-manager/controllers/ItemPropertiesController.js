@@ -100,7 +100,7 @@
                 value: item.ext
             });
 
-            if (item.type === 'image') {
+            if (item.type === 'image' && ng.hasValue(item.thumbs)) {
 
                 details.push({
                     name: Trans('item_properties_modal_item_url'),
@@ -110,15 +110,14 @@
                     })
                 });
 
-                ng.forEach($scope.imgSizes(), function (arr, size) {
+                ng.forEach(item.thumbs, function (val, size) {
                     details.push({
                         name: Trans('item_properties_modal_size_url_title').supplant({
                             size: Trans('item_properties_modal_size_key_' + size)
                         }),
-                        value: '<a href="{url}?thumb={size}" target="_blank">{title}</a>'.supplant({
-                            url: item.url,
-                            size: size,
-                            title: Trans('item_properties_modal_size_dim').supplant(arr)
+                        value: '<a href="{url}" target="_blank">{title}</a>'.supplant({
+                            url: val.url,
+                            title: Trans('item_properties_modal_size_dim').supplant(val.dimensions)
                         })
                     });
                 });

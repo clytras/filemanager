@@ -104,6 +104,7 @@ class File implements ICripObject, IArrayObject, IFileSystemObject, IManagerPath
             'date' => $this->service->getDate(),
             'url' => $this->url->getFileUrl($this),
             'thumb' => $this->service->getThumb(),
+            'dimensions' => $this->getDimensions(),
             'thumbs' => $this->getThumbs()
         ];
     }
@@ -246,6 +247,21 @@ class File implements ICripObject, IArrayObject, IFileSystemObject, IManagerPath
     {
         if ($this->mime->service->isImage()) {
             return $this->thumb->get($this);
+        }
+
+        return [];
+    }
+
+    /**
+     * Get image dimensions if they are presented
+     *
+     * @return array
+     * @throws FileManagerException
+     */
+    private function getDimensions()
+    {
+        if ($this->mime->service->isImage()) {
+            return getimagesize($this->getSysPath());
         }
 
         return [];
