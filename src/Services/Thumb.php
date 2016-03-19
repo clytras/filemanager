@@ -66,19 +66,18 @@ class Thumb implements ICripObject, IUsePathService
      */
     public function details(File $file)
     {
-        $thumbs = [];
+        $thumbs = collect([]);
         if ($file->isImage()) {
-            foreach ($this->sizes as $size_key => $size) {
-                $thumb = getimagesize($this->getPath()->thumbPath($size_key, $file));
-                list($width, $height) = $thumb;
-                $thumbs[$size_key] = [
-                    'url' => $this->url->forName($this->getPath(), $file->fullName(), $size_key),
+            collect(array_keys($this->sizes))->each(function ($size) use ($thumbs, $file) {
+                list($width, $height) = getimagesize($this->getPath()->thumbPath($size, $file));
+                $thumbs->put($size, [
+                    'url' => $this->url->forName($this->getPath(), $file->fullName(), $size),
                     'size' => [$width, $height]
-                ];
-            }
+                ]);
+            });
         }
 
-        return $thumbs;
+        return $thumbs->all();
     }
 
     /**
@@ -126,13 +125,14 @@ class Thumb implements ICripObject, IUsePathService
      */
     public function rename(File $file, File $new_file)
     {
-        foreach (array_keys($this->sizes) as $size) {
-            $new_path = $new_file->getPath()->thumbPath($size, $new_file);
-            $old_path = $file->getPath()->thumbPath($size, $file);
-            if (FileSystem::exists($old_path)) {
-                rename($old_path, $new_path);
-            }
-        }
+        collect(array_keys($this->sizes))
+            ->each(function ($size) use ($file, $new_file) {
+                $new_path = $new_file->getPath()->thumbPath($size, $new_file);
+                $old_path = $file->getPath()->thumbPath($size, $file);
+                if (FileSystem::exists($old_path)) {
+                    rename($old_path, $new_path);
+                }
+            });
     }
 
     /**
@@ -143,11 +143,12 @@ class Thumb implements ICripObject, IUsePathService
      */
     public function delete(File $file)
     {
-        foreach (array_keys($this->sizes) as $size) {
-            $path = $file->getPath()->thumbPath($size, $file);
-            if (FileSystem::exists($path)) {
-                FileSystem::delete($path);
-            }
-        }
+        collect(array_keys($this->sizes))
+            ->each(function ($size) use ($file) {
+                $path = $file->getPath()->thumbPath($size, $file);
+                if (FileSystem::exists($path)) {
+                    FileSystem::delete($path);
+                }
+            });
     }
 }

@@ -135,10 +135,12 @@ class Mime implements ICripObject
         }
 
         foreach ($this->mimes as $mime => $mime_values) {
-            foreach ($mime_values as $mime_value) {
-                if (preg_match($mime_value, $this->mime)) {
-                    return $mime;
-                }
+            $key = collect($mime_values)->search(function ($mime_value) {
+                return preg_match($mime_value, $this->mime);
+            });
+
+            if ($key) {
+                return $key;
             }
         }
 
@@ -153,14 +155,11 @@ class Mime implements ICripObject
      */
     public function getMediaType()
     {
-        $file_type = $this->getFileType();
-        foreach ($this->media_mapping as $media => $map) {
-            if (in_array($file_type, $map)) {
-                return $media;
-            }
-        }
+        $media = collect($this->media_mapping)->search(function ($map) {
+            return in_array($this->getFileType(), $map);
+        });
 
-        return 'file';
+        return $media ?: 'file';
     }
 
     /**
@@ -170,12 +169,8 @@ class Mime implements ICripObject
      */
     public function isImage()
     {
-        foreach ($this->mimes['img'] as $img_reg) {
-            if (preg_match($img_reg, $this->mime)) {
-                return true;
-            }
-        }
-
-        return false;
+        return collect($this->mimes['img'])->search(function ($image_regex) {
+            return preg_match($image_regex, $this->mime);
+        }) !== false;
     }
 }
