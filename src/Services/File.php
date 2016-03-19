@@ -154,7 +154,7 @@ class File implements ICripObject, IUsePathService
         $this->setName(pathinfo(basename($name), PATHINFO_FILENAME));
         $file = $this->fullPath();
         if (!FileSystem::exists($file)) {
-            throw new FileManagerException($this, 'Cannot read file info. It does not exists in file system');
+            throw new FileManagerException($this, 'err_file_info_read');
         }
 
         $this->setMime($file, true);

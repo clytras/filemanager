@@ -10,6 +10,7 @@ return [
     'err_file_path_is_not_set' => 'Faila atrasšanās vieta nav nosakāma.',
     'err_file_cant_rename' => 'Faila pārsaukšana neizdevās.',
     'err_file_ext_cant_be_changed' => 'Faila paplašinājums nevar mainīties.',
+    'err_file_info_read' => 'Fails netika atrasts.',
     // Dir errors
     'err_folder_not_found' => 'Direktorija netika atrasta.',
     'err_folder_cant_rename' => 'Direktorijas pārsaukšana neizdevās.',

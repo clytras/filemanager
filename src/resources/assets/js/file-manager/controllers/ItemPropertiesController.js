@@ -46,7 +46,7 @@
          * @param {Array} details
          * @param {object} item
          * @param {string} item.full_name
-         * @param {string} item.date
+         * @param {string} item.updated_at
          * @param {function} item.getSize
          */
         function defaultDetails(details, item) {
@@ -58,7 +58,7 @@
                 value: item.full_name
             }, {
                 name: Trans('item_properties_modal_date'),
-                value: item.date
+                value: item.updated_at
             }, {
                 name: Trans('item_properties_modal_size'),
                 value: item.getSize()
@@ -97,7 +97,7 @@
 
             details.push({
                 name: Trans('item_properties_modal_item_extension'),
-                value: item.ext
+                value: item.extension
             });
 
             if (item.type === 'image' && ng.hasValue(item.thumbs)) {
@@ -106,7 +106,7 @@
                     name: Trans('item_properties_modal_item_url'),
                     value: '<a href="{url}" target="_blank">{title}</a>'.supplant({
                         url: item.url,
-                        title: Trans('item_properties_modal_size_dim').supplant(item.dimensions)
+                        title: Trans('item_properties_modal_size_dim').supplant(item.size)
                     })
                 });
 
@@ -117,7 +117,7 @@
                         }),
                         value: '<a href="{url}" target="_blank">{title}</a>'.supplant({
                             url: val.url,
-                            title: Trans('item_properties_modal_size_dim').supplant(val.dimensions)
+                            title: Trans('item_properties_modal_size_dim').supplant(val.size)
                         })
                     });
                 });

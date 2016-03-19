@@ -148,7 +148,7 @@
          * Get user friendly item size
          */
         function getSize() {
-            return this.size.toBytes();
+            return this.bytes.toBytes();
         }
     }
 })(angular, window.crip || (window.crip = {}));
