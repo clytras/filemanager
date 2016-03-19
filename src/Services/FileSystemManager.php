@@ -15,7 +15,7 @@ class FileSystemManager implements ICripObject, IUsePathService
     use UsePath;
 
     /**
-     * @var FolderContentService
+     * @var FolderContent
      */
     public $folder;
 
@@ -32,9 +32,9 @@ class FileSystemManager implements ICripObject, IUsePathService
     /**
      * @param UniqueNameService $uniqueName
      * @param Thumb $thumb
-     * @param FolderContentService $folder
+     * @param FolderContent $folder
      */
-    public function __construct(UniqueNameService $uniqueName, Thumb $thumb, FolderContentService $folder)
+    public function __construct(UniqueNameService $uniqueName, Thumb $thumb, FolderContent $folder)
     {
         $this->uniqueName = $uniqueName;
         $this->thumb = $thumb;

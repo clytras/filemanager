@@ -6,7 +6,7 @@ use Crip\FileManager\Services\File;
 use Crip\FileManager\Services\FileSystemManager;
 use Crip\FileManager\Services\FileUploader;
 use Crip\FileManager\Services\Folder;
-use Crip\FileManager\Services\FolderContentService;
+use Crip\FileManager\Services\FolderContent;
 use Crip\FileManager\Services\Path;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -193,7 +193,7 @@ class FileManager implements ICripObject
      */
     public function content()
     {
-        return app(FolderContentService::class)->setPath($this->path)->get();
+        return app(FolderContent::class)->setPath($this->path)->get();
     }
 
 }
