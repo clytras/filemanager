@@ -57,8 +57,7 @@ class ThumbManager implements ICripObject, IManagerPath
         if ($file->mime->service->isImage()) {
             $thumbs = [];
             foreach ($this->thumb_sizes as $size_key => $sizes) {
-                $thumbs[] = [
-                    'size_key' => $size_key,
+                $thumbs[$size_key] = [
                     'url' => $this->url->getFileUrl($file, $size_key),
                     'dimensions' => getimagesize($file->getPathManager()->thumbSysPath($size_key, $file))
                 ];

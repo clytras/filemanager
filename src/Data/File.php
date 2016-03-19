@@ -8,6 +8,7 @@ use Crip\FileManager\Contracts\IManagerPath;
 use Crip\FileManager\Exceptions\FileManagerException;
 use Crip\FileManager\Services\FileService;
 use Crip\FileManager\Services\PathManager;
+use Crip\FileManager\Services\ThumbManager;
 use Crip\FileManager\Services\UrlManager;
 use File as LaravelFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -69,15 +70,22 @@ class File implements ICripObject, IArrayObject, IFileSystemObject, IManagerPath
     private $path_manager;
 
     /**
+     * @var ThumbManager
+     */
+    private $thumb;
+
+    /**
      * @param Mime $mime
      * @param FileService $service
      * @param UrlManager $url
+     * @param ThumbManager $thumb
      */
-    public function __construct(Mime $mime, FileService $service, UrlManager $url)
+    public function __construct(Mime $mime, FileService $service, UrlManager $url, ThumbManager $thumb)
     {
         $this->mime = $mime;
         $this->service = $service;
         $this->url = $url;
+        $this->thumb = $thumb;
     }
 
     /**
@@ -237,7 +245,7 @@ class File implements ICripObject, IArrayObject, IFileSystemObject, IManagerPath
     private function getThumbs()
     {
         if ($this->mime->service->isImage()) {
-            return array_values(getimagesize($this->getSysPath()));
+            return $this->thumb->get($this);
         }
 
         return [];
@@ -254,6 +262,7 @@ class File implements ICripObject, IArrayObject, IFileSystemObject, IManagerPath
         $this->path_manager = $manager;
         $this->service->setPathManager($manager);
         $this->url->setPathManager($manager);
+        $this->thumb->setPathManager($manager);
 
         return $this;
     }

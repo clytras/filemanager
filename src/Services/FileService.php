@@ -197,7 +197,7 @@ class FileService implements IManagerPath
      */
     private function setThumb()
     {
-        if ($this->mime->service->isImage() && $this->path_manager) {
+        if ($this->mime->service->isImage()) {
             $this->thumb = $this->url->getFromName($this->getFullName());
         } else {
             $this->thumb = $this->icon->get($this->mime);
@@ -221,6 +221,7 @@ class FileService implements IManagerPath
     public function setPathManager(PathManager $manager)
     {
         $this->path_manager = $manager;
+        $this->url->setPathManager($manager);
 
         return $this;
     }
