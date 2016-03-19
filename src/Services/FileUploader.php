@@ -1,17 +1,20 @@
 <?php namespace Crip\FileManager\Services;
 
 use Crip\Core\Contracts\ICripObject;
-use Crip\FileManager\Contracts\IManagerPath;
-use Crip\FileManager\Data\File;
+use Crip\FileManager\Contracts\IUsePathService;
 use Crip\FileManager\Exceptions\FileManagerException;
+use Crip\FileManager\Traits\UsePath;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class FileUploader
  * @package Crip\FileManager\Services
  */
-class FileUploader implements ICripObject, IManagerPath
+class FileUploader implements ICripObject, IUsePathService
 {
+
+    use UsePath;
+
     /**
      * Default thumb size array
      *
@@ -26,7 +29,7 @@ class FileUploader implements ICripObject, IManagerPath
     ];
 
     /**
-     * @var ThumbManager
+     * @var Thumb
      */
     private $thumb;
 
@@ -41,16 +44,11 @@ class FileUploader implements ICripObject, IManagerPath
     private $uniqueName;
 
     /**
-     * @var PathManager
-     */
-    private $path_manager;
-
-    /**
-     * @param ThumbManager $thumb
+     * @param Thumb $thumb
      * @param File $file
      * @param UniqueNameService $uniqueName
      */
-    public function __construct(ThumbManager $thumb, File $file, UniqueNameService $uniqueName)
+    public function __construct(Thumb $thumb, File $file, UniqueNameService $uniqueName)
     {
         $this->thumb = $thumb;
         $this->file = $file;
@@ -59,52 +57,33 @@ class FileUploader implements ICripObject, IManagerPath
 
     /**
      * @param UploadedFile $uploaded_file
-     * @param PathManager $path
-     *
-     * @return array Uploaded file url and/or thumbs
-     *
+     * @return array Uploaded file info
      * @throws FileManagerException
      */
     public function upload(UploadedFile $uploaded_file)
     {
         if ($uploaded_file->isValid()) {
-            $this->file->setFromUpload($uploaded_file);
-            $this->uniqueName->file($this->file);
-            $uploaded_file->move($this->getPathManager()->sysPath(), $this->file->full_name);
-            $result = [
-                'file' =>  $this->file->toArray()
-            ];
-            if ($this->file->mime->service->isImage()) {
-                $result['thumbs'] = $this->thumb->create($this->file);
+            $file = $this->file->uploading($uploaded_file);
+            $this->uniqueName->file($file);
+            $uploaded_file->move($file->dirPath(), $file->fullName());
+            if ($file->isImage()) {
+                $this->thumb->create($file);
+                $file->setFileThumb();
             }
 
-            return $result;
+            return (array) $file->details();
         }
         throw new FileManagerException($this, 'err_file_upload_invalid_file');
     }
 
     /**
-     * Set path manager
+     * Update file when path manager is set up
      *
-     * @param PathManager $manager
-     * @return $this
+     * @param Path $path
      */
-    public function setPathManager(PathManager $manager)
+    protected function onPathUpdate(Path $path)
     {
-        $this->path_manager = $manager;
-        $this->thumb->setPathManager($manager);
-        $this->file->setPathManager($manager);
-
-        return $this;
-    }
-
-    /**
-     * Get current path manager
-     *
-     * @return PathManager
-     */
-    public function getPathManager()
-    {
-        return $this->path_manager;
+        $this->file->setPath($path);
+        $this->thumb->setPath($path);
     }
 }

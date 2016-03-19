@@ -13,6 +13,7 @@ return [
     // Dir errors
     'err_folder_not_found' => 'Direktorija netika atrasta.',
     'err_folder_cant_rename' => 'Direktorijas pārsaukšana neizdevās.',
+    'err_folder_this_name_cant_be_used' => 'Direktorijai nedrīkst izmantot tādu vārdu.',
     /**
      * UI translations
      */

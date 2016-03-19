@@ -2,18 +2,17 @@
 
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
-use Crip\FileManager\Contracts\IManagerPath;
-use Crip\FileManager\Data\File;
-use Crip\FileManager\Data\Folder;
+use Crip\FileManager\Contracts\IUsePathService;
 use Crip\FileManager\Exceptions\FileManagerException;
-use Illuminate\Support\Collection;
+use Crip\FileManager\Traits\UsePath;
 
 /**
  * Class FileSystemManager
  * @package Crip\FileManager\Services
  */
-class FileSystemManager implements ICripObject, IManagerPath
+class FileSystemManager implements ICripObject, IUsePathService
 {
+    use UsePath;
 
     /**
      * @var FolderContentService
@@ -26,22 +25,16 @@ class FileSystemManager implements ICripObject, IManagerPath
     private $uniqueName;
 
     /**
-     * @var ThumbManager
+     * @var Thumb
      */
     private $thumb;
 
     /**
-     * @var PathManager
-     */
-    private $path_manager;
-
-
-    /**
      * @param UniqueNameService $uniqueName
-     * @param ThumbManager $thumb
+     * @param Thumb $thumb
      * @param FolderContentService $folder
      */
-    public function __construct(UniqueNameService $uniqueName, ThumbManager $thumb, FolderContentService $folder)
+    public function __construct(UniqueNameService $uniqueName, Thumb $thumb, FolderContentService $folder)
     {
         $this->uniqueName = $uniqueName;
         $this->thumb = $thumb;
@@ -49,17 +42,24 @@ class FileSystemManager implements ICripObject, IManagerPath
     }
 
     /**
-     * @param File $old_file
-     * @param File $new_file
+     * @param File $file
+     * @param string $name
      *
      * @return File
      *
      * @throws FileManagerException
      */
-    public function renameFile(File $old_file, File $new_file)
+    public function renameFile(File $file, $name)
     {
-        $old_file_path = $old_file->getSysPath();
-        $new_file_path = $new_file->clonePath($old_file)->getSysPath();
+        $name = pathinfo(basename($name), PATHINFO_FILENAME);
+        $new_file = app(File::class)
+            ->setPath($file->getPath())
+            ->existing($file->fullName())
+            ->setName($name);
+        $new_file->setName($name);
+
+        $old_file_path = $file->fullPath();
+        $new_file_path = $new_file->fullPath();
 
         if (!FileSystem::exists($old_file_path)) {
             throw new FileManagerException($this, 'err_file_not_found');
@@ -67,23 +67,19 @@ class FileSystemManager implements ICripObject, IManagerPath
 
         // if old name is the same as new one, just return existing file info
         if ($old_file_path === $new_file_path) {
-            return $old_file;
-        }
-
-        if ($old_file->ext !== $new_file->ext) {
-            throw new FileManagerException($this, 'err_file_ext_cant_be_changed');
+            return $file->details();
         }
 
         if (FileSystem::exists($new_file_path)) {
             $new_file = $this->uniqueName->file($new_file);
         }
 
-        if (rename($old_file_path, $new_file->getSysPath())) {
-            if ($old_file->mime->service->isImage()) {
-                $this->thumb->rename($old_file, $new_file);
+        if (rename($old_file_path, $new_file->fullPath())) {
+            if ($file->isImage()) {
+                $this->thumb->rename($file, $new_file);
             }
 
-            return $old_file->setName($new_file->getName());
+            return $file->setName($new_file->name())->setFileThumb()->details();
         }
 
         throw new FileManagerException($this, 'err_file_cant_rename');
@@ -98,14 +94,14 @@ class FileSystemManager implements ICripObject, IManagerPath
      */
     public function deleteFile(File $file)
     {
-        $path = $file->getSysPath();
+        $path = $file->fullPath();
 
         if (!FileSystem::exists($path)) {
             throw new FileManagerException($this, 'err_file_not_found');
         }
 
         if (FileSystem::delete($path)) {
-            if ($file->mime->service->isImage()) {
+            if ($file->isImage()) {
                 $this->thumb->delete($file);
             }
 
@@ -117,32 +113,38 @@ class FileSystemManager implements ICripObject, IManagerPath
 
     /**
      * @param Folder $folder
-     *
      * @return Folder
+     * @throws FileManagerException
      */
     public function createFolder(Folder $folder)
     {
-        if (FileSystem::exists($folder->getSysPath())) {
+        if (FileSystem::exists($folder->fullPath())) {
             $this->uniqueName->folder($folder);
         }
-        // TODO: deny create folders in root folder with router keywords
-        FileSystem::mkdir($folder->getSysPath(), 777, true);
+
+        // TODO: add this list to config
+        if (in_array($folder->name(), ['create', 'delete', 'rename', 'null'])) {
+            throw new FileManagerException($this, 'err_folder_this_name_cant_be_used');
+        }
+        FileSystem::mkdir($folder->fullPath(), 777, true);
 
         return $folder;
     }
 
     /**
-     * @param Folder $old
-     * @param Folder $new
-     *
+     * @param Folder $folder
+     * @param string $name
      * @return Folder
-     *
      * @throws FileManagerException
      */
-    public function renameFolder(Folder $old, Folder $new)
+    public function renameFolder(Folder $folder, $name)
     {
-        $old_folder_path = $old->getSysPath();
-        $new_folder_path = $new->setPathFrom($old)->getSysPath();
+        $old_folder_path = $folder->fullPath();
+        $new_folder = app(Folder::class)
+            ->setPath($folder->getPath())
+            ->setName($name);
+
+        $new_folder_path = $new_folder->fullPath();
 
         if (!FileSystem::exists($old_folder_path)) {
             throw new FileManagerException($this, 'err_folder_not_found');
@@ -150,15 +152,15 @@ class FileSystemManager implements ICripObject, IManagerPath
 
         // if old name is the same as new one, just return existing folder info
         if ($old_folder_path === $new_folder_path) {
-            return $old;
+            return $folder;
         }
 
         if (FileSystem::exists($new_folder_path)) {
-            $new = $this->uniqueName->folder($new);
+            $new = $this->uniqueName->folder($new_folder);
         }
 
-        if (rename($old_folder_path, $new->getSysPath())) {
-            return $new;
+        if (rename($old_folder_path, $new_folder->fullPath())) {
+            return $new_folder->updateDetails()->details();
         }
 
         throw new FileManagerException($this, 'err_folder_cant_rename');
@@ -173,7 +175,7 @@ class FileSystemManager implements ICripObject, IManagerPath
      */
     public function deleteFolder(Folder $folder)
     {
-        $path = $folder->getSysPath();
+        $path = $folder->fullPath();
 
         if (!FileSystem::exists($path)) {
             throw new FileManagerException($this, 'err_folder_not_found');
@@ -183,26 +185,12 @@ class FileSystemManager implements ICripObject, IManagerPath
     }
 
     /**
-     * Set path manager
+     * Update file when path manager is set up
      *
-     * @param PathManager $manager
-     * @return $this
+     * @param Path $path
      */
-    public function setPathManager(PathManager $manager)
+    protected function onPathUpdate(Path $path)
     {
-        $this->path_manager = $manager;
-        $this->thumb->setPathManager($manager);
-
-        return $this;
-    }
-
-    /**
-     * Get current path manager
-     *
-     * @return PathManager
-     */
-    public function getPathManager()
-    {
-        return $this->path_manager;
+        $this->thumb->setPath($path);
     }
 }

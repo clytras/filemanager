@@ -33,7 +33,7 @@ return [
     ],
     'public_href' => '/vendor/crip/cripfilemanager',
     'icons' => [
-        'path' => '/vendor/crip/cripfilemanager/images/',
+        'url' => '/vendor/crip/cripfilemanager/images/',
         'files' => [
             'js' => 'js.png',
             'dir' => 'dir.png',

@@ -2,20 +2,19 @@
 
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Exceptions\BadConfigurationException;
-use Crip\FileManager\Data\Mime;
 use Crip\FileManager\FileManager;
 
 /**
- * Class IconService
+ * Class Icon
  * @package Crip\FileManager\Services
  */
-class IconService implements ICripObject
+class Icon implements ICripObject
 {
 
     /**
      * @var string
      */
-    private $path;
+    private $url = '';
 
     /**
      * @var array
@@ -36,10 +35,13 @@ class IconService implements ICripObject
         'excel' => 'excel.png',
     ];
 
+    /**
+     * Initialise new instance of Icon service
+     */
     public function __construct()
     {
         $pck = FileManager::package();
-        $this->path = $pck->config('icons.path', '');
+        $this->url = $pck->config('icons.url', '');
         $pck->mergeWithConfig($this->icon_names, 'icons.files', [], false);
     }
 
@@ -51,7 +53,7 @@ class IconService implements ICripObject
      */
     public function get(Mime $mime)
     {
-        return $this->result($mime->service->getFileType());
+        return $this->result($mime->getFileType());
     }
 
     /**
@@ -67,6 +69,6 @@ class IconService implements ICripObject
             throw new BadConfigurationException($this, $message);
         }
 
-        return $this->path . $this->icon_names[$key];
+        return $this->url . $this->icon_names[$key];
     }
 }

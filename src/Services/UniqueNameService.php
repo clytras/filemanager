@@ -1,8 +1,6 @@
 <?php namespace Crip\FileManager\Services;
 
 use Crip\Core\Helpers\FileSystem;
-use Crip\FileManager\Data\File;
-use Crip\FileManager\Data\Folder;
 
 /**
  * Class UniqueNameService
@@ -19,10 +17,10 @@ class UniqueNameService
      */
     public function file(File $file)
     {
-        if (FileSystem::exists($file->getSysPath())) {
-            $original_name = $file->getName();
+        if (FileSystem::exists($file->fullPath())) {
+            $original_name = $file->name();
             $file->setName($original_name . '-1');
-            for ($i = 2; FileSystem::exists($file->getSysPath()); $i++) {
+            for ($i = 2; FileSystem::exists($file->fullPath()); $i++) {
                 $file->setName($original_name . '-' . $i);
             }
         }
@@ -38,10 +36,10 @@ class UniqueNameService
      */
     public function folder(Folder $folder)
     {
-        if (FileSystem::exists($folder->getSysPath())) {
-            $original_name = $folder->getName();
+        if (FileSystem::exists($folder->fullPath())) {
+            $original_name = $folder->name();
             $folder->setName($original_name . '-1');
-            for ($i = 2; FileSystem::exists($folder->getSysPath()); $i++) {
+            for ($i = 2; FileSystem::exists($folder->fullPath()); $i++) {
                 $folder->setName($original_name . '-' . $i);
             }
         }

@@ -38,14 +38,10 @@ class FileController extends BaseFileManagerController
     public function file($path)
     {
         list($dir, $name) = FileSystem::splitNameFromPath($path);
-        $thumb = Input::get('thumb', null);
+        $file = $this->fileManager->in($dir)->fileService($name);
 
-        $file = $this->fileManager
-            ->in($dir)
-            ->get($name, $thumb);
-
-        return \Response::make($file->file)
-            ->header('Content-Type', $file->mime->type);
+        return \Response::make($file->content(Input::get('thumb', null)))
+            ->header('Content-Type', $file->mimetype());
     }
 
     /**
@@ -59,8 +55,7 @@ class FileController extends BaseFileManagerController
 
             return $this->fileManager
                 ->in($path)
-                ->renameFile(Input::get('old'), Input::get('new'))
-                ->toArray();
+                ->renameFile(Input::get('old'), Input::get('new'));
         });
     }
 

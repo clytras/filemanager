@@ -2,31 +2,23 @@
 
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
-use Crip\FileManager\Data\File;
-use Crip\FileManager\Data\Folder;
+use Crip\FileManager\Contracts\IUsePathService;
 use Crip\FileManager\Exceptions\FileManagerException;
+use Crip\FileManager\Traits\UsePath;
 use Illuminate\Support\Collection;
 
 /**
  * Class FolderContentService
  * @package Crip\FileManager\Services
  */
-class FolderContentService implements ICripObject
+class FolderContentService implements ICripObject, IUsePathService
 {
+    use UsePath;
+
     /**
      * @var Collection
      */
     public $content;
-
-    /**
-     * @var PathManager
-     */
-    private $pathManager;
-
-    /**
-     * @var string
-     */
-    private $path;
 
     /**
      * @var string
@@ -34,11 +26,10 @@ class FolderContentService implements ICripObject
     private $sys_path;
 
     /**
-     * @param PathManager $pathManager
+     * Initialise new instance of FolderContentService
      */
-    public function __construct(PathManager $pathManager)
+    public function __construct()
     {
-        $this->pathManager = $pathManager;
         $this->content = new Collection();
     }
 
@@ -49,11 +40,9 @@ class FolderContentService implements ICripObject
      *
      * @throws FileManagerException
      */
-    public function get($path)
+    public function get()
     {
-        $this->pathManager->goToPath($path);
-        $this->path = $this->pathManager->getPath();
-        $this->sys_path = $this->pathManager->sysPath();
+        $this->sys_path = $this->getPath()->path();
 
         if (!FileSystem::exists($this->sys_path)) {
             throw new FileManagerException($this, 'err_folder_not_found');
@@ -64,11 +53,7 @@ class FolderContentService implements ICripObject
             $this->readItem($item_path, $item_name);
         }
 
-        $result = [];
-        foreach ($this->content as $item) {
-            $result[] = $item->toArray();
-        }
-        return $result;
+        return $this->content->toArray();
     }
 
     /**
@@ -77,8 +62,8 @@ class FolderContentService implements ICripObject
     private function readDir()
     {
         // Exclude current, parent and thumb directories from reading
-        $exclude = ['.', '..', $this->pathManager->getThumbDir(), '.gitignore'];
-        if ($this->pathManager->isRoot($this->sys_path)) {
+        $exclude = ['.', '..', $this->getPath()->thumbDirName(), '.gitignore'];
+        if ($this->getPath()->isRoot($this->sys_path)) {
             // Root folder can't contain folders with file manger router keywords
             // they can't be created, but user can create them manually in file system
             $exclude = array_merge($exclude, ['create', 'delete', 'rename', 'null']);
@@ -108,10 +93,11 @@ class FolderContentService implements ICripObject
     private function addFolder($item_name)
     {
         $folder = app(Folder::class)
-            ->setPathManager($this->pathManager)
-            ->setName($item_name);
+            ->setPath($this->getPath())
+            ->setName($item_name)
+            ->updateDetails();
 
-        $this->content->push($folder);
+        $this->content->push($folder->details());
     }
 
     /**
@@ -120,10 +106,10 @@ class FolderContentService implements ICripObject
     private function addFile($item_name)
     {
         $file = app(File::class)
-            ->setPathManager($this->pathManager)
-            ->setFromString($item_name);
+            ->setPath($this->getPath())
+            ->existing($item_name);
 
-        $this->content->push($file);
+        $this->content->push($file->details());
     }
 
     /**
@@ -131,15 +117,16 @@ class FolderContentService implements ICripObject
      */
     private function addFolderBack()
     {
-        $parts = FileSystem::split($this->pathManager->getPath());
+        $parts = FileSystem::split($this->getPath()->relativePath());
         array_pop($parts);
         $patent_path = FileSystem::join($parts);
-        $parent_path_manager = app(PathManager::class)->goToPath($patent_path);
+        $parent_path_manager = app(Path::class)->change($patent_path);
 
         $folder = app(Folder::class)
-            ->setPathManager($parent_path_manager)
-            ->setName('..');
+            ->setPath($parent_path_manager)
+            ->setName('..')
+            ->updateDetails();
 
-        $this->content->push($folder);
+        $this->content->push($folder->details());
     }
 }

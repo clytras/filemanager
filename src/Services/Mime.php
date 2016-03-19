@@ -5,15 +5,16 @@ use Crip\Core\Helpers\FileSystem;
 use Crip\FileManager\FileManager;
 
 /**
- * Class MimeService
+ * Class Mime
  * @package Crip\FileManager\Services
  */
-class MimeService implements ICripObject
+class Mime implements ICripObject
 {
+
     /**
      * @var string
      */
-    private $mime;
+    private $mime = '';
 
     /**
      * @var array
@@ -76,6 +77,9 @@ class MimeService implements ICripObject
         'document' => ['excel', 'word', 'pwp', 'html', 'txt', 'js']
     ];
 
+    /**
+     * Initialise new instance of Mime service
+     */
     public function __construct()
     {
         $pck = FileManager::package();
@@ -84,8 +88,9 @@ class MimeService implements ICripObject
     }
 
     /**
-     * @param $mime
+     * Set mime type
      *
+     * @param $mime
      * @return $this
      */
     public function setMime($mime)
@@ -96,10 +101,10 @@ class MimeService implements ICripObject
     }
 
     /**
+     * Set mime from file full path
+     *
      * @param string $path
-     *
      * @return MimeService
-     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function setMimeByPath($path)
@@ -118,7 +123,7 @@ class MimeService implements ICripObject
     }
 
     /**
-     * Get file type from mime (if empty mime - 'dir', if not found - 'file')
+     * Get file type from mime (if empty mime - 'dir', default - 'file')
      * dir, js, css, txt, img, zip, pwp, html, word, audio, video, excel or file
      *
      * @return string
@@ -141,7 +146,7 @@ class MimeService implements ICripObject
     }
 
     /**
-     * Get mime type name
+     * Get mime media type name
      * dir, image, media, document or file
      *
      * @return string
@@ -173,5 +178,4 @@ class MimeService implements ICripObject
 
         return false;
     }
-
 }

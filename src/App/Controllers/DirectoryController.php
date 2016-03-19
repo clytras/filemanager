@@ -47,8 +47,7 @@ class DirectoryController extends BaseFileManagerController
         return $this->tryReturn(function () use ($path) {
             return $this->fileManager
                 ->in($path)
-                ->createFolder(Input::get('name'))
-                ->toArray();
+                ->createFolder(Input::get('name'));
         });
     }
 
@@ -61,8 +60,7 @@ class DirectoryController extends BaseFileManagerController
         return $this->tryReturn(function () use ($path) {
             return $this->fileManager
                 ->in($path)
-                ->renameFolder(Input::get('old'), Input::get('new'))
-                ->toArray();
+                ->renameFolder(Input::get('old'), Input::get('new'));
         });
     }
 
@@ -86,8 +84,7 @@ class DirectoryController extends BaseFileManagerController
     public function dir($path = '')
     {
         return $this->tryReturn(function () use ($path) {
-            $path_manager = $this->fileManager->in($path)->getPathManager();
-            return $this->fileSystem->setPathManager($path_manager)->folder->get($path);
+            return $this->fileManager->in($path)->content();
         });
     }
 }

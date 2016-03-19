@@ -1,15 +1,13 @@
 <?php namespace Crip\FileManager;
 
 use Crip\Core\Contracts\ICripObject;
-use Crip\Core\Helpers\FileSystem;
 use Crip\Core\Support\PackageBase;
-use Crip\FileManager\Data\File;
-use Crip\FileManager\Data\Folder;
-use Crip\FileManager\Exceptions\FileManagerException;
+use Crip\FileManager\Services\File;
 use Crip\FileManager\Services\FileSystemManager;
 use Crip\FileManager\Services\FileUploader;
-use Crip\FileManager\Services\PathManager;
-use Crip\FileManager\Services\ThumbManager;
+use Crip\FileManager\Services\Folder;
+use Crip\FileManager\Services\FolderContentService;
+use Crip\FileManager\Services\Path;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -24,14 +22,9 @@ class FileManager implements ICripObject
     private static $package;
 
     /**
-     * @var ThumbManager
+     * @var Path
      */
-    private $thumb;
-
-    /**
-     * @var PathManager
-     */
-    private $path_manager;
+    private $path;
 
     /**
      * @var File
@@ -40,46 +33,35 @@ class FileManager implements ICripObject
     /**
      * @var FileUploader
      */
-
     private $uploader;
-    /**
-     * @var FileSystemManager
-     */
-
-    /**
-     * @var FileSystemManager
-     */
-    private $fileSystem;
 
     /**
      * @var Folder
      */
     private $folder;
+    /**
+     * @var FileSystemManager
+     */
+    private $sys;
 
     /**
-     * @param ThumbManager $thumb
-     * @param PathManager $path
+     * Initialise new instance of FileManager
+     *
+     * @param Path $path
      * @param File $file
-     * @param Folder $folder
      * @param FileUploader $uploader
-     * @param FileSystemManager $fileSystem
+     * @param Folder $folder
+     * @param FileSystemManager $sys
      */
-    public function __construct(
-        ThumbManager $thumb,
-        PathManager $path,
-        File $file,
-        Folder $folder,
-        FileUploader $uploader,
-        FileSystemManager $fileSystem
-    ) {
+    public function __construct(Path $path, File $file, FileUploader $uploader, Folder $folder, FileSystemManager $sys)
+    {
         static::package();
 
-        $this->thumb = $thumb;
-        $this->path_manager = $path;
+        $this->path = $path;
         $this->file = $file;
-        $this->folder = $folder;
         $this->uploader = $uploader;
-        $this->fileSystem = $fileSystem;
+        $this->folder = $folder;
+        $this->sys = $sys;
     }
 
     /**
@@ -98,46 +80,27 @@ class FileManager implements ICripObject
      * Change path
      *
      * @param string $path Go to the path
-     *
      * @return FileManager
      */
     public function in($path)
     {
-        $this->path_manager->goToPath($path);
-        $this->thumb->setPathManager($this->path_manager);
-        $this->file->setPathManager($this->path_manager);
-        $this->folder->setPathManager($this->path_manager);
-        $this->uploader->setPathManager($this->path_manager);
-        $this->fileSystem->setPathManager($this->path_manager);
+        $this->path->updatePath($path);
+        $this->file->setPath($this->path);
+        $this->uploader->setPath($this->path);
+        $this->folder->setPath($this->path);
 
         return $this;
     }
 
     /**
-     * Get file from filesystem corresponding size
+     * Get file info filesystem
      *
-     * @param string $file_name File name to get
-     * @param string $size The thumb size
-     *
+     * @param string $name File name to get
      * @return File
-     *
-     * @throws FileManagerException
      */
-    public function get($file_name, $size)
+    public function fileService($name)
     {
-        $file_path = FileSystem::join([$this->path_manager->sysPath(), $file_name]);
-        if ($size AND array_key_exists($size, $this->thumb->getSizes())) {
-            $thumb_path = FileSystem::join([$this->path_manager->thumbSysPath($size), $file_name]);
-            if (FileSystem::exists($thumb_path)) {
-                $file_path = $thumb_path;
-            }
-        }
-
-        if (FileSystem::exists($file_path)) {
-            return $this->file->set($file_path);
-        }
-
-        throw new FileManagerException($this, 'err_file_not_found');
+        return $this->file->existing($name);
     }
 
     /**
@@ -162,40 +125,37 @@ class FileManager implements ICripObject
      */
     public function renameFile($old, $new)
     {
-        $old_file = app(File::class)->setPath($this->path_manager)->setFromString($old);
-        $new_file = app(File::class)->setFromString($new);
+        $old_file = app(File::class)
+            ->setPath($this->path)
+            ->existing($old);
 
-        return $this->fileSystem->renameFile($old_file, $new_file);
+        return $this->sys->renameFile($old_file, $new);
     }
 
     /**
      * Delete file from file system
      *
-     * @param string $file_name File name to be deleted
-     *
+     * @param string $name File name to be deleted
      * @return bool Is file deleted
      */
-    public function deleteFile($file_name)
+    public function deleteFile($name)
     {
-        $file = $this->file
-            ->setPath($this->path_manager)
-            ->setFromString($file_name);
+        $file = $this->file->existing($name);
 
-        return $this->fileSystem->deleteFile($file);
+        return $this->sys->deleteFile($file);
     }
 
     /**
      * Create folder in file system
      *
      * @param string $folder_name The folder name to be created
-     *
-     * @return Folder
+     * @return array
      */
     public function createFolder($folder_name)
     {
-        $folder = $this->folder->setPathManager($this->path_manager)->setName($folder_name);
+        $folder = $this->folder->setName($folder_name);
 
-        return $this->fileSystem->createFolder($folder);
+        return (array)$this->sys->createFolder($folder)->updateDetails()->details();
     }
 
     /**
@@ -208,10 +168,9 @@ class FileManager implements ICripObject
      */
     public function renameFolder($old_name, $new_name)
     {
-        $old_folder = app(Folder::class)->setPathManager($this->path_manager)->setName($old_name);
-        $new_folder = app(Folder::class)->setName($new_name);
+        $old_folder = $this->folder->setName($old_name);
 
-        return $this->fileSystem->renameFolder($old_folder, $new_folder);
+        return $this->sys->renameFolder($old_folder, $new_name);
     }
 
     /**
@@ -223,16 +182,18 @@ class FileManager implements ICripObject
      */
     public function deleteFolder($folder_name)
     {
-        $folder = $this->folder->setPathManager($this->path_manager)->setName($folder_name);
+        $folder = $this->folder->setName($folder_name);
 
-        return $this->fileSystem->deleteFolder($folder);
+        return $this->sys->deleteFolder($folder);
     }
 
     /**
-     * @return PathManager
+     * @return array
+     * @throws Exceptions\FileManagerException
      */
-    public function getPathManager()
+    public function content()
     {
-        return $this->path_manager;
+        return app(FolderContentService::class)->setPath($this->path)->get();
     }
+
 }
