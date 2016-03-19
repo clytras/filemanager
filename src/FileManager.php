@@ -46,6 +46,9 @@ class FileManager implements ICripObject
      * @var FileSystemManager
      */
 
+    /**
+     * @var FileSystemManager
+     */
     private $fileSystem;
 
     /**
@@ -190,7 +193,7 @@ class FileManager implements ICripObject
      */
     public function createFolder($folder_name)
     {
-        $folder = $this->folder->setPath($this->path_manager)->setName($folder_name);
+        $folder = $this->folder->setPathManager($this->path_manager)->setName($folder_name);
 
         return $this->fileSystem->createFolder($folder);
     }
@@ -205,7 +208,7 @@ class FileManager implements ICripObject
      */
     public function renameFolder($old_name, $new_name)
     {
-        $old_folder = app(Folder::class)->setPath($this->path_manager)->setName($old_name);
+        $old_folder = app(Folder::class)->setPathManager($this->path_manager)->setName($old_name);
         $new_folder = app(Folder::class)->setName($new_name);
 
         return $this->fileSystem->renameFolder($old_folder, $new_folder);
@@ -220,8 +223,16 @@ class FileManager implements ICripObject
      */
     public function deleteFolder($folder_name)
     {
-        $folder = $this->folder->setPath($this->path_manager)->setName($folder_name);
+        $folder = $this->folder->setPathManager($this->path_manager)->setName($folder_name);
 
         return $this->fileSystem->deleteFolder($folder);
+    }
+
+    /**
+     * @return PathManager
+     */
+    public function getPathManager()
+    {
+        return $this->path_manager;
     }
 }

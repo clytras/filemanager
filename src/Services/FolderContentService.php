@@ -108,7 +108,7 @@ class FolderContentService implements ICripObject
     private function addFolder($item_name)
     {
         $folder = app(Folder::class)
-            ->setPath($this->pathManager)
+            ->setPathManager($this->pathManager)
             ->setName($item_name);
 
         $this->content->push($folder);
@@ -137,7 +137,7 @@ class FolderContentService implements ICripObject
         $parent_path_manager = app(PathManager::class)->goToPath($patent_path);
 
         $folder = app(Folder::class)
-            ->setPath($parent_path_manager)
+            ->setPathManager($parent_path_manager)
             ->setName('..');
 
         $this->content->push($folder);

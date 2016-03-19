@@ -86,7 +86,8 @@ class DirectoryController extends BaseFileManagerController
     public function dir($path = '')
     {
         return $this->tryReturn(function () use ($path) {
-            return $this->fileSystem->folder->get($path);
+            $path_manager = $this->fileManager->in($path)->getPathManager();
+            return $this->fileSystem->setPathManager($path_manager)->folder->get($path);
         });
     }
 }

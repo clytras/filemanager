@@ -44,21 +44,32 @@ class UrlManager implements ICripObject, IManagerPath
     }
 
     /**
+     * Generate url from file name (PathManager should be set before use)
+     *
+     * @param string $file_name
+     * @param string|null $size
+     * @return string
+     */
+    public function getFromName($file_name, $size = null)
+    {
+        if ($size) {
+            $file_name .= '?thumb=' . $size;
+        }
+        $file_path = FileSystem::join($this->getPathManager()->getPath(), $file_name);
+
+        return action($this->file_action, $this->pathToUrl($file_path));
+    }
+
+    /**
      * @param File $file
      * @param string $size_key
      * @return string
      */
     public function getFileUrl(File $file, $size_key = null)
     {
-        $pos = '';
-        if ($size_key) {
-            $pos = '?thumb=' . $size_key;
-        }
+        $this->setPathManager($file->getPathManager());
 
-        $file_path = FileSystem::join([$file->getPathManager()->getPath(), $file->full_name]);
-        $url = action($this->file_action, $this->pathToUrl($file_path));
-
-        return $url . $pos;
+        return $this->getFromName($file->full_name, $size_key);
     }
 
     /**

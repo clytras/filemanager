@@ -173,7 +173,7 @@ class File implements ICripObject, IArrayObject, IFileSystemObject, IManagerPath
     public function setPath(PathManager $path)
     {
         $this->path = $this->service
-            ->setPath($path)
+            ->setPathManager($path)
             ->relativePath();
 
         $this->path_manager = $path;

@@ -2,6 +2,7 @@
 
 use Crip\Core\Contracts\ICripObject;
 use Crip\Core\Helpers\FileSystem;
+use Crip\FileManager\Contracts\IManagerPath;
 use Crip\FileManager\Data\File;
 use Crip\FileManager\Data\Folder;
 use Crip\FileManager\Exceptions\FileManagerException;
@@ -11,7 +12,7 @@ use Illuminate\Support\Collection;
  * Class FileSystemManager
  * @package Crip\FileManager\Services
  */
-class FileSystemManager implements ICripObject
+class FileSystemManager implements ICripObject, IManagerPath
 {
 
     /**
@@ -28,6 +29,11 @@ class FileSystemManager implements ICripObject
      * @var ThumbManager
      */
     private $thumb;
+
+    /**
+     * @var PathManager
+     */
+    private $path_manager;
 
 
     /**
@@ -174,5 +180,29 @@ class FileSystemManager implements ICripObject
         }
 
         return FileSystem::deleteDirectory($path);
+    }
+
+    /**
+     * Set path manager
+     *
+     * @param PathManager $manager
+     * @return $this
+     */
+    public function setPathManager(PathManager $manager)
+    {
+        $this->path_manager = $manager;
+        $this->thumb->setPathManager($manager);
+
+        return $this;
+    }
+
+    /**
+     * Get current path manager
+     *
+     * @return PathManager
+     */
+    public function getPathManager()
+    {
+        return $this->path_manager;
     }
 }
