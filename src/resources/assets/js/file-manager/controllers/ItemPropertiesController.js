@@ -50,6 +50,7 @@
          * @param {function} item.getSize
          */
         function defaultDetails(details, item) {
+            $log.log('item_properties_modal_file_type_' + item.type);
             details.push({
                 name: Trans('item_properties_modal_item_type'),
                 value: Trans('item_properties_modal_file_type_' + item.type)

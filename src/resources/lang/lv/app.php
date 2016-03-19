@@ -37,6 +37,7 @@ return [
     'item_properties_modal_file_type_document' => 'Dokuments',
     'item_properties_modal_file_type_image' => 'Attēls',
     'item_properties_modal_file_type_media' => 'Multivides fails',
+    'item_properties_modal_file_type_file' => 'Fails',
     'item_properties_modal_size' => 'Izmērs',
     'item_properties_modal_item_extension' => 'Faila paplašinājums',
     'item_properties_modal_item_url' => 'URL',

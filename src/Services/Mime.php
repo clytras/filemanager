@@ -139,8 +139,8 @@ class Mime implements ICripObject
                 return preg_match($mime_value, $this->mime);
             });
 
-            if ($key) {
-                return $key;
+            if ($key !== false) {
+                return $mime;
             }
         }
 
