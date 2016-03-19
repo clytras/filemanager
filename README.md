@@ -2,6 +2,8 @@
 
 This package is created to integrate filesystem managment tools i to your site. You can use it with TinyMCE editor or just stand alone popup for your input fields. Crip File Manager is based on AngularJs framework and is stand alone single page application for your file system control on server side.
 
+![alt tag](https://i6.ifrype.com/gallery/25c3507daf273533fdbfe5e6cf4bab01/07/041/226/v1/416041226.jpg)
+
 ## Installation
 
 Require this package with composer:

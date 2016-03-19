@@ -74,6 +74,8 @@ class Path implements ICripObject
     public function change($path)
     {
         $this->relative_path = trim(FileSystem::canonical($path), '/');
+        $this->sys_path = FileSystem::canonical(FileSystem::join($this->sys_root_dir, $this->relative_path));
+
         if (!FileSystem::exists($this->sys_path)) {
             throw new FileManagerException($this, 'err_path_not_exist', ['path' => $this->relative_path]);
         }
