@@ -66,28 +66,25 @@
             var string_value = val.dir || '';
             breadcrumb.items.splice(0, breadcrumb.items.length);
 
-            if (val.name !== '' && val.name !== null) {
+            if (ng.hasValue(val.name)) {
                 string_value += '/' + val.name;
             }
             setUrlLocation(string_value);
-            ng.forEach(string_value.split('\/'), function (v) {
-                if (v !== '' && v !== null) {
-
-                    // create current dir from previous item, if it exists
-                    var dir = '';
-                    if (breadcrumb.items.length > 0) {
-                        // if only one previous item, use it`s name
-                        if (breadcrumb.items.length === 1) {
-                            dir = breadcrumb.items[0].name;
-                        }
-                        // other way, concat prev dir with name
-                        else {
-                            dir = '{dir}/{name}'.supplant(breadcrumb.items[breadcrumb.items.length - 1]);
-                        }
+            ng.forEach(string_value.split('\/').clean('', null), function (v) {
+                // create current dir from previous item, if it exists
+                var dir = '';
+                if (breadcrumb.items.length > 0) {
+                    // if only one previous item, use it`s name
+                    if (breadcrumb.items.length === 1) {
+                        dir = breadcrumb.items[0].name;
                     }
-
-                    breadcrumb.items.push({name: v, dir: dir, isActive: false});
+                    // other way, concat prev dir with name
+                    else {
+                        dir = '{dir}/{name}'.supplant(breadcrumb.items[breadcrumb.items.length - 1]);
+                    }
                 }
+
+                breadcrumb.items.push({name: v, dir: dir, isActive: false});
             });
 
             // mark last item as active, this will help mark item as active
@@ -103,7 +100,14 @@
          */
         function setUrlLocation(parts) {
             breadcrumb.urlChangeIgnore = true;
-            $location.search('l', typeof parts === 'string' ? parts.split('\/') : parts);
+            var location = typeof parts === 'string' ? parts.split('\/') : parts;
+            location.clean();
+
+            if (location.length > 0 && ng.hasValue(location[0])) {
+                $location.search('l', location);
+            } else {
+                $location.search('l', null);
+            }
             breadcrumb.urlChangeIgnore = false;
         }
 
