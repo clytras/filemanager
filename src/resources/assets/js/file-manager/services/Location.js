@@ -5,10 +5,15 @@
         .service('CripManagerLocation', ChangeLocationService);
 
     ChangeLocationService.$inject = [
-        '$cookies', 'Dir', 'ItemService', 'CripManagerBreadcrumb', 'CripManagerContent'
+        '$cookies', '$location', '$rootScope', 'Dir', 'ItemService', 'CripManagerBreadcrumb', 'CripManagerContent'
     ];
 
-    function ChangeLocationService($cookies, Dir, ItemService, Breadcrumb, Content) {
+    function ChangeLocationService($cookies, $location, $rootScope, Dir, ItemService, Breadcrumb, Content) {
+
+        $rootScope.$on('url-change', function (event, args) {
+            change({dir: args[0]});
+        });
+
         return {
             init: initialLoad,
             change: change,
@@ -62,14 +67,21 @@
          * @returns {{dir: string, name: string}}
          */
         function getLocationFromCookie() {
-            var location = {dir: null, name: null};
+            var location = {dir: null, name: null},
+                url = Breadcrumb.resolveUrlObject($location.search());
+
+            // if url contains location, ignore cookies value
+            if (ng.hasValue(url)) {
+                location.dir = url;
+
+                return location;
+            }
 
             var cookieDir = $cookies.get('location-dir'),
                 name = $cookies.get('location-dir-name');
             if (ng.hasValue(cookieDir) || ng.hasValue(name)) {
                 location.dir = cookieDir;
-
-                if (!name || name === 'null' || name === null) {
+                if (ng.isEmpty(name)) {
                     name = '';
                 }
                 location.name = name;

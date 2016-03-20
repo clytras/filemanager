@@ -3,15 +3,22 @@
     crip.filemanager
         .service('CripManagerBreadcrumb', Breadcrumb);
 
-    Breadcrumb.$inject = [];
+    Breadcrumb.$inject = ['$location', '$rootScope'];
 
-    function Breadcrumb() {
+    function Breadcrumb($location, $rootScope) {
         var breadcrumb = {
             items: [],
             hasItems: hasItems,
             current: current,
-            set: setLocation
+            set: setLocation,
+            urlChangeIgnore: false,
+            resolveUrlObject: resolveUrlObject
         };
+
+        /**
+         * Watch location change and fire event, if it is changed by user
+         */
+        $rootScope.$watch(location, onUrlLocationChange);
 
         return breadcrumb;
 
@@ -62,7 +69,7 @@
             if (val.name !== '' && val.name !== null) {
                 string_value += '/' + val.name;
             }
-
+            setUrlLocation(string_value);
             ng.forEach(string_value.split('\/'), function (v) {
                 if (v !== '' && v !== null) {
 
@@ -87,6 +94,51 @@
             if (breadcrumb.items.length > 0) {
                 breadcrumb.items[breadcrumb.items.length - 1].isActive = true;
             }
+        }
+
+        /**
+         * Set current location to url
+         *
+         * @param {Array|String} parts
+         */
+        function setUrlLocation(parts) {
+            breadcrumb.urlChangeIgnore = true;
+            $location.search('l', typeof parts === 'string' ? parts.split('\/') : parts);
+            breadcrumb.urlChangeIgnore = false;
+        }
+
+        /**
+         * Get current url location object
+         *
+         * @returns {*|Object}
+         */
+        function location() {
+            return $location.search();
+        }
+
+        function onUrlLocationChange(n, o) {
+            if (!breadcrumb.urlChangeIgnore && !ng.equals(n, o)) {
+                $rootScope.fireBroadcast('url-change', [resolveUrlObject(n)]);
+            }
+        }
+
+        /**
+         * Resolve $location object ro path string
+         *
+         * @param {Object} location
+         * @param {Array|String} location.l
+         * @returns {String|null}
+         */
+        function resolveUrlObject(location) {
+            var path = null;
+            if (ng.hasValue(location.l)) {
+                path = location.l;
+                if (typeof path === 'object')
+                    path = path.join('/');
+            }
+            console.log(path, typeof path);
+
+            return path;
         }
     }
 })(angular, window.crip);
