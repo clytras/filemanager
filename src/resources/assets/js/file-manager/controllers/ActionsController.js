@@ -26,6 +26,8 @@
 
             $scope.hasProperties = hasProperties;
             $scope.openProperties = openProperties;
+
+            $scope.canUpload = canUpload;
         }
 
         /**
@@ -128,25 +130,39 @@
             return item && !item.isDirUp;
         }
 
+        /**
+         * Open item properties pop-up
+         *
+         * @param $event
+         */
         function openProperties($event) {
             if (!hasProperties())
                 return;
 
             $event.stopPropagation();
-            var item = Content.getSelectedItem();
-
-            $mdDialog.show({
-                clickOutsideToClose: true,
-                openFrom: '#' + item.identifier,
-                closeTo: '#' + item.identifier,
-                templateUrl: 'item-properties-modal.html',
-                controller: 'ItemPropertiesController',
-                resolve: {
-                    item: function () {
-                        return item;
+            var item = Content.getSelectedItem(),
+                options = {
+                    clickOutsideToClose: true,
+                    openFrom: '#' + item.identifier,
+                    closeTo: '#' + item.identifier,
+                    templateUrl: $scope.templatePath('item-properties-modal'),
+                    controller: 'ItemPropertiesController',
+                    locals: {
+                        item: item
                     }
-                }
-            });
+                };
+
+            $mdDialog.show(options);
+        }
+
+        /**
+         * Determines if file can be uploaded
+         *
+         * @returns {boolean}
+         */
+        function canUpload() {
+            // at this moment we can upload to any open dir
+            return true;
         }
     }
 })(angular, jQuery, window.crip || (window.crip = {}));

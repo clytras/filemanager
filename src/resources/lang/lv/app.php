@@ -27,6 +27,7 @@ return [
     'actions_delete' => 'Dzēst',
     'actions_properties' => 'Detaļas',
     'actions_open' => 'Atvērt',
+    'actions_upload' => 'Augšuplādēt',
     'breadcrumb_root' => 'Galvenā',
     'breadcrumb_go_to_root' => 'Pāriet uz galveno direktoriju',
     'item_properties_modal_title' => 'Detaļas',

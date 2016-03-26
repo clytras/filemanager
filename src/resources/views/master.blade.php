@@ -8,6 +8,7 @@
     <meta id="settings"
           data-sizes="{!! str_replace('"', '\'', json_encode(config('cripfilemanager.thumbs'))) !!}"
           data-params="{!! str_replace('"', '\'', json_encode(Input::all())) !!}"
+          data-public-url="{!! config('cripfilemanager.public_href') !!}"
           data-base-url="/{!! App::getLocale() !!}/{!! trim(config('cripfilemanager.base_url'), '/\\') !!}/">
     <title>{!! trans('cripfilemanager::app.title') !!}</title>
 
@@ -35,6 +36,18 @@
                              src="{!! icon('add-folder') !!}"
                              alt="{!! trans('cripfilemanager::app.actions_new_dir') !!}">
                         <span class="action-text">{!! trans('cripfilemanager::app.actions_new_dir') !!}</span>
+                    </a>
+                    <a href
+                       class="action-vertical"
+                       ng-controller="FileUploadController"
+                       title="{!! trans('cripfilemanager::app.actions_upload') !!}"
+                       ng-class="{'disabled': !canUpload()}"
+                       ngf-multiple="true"
+                       ngf-select="addUpload($files, $invalidFiles)">
+                        <img class="action-large"
+                             src="{!! icon('upload') !!}"
+                             alt="{!! trans('cripfilemanager::app.actions_upload') !!}">
+                        <span class="action-text">{!! trans('cripfilemanager::app.actions_upload') !!}</span>
                     </a>
                 </li>
                 <li>
@@ -149,21 +162,5 @@
 
 <script src="{!! config('cripfilemanager.public_href') !!}/js/vendor.js"></script>
 <script src="{!! config('cripfilemanager.public_href') !!}/js/file-manager.js"></script>
-<script type="text/ng-template" id="item-properties-modal.html">
-    <div class="modal-header">
-        <button type="button" class="close" ng-click="close()">&times;</button>
-        <h3 class="modal-title">
-            <img src ng-src="{{thumb}}" class="thumb">
-            <span>{{name}}</span>
-        </h3>
-    </div>
-    <div class="modal-body">
-        <ul>
-            <li ng-repeat="prop in item">
-                <span ng-bind="prop.name"></span>: <span ng-bind-html="prop.value"></span>
-            </li>
-        </ul>
-    </div>
-</script>
 </body>
 </html>

@@ -12,7 +12,8 @@ crip.scripts([
     '/angular-animate/angular-animate.js',
     '/angular-aria/angular-aria.min.js',
     '/angular-loading-bar/build/loading-bar.js',
-    '/angular-file-upload/dist/angular-file-upload.min.js',
+    '/ng-file-upload-shim/ng-file-upload-shim.min.js',
+    '/ng-file-upload/ng-file-upload.js',
     '/angular-material/angular-material.min.js',
     '/crip-angular-core/build/crip-core.js',
     '/crip-transparent-progressbar/build/transparent-progressbar.min.js'
@@ -50,6 +51,9 @@ crip.copy(
 crip.copy(
     'src/resources/assets/images/*',
     'src/public/images', 'images');
+crip.copy(
+    'src/resources/templates/*',
+    'src/public/templates', 'templates');
 
 crip.copy(
     'bower_components/bootstrap-sass/assets/fonts/**/*.*',
@@ -57,6 +61,7 @@ crip.copy(
 crip.copy('src/public/js/**/*.js', '../../public/vendor/crip/cripfilemanager/js', 'publish-js');
 crip.copy('src/public/css/**/*.css', '../../public/vendor/crip/cripfilemanager/css', 'publish-css');
 crip.copy('src/public/images/*', '../../public/vendor/crip/cripfilemanager/images', 'publish-images');
+crip.copy('src/public/templates/*', '../../public/vendor/crip/cripfilemanager/templates', 'publish-templates');
 crip.copy('src/resources/views/**/*.php', '../../resources/views/vendor/cripfilemanager', 'publish-views');
 
 gulp.task('default', function () {

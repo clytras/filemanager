@@ -11,11 +11,14 @@
     function Run($rootScope) {
         var $settings = $('#settings'),
             base_url = $settings.data('base-url'),
+            public_url = $settings.data('public-url'),
             img_sizes = JSON.parse($settings.data('sizes').replaceAll("'", '"'));
 
         $rootScope.fireBroadcast = broadcast;
         $rootScope.baseUrl = baseUrl;
+        $rootScope.publicUrl = publicUrl;
         $rootScope.imgSizes = imgSizes;
+        $rootScope.templatePath = templatePath;
 
         /**
          * Get plugin dir action url
@@ -75,8 +78,35 @@
             return base_url + path;
         }
 
+        /**
+         * Get image sizes
+         */
         function imgSizes() {
             return img_sizes;
+        }
+
+        /**
+         * Get public url
+         *
+         * @returns {String}
+         */
+        function publicUrl() {
+            return public_url;
+        }
+
+        /**
+         * Get full path to template
+         * @param {String} template_name
+         * @param {String} [extension]
+         */
+        function templatePath(template_name, extension) {
+            var tmp = {
+                url: publicUrl(),
+                name: template_name,
+                ext: extension || 'html'
+            };
+
+            return '{url}/templates/{name}.{ext}'.supplant(tmp);
         }
     }
 })(angular, jQuery, window.crip || (window.crip = {}));

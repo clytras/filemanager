@@ -4,7 +4,7 @@
     crip.filemanager = ng.module('crip.file-manager', [
         'crip.core',
         'angular-loading-bar',
-        'angularFileUpload',
+        'ngFileUpload',
         'ngCookies',
         'ngResource',
         'ngSanitize',
