@@ -39,16 +39,27 @@
                     </a>
                     <a href
                        class="action-vertical"
-                       ng-controller="FileUploadController"
                        title="{!! trans('cripfilemanager::app.actions_upload') !!}"
                        ng-class="{'disabled': !canUpload()}"
                        ngf-multiple="true"
-                       ngf-select="addUpload($files, $invalidFiles)">
+                       ngf-select="addFiles($files, $invalidFiles)">
                         <img class="action-large"
                              src="{!! icon('upload') !!}"
                              alt="{!! trans('cripfilemanager::app.actions_upload') !!}">
                         <span class="action-text">{!! trans('cripfilemanager::app.actions_upload') !!}</span>
                     </a>
+                    <div class="actions-horizontal">
+                        <a href
+                           class="action-horizontal"
+                           title="{!! trans('cripfilemanager::app.actions_upload_all') !!}"
+                           ng-class="{'disabled': !hasUploads()}"
+                           ng-click="upload()">
+                            <img class="action-small"
+                                 src="{!! icon('upload') !!}"
+                                 alt="{!! trans('cripfilemanager::app.actions_upload_all') !!}">
+                            <span class="action-text"><!--{!! trans('cripfilemanager::app.actions_upload_all') !!}--></span>
+                        </a>
+                    </div>
                 </li>
                 <li>
                     <a href

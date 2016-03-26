@@ -12,7 +12,8 @@
             current: current,
             set: setLocation,
             urlChangeIgnore: false,
-            resolveUrlObject: resolveUrlObject
+            resolveUrlObject: resolveUrlObject,
+            toString: toString
         };
 
         /**
@@ -63,12 +64,8 @@
          * @param {string} val.name
          */
         function onLocationChange(val) {
-            var string_value = val.dir || '';
+            var string_value = toString.apply(val);
             breadcrumb.items.splice(0, breadcrumb.items.length);
-
-            if (ng.hasValue(val.name)) {
-                string_value += '/' + val.name;
-            }
             setUrlLocation(string_value);
             ng.forEach(string_value.split('\/').clean('', null), function (v) {
                 // create current dir from previous item, if it exists
@@ -140,9 +137,22 @@
                 if (typeof path === 'object')
                     path = path.join('/');
             }
-            console.log(path, typeof path);
 
             return path;
+        }
+
+        /**
+         * Convert context to string value
+         *
+         * @param [value]
+         * @returns {string}
+         */
+        function toString(value) {
+            this.dir = this.dir || '';
+            this.name = this.name || '';
+            value = '{dir}/{name}'.supplant(this);
+
+            return value.split('\/').clean().join('\/');
         }
     }
 })(angular, window.crip);

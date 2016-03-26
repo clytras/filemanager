@@ -28,6 +28,7 @@ return [
     'actions_properties' => 'Detaļas',
     'actions_open' => 'Atvērt',
     'actions_upload' => 'Augšuplādēt',
+    'actions_upload_all' => 'Augšuplādēt visu',
     'breadcrumb_root' => 'Galvenā',
     'breadcrumb_go_to_root' => 'Pāriet uz galveno direktoriju',
     'item_properties_modal_title' => 'Detaļas',

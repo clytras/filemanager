@@ -5,10 +5,12 @@
         .controller('ActionsController', ActionsController);
 
     ActionsController.$inject = [
-        '$scope', '$mdDialog', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation'
+        '$scope', '$mdDialog', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation',
+        'CripManagerUploader'
     ];
 
-    function ActionsController($scope, $mdDialog, focus, Actions, Content, Location) {
+    function ActionsController($scope, $mdDialog, focus, Actions, Content, Location,
+                               Uploader) {
         activate();
 
         function activate() {
@@ -28,6 +30,9 @@
             $scope.openProperties = openProperties;
 
             $scope.canUpload = canUpload;
+            $scope.hasUploads = hasUploads;
+            $scope.addFiles = addFiles;
+            $scope.upload = upload;
         }
 
         /**
@@ -163,6 +168,31 @@
         function canUpload() {
             // at this moment we can upload to any open dir
             return true;
+        }
+
+        /**
+         * Determines if there files in queue for upload
+         *
+         * @returns {boolean}
+         */
+        function hasUploads() {
+            return Uploader.hasFiles();
+        }
+
+        /**
+         * Add files for upload
+         *
+         * @param {Array} files
+         */
+        function addFiles(files) {
+            Uploader.add(files);
+        }
+
+        /**
+         * Start upload files from queue
+         */
+        function upload() {
+            Uploader.start();
         }
     }
 })(angular, jQuery, window.crip || (window.crip = {}));
