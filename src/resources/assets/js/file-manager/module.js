@@ -8,8 +8,6 @@
         'ngCookies',
         'ngResource',
         'ngSanitize',
-        'ui.bootstrap',
-        'ui-notification',
-        'io.dennis.contextmenu'
+        'ngMaterial'
     ])
 })(angular, window.crip || (window.crip = {}));

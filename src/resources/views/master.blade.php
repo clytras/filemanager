@@ -61,6 +61,7 @@
                 </li>
                 <li>
                     <a href
+                       id="action-properties"
                        class="action-vertical"
                        title="{!! trans('cripfilemanager::app.actions_properties') !!}"
                        ng-class="{'disabled': !hasProperties()}"

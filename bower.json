@@ -25,15 +25,13 @@
   "dependencies": {
     "jquery": "2.1.4",
     "bootstrap-sass": "~3.3.5",
-    "angular": "~1.4.9",
+    "angular": "~1.5.3",
     "angular-loading-bar": "~0.8.0",
     "angular-resource": "1.4.5",
-    "angular-ui-notification": "0.0.14",
     "angular-sanitize": "1.4.5",
     "angular-file-upload": "~2.1.4",
-    "angular-bootstrap": "~0.14.2",
-    "angular-contextmenu": "~0.1.2",
     "angular-cookies": "~1.4.8",
-    "crip-angular-core": "crip-core#^1.0"
+    "crip-angular-core": "crip-core#^1.0",
+    "angular-material": "^1.0"
   }
 }

@@ -4,10 +4,10 @@
         .controller('ItemPropertiesController', ItemPropertiesController);
 
     ItemPropertiesController.$inject = [
-        '$log', '$scope', '$uibModalInstance', 'CripManagerTrans', 'item'
+        '$log', '$scope', '$mdDialog', 'CripManagerTrans', 'item'
     ];
 
-    function ItemPropertiesController($log, $scope, $uibModalInstance, Trans, item) {
+    function ItemPropertiesController($log, $scope, $mdDialog, Trans, item) {
         activate();
 
         function activate() {
@@ -23,7 +23,7 @@
          * Hide modal
          */
         function close() {
-            $uibModalInstance.close();
+            $mdDialog.hide();
         }
 
         /**

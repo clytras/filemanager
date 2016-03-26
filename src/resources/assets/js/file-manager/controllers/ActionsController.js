@@ -5,10 +5,10 @@
         .controller('ActionsController', ActionsController);
 
     ActionsController.$inject = [
-        '$scope', '$uibModal', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation'
+        '$scope', '$mdDialog', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation'
     ];
 
-    function ActionsController($scope, $uibModal, focus, Actions, Content, Location) {
+    function ActionsController($scope, $mdDialog, focus, Actions, Content, Location) {
         activate();
 
         function activate() {
@@ -133,15 +133,17 @@
                 return;
 
             $event.stopPropagation();
+            var item = Content.getSelectedItem();
 
-            $uibModal.open({
-                animation: true,
+            $mdDialog.show({
+                clickOutsideToClose: true,
+                openFrom: '#' + item.identifier,
+                closeTo: '#' + item.identifier,
                 templateUrl: 'item-properties-modal.html',
                 controller: 'ItemPropertiesController',
-                size: 'lg',
                 resolve: {
                     item: function () {
-                        return Content.getSelectedItem();
+                        return item;
                     }
                 }
             });

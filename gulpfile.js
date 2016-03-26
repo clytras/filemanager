@@ -5,17 +5,15 @@ var gulp = require('gulp'),
 // Concat, uglify and sourcemap vendor packages
 crip.scripts([
     '/jquery/dist/jquery.js',
-    '/bootstrap-sass/assets/javascripts/bootstrap.js',
     '/angular/angular.js',
-    '/angular-file-upload/dist/angular-file-upload.min.js',
     '/angular-resource/angular-resource.js',
     '/angular-sanitize/angular-sanitize.js',
-    '/angular-ui-notification/dist/angular-ui-notification.min.js',
-    '/angular-bootstrap/ui-bootstrap.js',
-    '/angular-bootstrap/ui-bootstrap-tpls.js',
-    '/angular-contextmenu/dist/contextmenu.js',
-    '/angular-loading-bar/build/loading-bar.js',
     '/angular-cookies/angular-cookies.js',
+    '/angular-animate/angular-animate.js',
+    '/angular-aria/angular-aria.min.js',
+    '/angular-loading-bar/build/loading-bar.js',
+    '/angular-file-upload/dist/angular-file-upload.min.js',
+    '/angular-material/angular-material.min.js',
     '/crip-angular-core/build/crip-core.js',
     '/crip-transparent-progressbar/build/transparent-progressbar.min.js'
 ], 'vendor', 'scripts-core', 'bower_components', './src/public/js');

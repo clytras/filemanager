@@ -1,6 +1,7 @@
 @import "variables";
 @import "../../../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "../../../../bower_components/crip-transparent-progressbar/resources/sass/styles";
+@import "../../../../bower_components/angular-material/angular-material.scss";
 @import "mixins";
 @import "components/contextmenu";
 @import "components/loadingbar";
@@ -12,7 +13,6 @@
 @import "components/modal";
 @import "dropdown-submenu";
 @import "btn";
-
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
