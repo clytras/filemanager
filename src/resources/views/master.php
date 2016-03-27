@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="{!! App::getLocale() !!}" ng-app="crip.file-manager">
+<html lang="<?php echo App::getLocale() ?>" ng-app="crip.file-manager">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta id="settings"
-          data-sizes="{!! str_replace('"', '\'', json_encode(config('cripfilemanager.thumbs'))) !!}"
-          data-params="{!! str_replace('"', '\'', json_encode(Input::all())) !!}"
-          data-public-url="{!! config('cripfilemanager.public_href') !!}"
-          data-base-url="/{!! App::getLocale() !!}/{!! trim(config('cripfilemanager.base_url'), '/\\') !!}/">
-    <title>{!! trans('cripfilemanager::app.title') !!}</title>
+          data-sizes="<?php echo str_replace('"', '\'', json_encode(config('cripfilemanager.thumbs'))) ?>"
+          data-params="<?php echo str_replace('"', '\'', json_encode(Input::all())) ?>"
+          data-public-url="<?php echo config('cripfilemanager.public_href') ?>"
+          data-base-url="/<?php echo App::getLocale() ?>/<?php echo trim(config('cripfilemanager.base_url'), '/\\') ?>/">
+    <title><?php echo trans('cripfilemanager::app.title') ?></title>
 
-    <link href="{!! config('cripfilemanager.public_href') !!}/css/file-manager.css" rel="stylesheet">
+    <link href="<?php echo config('cripfilemanager.public_href') ?>/css/file-manager.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -29,82 +29,82 @@
                 <li>
                     <a href
                        class="action-vertical"
-                       title="{!! trans('cripfilemanager::app.actions_new_dir') !!}"
+                       title="<?php echo trans('cripfilemanager::app.actions_new_dir') ?>"
                        ng-class="{'disabled': !canCreateFolder()}"
-                       ng-click="createFolder('{!! trans("cripfilemanager::app.actions_new_dir") !!}')">
+                       ng-click="createFolder('<?php echo trans("cripfilemanager::app.actions_new_dir") ?>')">
                         <img class="action-large"
-                             src="{!! icon('add-folder') !!}"
-                             alt="{!! trans('cripfilemanager::app.actions_new_dir') !!}">
-                        <span class="action-text">{!! trans('cripfilemanager::app.actions_new_dir') !!}</span>
+                             src="<?php echo icon('add-folder') ?>"
+                             alt="<?php echo trans('cripfilemanager::app.actions_new_dir') ?>">
+                        <span class="action-text"><?php echo trans('cripfilemanager::app.actions_new_dir') ?></span>
                     </a>
                     <a href
                        class="action-vertical"
-                       title="{!! trans('cripfilemanager::app.actions_upload') !!}"
+                       title="<?php echo trans('cripfilemanager::app.actions_upload') ?>"
                        ng-class="{'disabled': !canUpload()}"
                        ngf-multiple="true"
                        ngf-select="addFiles($files, $invalidFiles)">
                         <img class="action-large"
-                             src="{!! icon('upload') !!}"
-                             alt="{!! trans('cripfilemanager::app.actions_upload') !!}">
-                        <span class="action-text">{!! trans('cripfilemanager::app.actions_upload') !!}</span>
+                             src="<?php echo icon('upload') ?>"
+                             alt="<?php echo trans('cripfilemanager::app.actions_upload') ?>">
+                        <span class="action-text"><?php echo trans('cripfilemanager::app.actions_upload') ?></span>
                     </a>
                     <div class="actions-horizontal">
                         <a href
                            class="action-horizontal"
-                           title="{!! trans('cripfilemanager::app.actions_upload_all') !!}"
+                           title="<?php echo trans('cripfilemanager::app.actions_upload_all') ?>"
                            ng-class="{'disabled': !hasUploads()}"
                            ng-click="upload()">
                             <img class="action-small"
-                                 src="{!! icon('upload') !!}"
-                                 alt="{!! trans('cripfilemanager::app.actions_upload_all') !!}">
-                            <span class="action-text"><!--{!! trans('cripfilemanager::app.actions_upload_all') !!}--></span>
+                                 src="<?php echo icon('upload') ?>"
+                                 alt="<?php echo trans('cripfilemanager::app.actions_upload_all') ?>">
+                            <span class="action-text"><!--<?php echo trans('cripfilemanager::app.actions_upload_all') ?>--></span>
                         </a>
                     </div>
                 </li>
                 <li>
                     <a href
                        class="action-vertical"
-                       title="{!! trans('cripfilemanager::app.actions_delete') !!}"
+                       title="<?php echo trans('cripfilemanager::app.actions_delete') ?>"
                        ng-class="{'disabled': !canDeleteSelected()}"
                        ng-click="deleteSelected($event)">
                         <img class="action-large"
-                             src="{!! icon('cancel') !!}"
-                             alt="{!! trans('cripfilemanager::app.actions_delete') !!}">
-                        <span class="action-text">{!! trans('cripfilemanager::app.actions_delete') !!}</span>
+                             src="<?php echo icon('cancel') ?>"
+                             alt="<?php echo trans('cripfilemanager::app.actions_delete') ?>">
+                        <span class="action-text"><?php echo trans('cripfilemanager::app.actions_delete') ?></span>
                     </a>
                     <a href
                        class="action-vertical"
-                       title="{!! trans('cripfilemanager::app.actions_rename') !!}"
+                       title="<?php echo trans('cripfilemanager::app.actions_rename') ?>"
                        ng-class="{'disabled': !canRenameSelected()}"
                        ng-click="enableRenameSelected($event)">
                         <img class="action-large"
-                             src="{!! icon('rename') !!}"
-                             alt="{!! trans('cripfilemanager::app.actions_rename') !!}">
-                        <span class="action-text">{!! trans('cripfilemanager::app.actions_rename') !!}</span>
+                             src="<?php echo icon('rename') ?>"
+                             alt="<?php echo trans('cripfilemanager::app.actions_rename') ?>">
+                        <span class="action-text"><?php echo trans('cripfilemanager::app.actions_rename') ?></span>
                     </a>
                 </li>
                 <li>
                     <a href
                        id="action-properties"
                        class="action-vertical"
-                       title="{!! trans('cripfilemanager::app.actions_properties') !!}"
+                       title="<?php echo trans('cripfilemanager::app.actions_properties') ?>"
                        ng-class="{'disabled': !hasProperties()}"
                        ng-click="openProperties($event)">
                         <img class="action-large"
-                             src="{!! icon('view-details') !!}"
-                             alt="{!! trans('cripfilemanager::app.actions_properties') !!}">
-                        <span class="action-text">{!! trans('cripfilemanager::app.actions_properties') !!}</span>
+                             src="<?php echo icon('view-details') ?>"
+                             alt="<?php echo trans('cripfilemanager::app.actions_properties') ?>">
+                        <span class="action-text"><?php echo trans('cripfilemanager::app.actions_properties') ?></span>
                     </a>
                     <div class="actions-horizontal">
                         <a href
                            class="action-horizontal"
-                           title="{!! trans('cripfilemanager::app.actions_open') !!}"
+                           title="<?php echo trans('cripfilemanager::app.actions_open') ?>"
                            ng-class="{'disabled': !canOpenSelected()}"
                            ng-click="openSelected()">
                             <img class="action-small"
-                                 src="{!! icon('open-folder') !!}"
-                                 alt="{!! trans('cripfilemanager::app.actions_open') !!}">
-                            <span class="action-text">{!! trans('cripfilemanager::app.actions_open') !!}</span>
+                                 src="<?php echo icon('open-folder') ?>"
+                                 alt="<?php echo trans('cripfilemanager::app.actions_open') ?>">
+                            <span class="action-text"><?php echo trans('cripfilemanager::app.actions_open') ?></span>
                         </a>
                     </div>
                 </li>
@@ -115,8 +115,8 @@
         <ol class="breadcrumb" ng-controller="BreadcrumbController">
             <li>
                 <a href
-                   title="{!! trans('cripfilemanager::app.breadcrumb_go_to_root') !!}"
-                   ng-click="goToRoot()">{!! trans('cripfilemanager::app.breadcrumb_root') !!}</a>
+                   title="<?php echo trans('cripfilemanager::app.breadcrumb_go_to_root') ?>"
+                   ng-click="goToRoot()"><?php echo trans('cripfilemanager::app.breadcrumb_root') ?></a>
             </li>
             <li ng-if="!breadcrumbHasItems()"></li>
             <li ng-repeat="bdItem in getBreadcrumbItems()" ng-class="{'active': bdItem.isActive}">
@@ -171,7 +171,7 @@
     </div>
 </div>
 
-<script src="{!! config('cripfilemanager.public_href') !!}/js/vendor.js"></script>
-<script src="{!! config('cripfilemanager.public_href') !!}/js/file-manager.js"></script>
+<script src="<?php echo config('cripfilemanager.public_href') ?>/js/vendor.js"></script>
+<script src="<?php echo config('cripfilemanager.public_href') ?>/js/file-manager.js"></script>
 </body>
 </html>
