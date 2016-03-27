@@ -3,6 +3,7 @@
 
     crip.filemanager = ng.module('crip.file-manager', [
         'crip.core',
+        'crip.transparent-progressbar',
         'angular-loading-bar',
         'ngFileUpload',
         'ngCookies',

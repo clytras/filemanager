@@ -4,50 +4,34 @@
     crip.filemanager
         .controller('FileUploadController', FileUploadController);
 
-    FileUploadController.$inject = ['$scope', 'Upload'];
+    FileUploadController.$inject = ['$scope', 'CripManagerUploader'];
 
-    function FileUploadController($scope, Upload) {
+    function FileUploadController($scope, Uploader) {
         activate();
 
         function activate() {
-            $scope.addUpload = addUpload;
-            $scope.upload = upload;
-            $scope.uploads = {
-                files: []
-            };
+            $scope.hasUploads = hasUploads;
+            $scope.files = files;
         }
 
-        function addUpload(files) {
-            ng.forEach(files, function(file){
-                $scope.uploads.files.push(file);
-            });
-        }
-
+        /**
+         * Determines if there files in queue for upload
+         *
+         * @returns {boolean}
+         */
         function hasUploads() {
-            return $scope.uploads.files.length > 0;
+            return Uploader.hasFiles();
         }
 
-        function upload() {
-            if(!hasUploads())
-                return;
-
-            ng.forEach($scope.uploads.files, function(file){
-                file.upload = Upload.upload({
-                    url: $scope.fileUrl('upload'), // TODO: add current dir path from Breadcrumb service
-                    data: {file: file}
-                });
-
-                file.upload.then(function (response) {
-                        file.result = response.data;
-                }, function (response) {
-                    if (response.status > 0)
-                        $scope.errorMsg = response.status + ': ' + response.data;
-                }, function (evt) {
-                    file.progress = Math.min(100, parseInt(100.0 *
-                        evt.loaded / evt.total));
-                });
-            });
+        /**
+         * Get files from queue
+         *
+         * @returns {Array}
+         */
+        function files() {
+            return Uploader.files;
         }
+
     }
 
 })(angular, window.crip);

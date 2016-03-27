@@ -16,7 +16,7 @@ crip.scripts([
     '/ng-file-upload/ng-file-upload.js',
     '/angular-material/angular-material.min.js',
     '/crip-angular-core/build/crip-core.js',
-    '/crip-transparent-progressbar/build/transparent-progressbar.min.js'
+    '/crip-transparent-progressbar/build/transparent-progressbar.js'
 ], 'vendor', 'scripts-core', 'bower_components', './src/public/js');
 
 // Concat, uglify and sourcemap application code

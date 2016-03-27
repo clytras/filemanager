@@ -29,6 +29,10 @@
     padding: 10px 10px 0 10px;
     width: 100%;
 
+    &.error {
+      color: $brand-danger;
+    }
+
     .text {
       white-space: nowrap;
       text-overflow: ellipsis;

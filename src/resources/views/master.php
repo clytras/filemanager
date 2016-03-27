@@ -9,7 +9,8 @@
           data-sizes="<?php echo str_replace('"', '\'', json_encode(config('cripfilemanager.thumbs'))) ?>"
           data-params="<?php echo str_replace('"', '\'', json_encode(Input::all())) ?>"
           data-public-url="<?php echo config('cripfilemanager.public_href') ?>"
-          data-base-url="/<?php echo App::getLocale() ?>/<?php echo trim(config('cripfilemanager.base_url'), '/\\') ?>/">
+          data-base-url="/<?php echo App::getLocale() ?>/<?php echo trim(config('cripfilemanager.base_url'),
+              '/\\') ?>/">
     <title><?php echo trans('cripfilemanager::app.title') ?></title>
 
     <link href="<?php echo config('cripfilemanager.public_href') ?>/css/file-manager.css" rel="stylesheet">
@@ -48,6 +49,7 @@
                              alt="<?php echo trans('cripfilemanager::app.actions_upload') ?>">
                         <span class="action-text"><?php echo trans('cripfilemanager::app.actions_upload') ?></span>
                     </a>
+
                     <div class="actions-horizontal">
                         <a href
                            class="action-horizontal"
@@ -57,7 +59,8 @@
                             <img class="action-small"
                                  src="<?php echo icon('upload') ?>"
                                  alt="<?php echo trans('cripfilemanager::app.actions_upload_all') ?>">
-                            <span class="action-text"><!--<?php echo trans('cripfilemanager::app.actions_upload_all') ?>--></span>
+                            <span
+                                class="action-text"><?php echo trans('cripfilemanager::app.actions_upload_all_text') ?></span>
                         </a>
                     </div>
                 </li>
@@ -95,6 +98,7 @@
                              alt="<?php echo trans('cripfilemanager::app.actions_properties') ?>">
                         <span class="action-text"><?php echo trans('cripfilemanager::app.actions_properties') ?></span>
                     </a>
+
                     <div class="actions-horizontal">
                         <a href
                            class="action-horizontal"
@@ -128,6 +132,21 @@
                    ng-bind="bdItem.name"></a>
             </li>
         </ol>
+    </div>
+
+    <div ng-controller="FileUploadController" ng-show="hasUploads()">
+        <div ng-repeat="file in files()"
+             class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center manager-item-wrapper"
+             crip-progressbar="file.progress">
+            <div class="img-wrapper">
+                <div ng-show="file.isHtml5"
+                     class="img-responsive manager-img"
+                     crip-thumb="{file: file, height: 100}"></div>
+            </div>
+            <div class="item-footer" ng-class="{'error': file.error}">
+                <div class="text" ng-bind="file.name"></div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-xs-12">
