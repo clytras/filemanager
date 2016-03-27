@@ -4,9 +4,9 @@
     crip.filemanager
         .service('CripManagerContent', Content);
 
-    Content.$inject = ['ItemService', 'SelectService'];
+    Content.$inject = ['ItemService', 'SelectService', 'Dir'];
 
-    function Content(ItemService, SelectService) {
+    function Content(ItemService, SelectService, Dir) {
         var content = {
             items: [],
             get: getItems,
@@ -43,6 +43,10 @@
         function add(item) {
             if (!ng.isDefined(item.is_extended)) {
                 ItemService.extendItem(item);
+            }
+
+            if(typeof item !== 'Dir') {
+                item = new Dir(item);
             }
 
             content.items.push(item);

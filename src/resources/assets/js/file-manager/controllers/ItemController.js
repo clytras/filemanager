@@ -40,7 +40,7 @@
          */
         function dblclick(e, item) {
             e.stopPropagation();
-            $log.info('dblclick', item);
+            //$log.info('dblclick', item);
 
             if (item.isDir) {
                 Location.change(item);
