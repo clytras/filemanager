@@ -1,7 +1,6 @@
 .manager-item-wrapper {
 
   height: 154px;
-  overflow: hidden;
   padding: 10px 10px 5px 10px;
 
   &.active {
@@ -25,8 +24,8 @@
 
   .item-footer {
     height: 39px;
-    overflow: hidden;
-    padding: 10px 10px 0 10px;
+    padding: 10px 30px 0 0;
+    position: relative;
     width: 100%;
 
     &.error {
@@ -42,6 +41,27 @@
     .rename input {
       width: 100%;
     }
-  }
 
+
+    .md-menu {
+      position: absolute;
+      right: -10px;
+      bottom: -9px;
+
+      .md-icon-button.md-button {
+        padding: 5px;
+        margin: 0;
+
+        .crip-menu-icon {
+          height: 30px;
+          width: 30px;
+        }
+      }
+    }
+  }
+}
+
+.crip-menu-item-icon {
+  height: 30px;
+  width: 30px;
 }

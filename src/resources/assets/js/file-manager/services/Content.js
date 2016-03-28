@@ -12,7 +12,8 @@
             get: getItems,
             add: add,
             remove: remove,
-            removeItems: removeItems
+            removeItems: removeItems,
+            hasProperties: hasProperties
         };
 
         ng.extend(content, SelectService);
@@ -59,6 +60,20 @@
          */
         function remove(item) {
             content.items.splice(content.items.indexOf(item), 1);
+        }
+
+        /**
+         * Determines is item has properties
+         *
+         * @param {object} item
+         * @returns {boolean}
+         */
+        function hasProperties(item) {
+            if(!item) {
+                return false;
+            }
+
+            return !item.isDirUp
         }
     }
 })(angular, window.crip);

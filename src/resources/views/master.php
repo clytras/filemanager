@@ -182,6 +182,33 @@
                                    ng-click="$event.stopPropagation()"
                                    ng-model="item.name">
                         </div>
+                        <md-menu>
+                            <md-button class="md-icon-button"
+                                       aria-label="---"
+                                       ng-click="$mdOpenMenu($event)">
+                                <img class="crip-menu-icon"
+                                     src="<?php echo icon('menu') ?>"
+                                     alt="<?php echo trans('cripfilemanager::app.item_actions_title_img') ?>">
+                            </md-button>
+                            <md-menu-content width="4">
+                                <md-menu-item ng-if="canDelete(item)">
+                                    <md-button ng-click="deleteItem(item)">
+                                        <img class="crip-menu-item-icon"
+                                             src="<?php echo icon('cancel') ?>"
+                                             alt="<?php echo trans('cripfilemanager::app.item_actions_delete_img') ?>">
+                                        <?php echo trans('cripfilemanager::app.item_actions_delete') ?>
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item ng-if="hasProperties(item)">
+                                    <md-button ng-click="openProperties(item)">
+                                        <img class="crip-menu-item-icon"
+                                             src="<?php echo icon('view-details') ?>"
+                                             alt="<?php echo trans('cripfilemanager::app.item_actions_properties_img') ?>">
+                                        <?php echo trans('cripfilemanager::app.item_actions_properties') ?>
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
                     </div>
                 </div>
 

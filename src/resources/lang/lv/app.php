@@ -32,6 +32,7 @@ return [
     'actions_upload_all_text' => 'Sākt',
     'breadcrumb_root' => 'Galvenā',
     'breadcrumb_go_to_root' => 'Pāriet uz galveno direktoriju',
+    // Item properties modal details
     'item_properties_modal_title' => 'Detaļas',
     'item_properties_modal_name' => 'Nosaukums',
     'item_properties_modal_date' => 'Pēdējais modifikācijas datums',
@@ -52,6 +53,12 @@ return [
     'item_properties_modal_size_key_sm' => 'Maza izmēra',
     'item_properties_modal_size_key_md' => 'Vidēja izmēra',
     'item_properties_modal_size_key_lg' => 'Liela izmēra',
+    // item context
+    'item_actions_title_img' => 'Darbības',
+    'item_actions_properties' => 'Detaļas',
+    'item_actions_properties_img' => 'Detaļas',
+    'item_actions_delete' => 'Dzēst failu',
+    'item_actions_delete_img' => 'Dzēst failu',
     '' => '',
 
     /*'context_delete' => 'Dzēst ierakstu',

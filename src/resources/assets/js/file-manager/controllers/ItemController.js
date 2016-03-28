@@ -5,10 +5,11 @@
         .controller('ItemController', ItemController);
 
     ItemController.$inject = [
-        '$log', '$scope', 'focus', 'CripManagerContent', 'CripManagerLocation', 'CripManagerActions'
+        '$log', '$scope', 'focus', 'CripManagerContent', 'CripManagerLocation', 'CripManagerActions',
+        'CripPropertiesModal'
     ];
 
-    function ItemController($log, $scope, focus, Content, Location, Actions) {
+    function ItemController($log, $scope, focus, Content, Location, Actions, PropertiesModal) {
         activate();
 
         function activate() {
@@ -16,6 +17,10 @@
             $scope.dblclick = dblclick;
             $scope.isSelected = isSelected;
             $scope.enableRename = enableRename;
+            $scope.canDelete = canDelete;
+            $scope.deleteItem = deleteItem;
+            $scope.hasProperties = hasProperties;
+            $scope.openProperties = openProperties;
         }
 
         /**
@@ -67,6 +72,27 @@
             var item = Content.getSelectedItem();
             Actions.enableRename(item);
             focus('#{identifier} input[name="name"]'.supplant(item));
+        }
+
+        function canDelete(item) {
+            return Actions.canDelete(item);
+        }
+
+        /**
+         * Delete item from file system
+         *
+         * @param {Object} item
+         */
+        function deleteItem(item) {
+            Actions.delete(item);
+        }
+
+        function hasProperties(item) {
+            return Content.hasProperties(item);
+        }
+
+        function openProperties(item) {
+            PropertiesModal.open(item);
         }
     }
 })(angular, window.crip || (window.crip = {}));

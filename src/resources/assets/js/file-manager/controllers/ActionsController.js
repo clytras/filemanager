@@ -6,11 +6,11 @@
 
     ActionsController.$inject = [
         '$scope', '$mdDialog', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation',
-        'CripManagerUploader'
+        'CripManagerUploader', 'CripPropertiesModal'
     ];
 
     function ActionsController($scope, $mdDialog, focus, Actions, Content, Location,
-                               Uploader) {
+                               Uploader, PropertiesModal) {
         activate();
 
         function activate() {
@@ -130,9 +130,7 @@
          * @returns {boolean}
          */
         function hasProperties() {
-            var item = Content.getSelectedItem();
-
-            return item && !item.isDirUp;
+            return Content.hasProperties(Content.getSelectedItem());
         }
 
         /**
@@ -145,19 +143,7 @@
                 return;
 
             $event.stopPropagation();
-            var item = Content.getSelectedItem(),
-                options = {
-                    clickOutsideToClose: true,
-                    openFrom: '#' + item.identifier,
-                    closeTo: '#' + item.identifier,
-                    templateUrl: $scope.templatePath('item-properties-modal'),
-                    controller: 'ItemPropertiesController',
-                    locals: {
-                        item: item
-                    }
-                };
-
-            $mdDialog.show(options);
+            PropertiesModal.open(Content.getSelectedItem());
         }
 
         /**
