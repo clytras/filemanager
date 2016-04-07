@@ -162,7 +162,8 @@
                      ng-dblclick="dblclick($event, item)"
                      ng-controller="ItemController"
                      ng-class="{'active': isSelected(item)}"
-                     ng-repeat="item in getContent()|filter:folderFilter|orderBy:order.by:order.isReverse">
+                     ng-repeat="item in getContent()|filter:folderFilter|orderBy:order.by:order.isReverse"
+                     crip-contextmenu="openMenu(item, $event)">
                     <div class="img-wrapper">
                         <img src
                              ng-src="{{item.thumb}}"
@@ -182,10 +183,10 @@
                                    ng-click="$event.stopPropagation()"
                                    ng-model="item.name">
                         </div>
-                        <md-menu>
+                        <md-menu ng-init="item.menu = this" use-backdrop="false">
                             <md-button class="md-icon-button"
                                        aria-label="---"
-                                       ng-click="$mdOpenMenu($event)">
+                                       ng-click="openMenu(item, $event)">
                                 <img class="crip-menu-icon"
                                      src="<?php echo icon('menu') ?>"
                                      alt="<?php echo trans('cripfilemanager::app.item_actions_title_img') ?>">

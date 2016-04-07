@@ -112,10 +112,10 @@
          * @returns {string}
          */
         function getFullName() {
-            if (this.isDir || this.ext === '')
+            if (this.isDir || this.extension === '')
                 return this.name;
             else
-                return '{name}.{ext}'.supplant(this);
+                return '{name}.{extension}'.supplant(this);
         }
 
         /**
@@ -123,7 +123,8 @@
          */
         function saveNewName() {
             var self = this,
-                key = getKey(self.identifier);
+                key = getKey(self.identifier),
+                menu = self.menu;
             self.rename = false;
             if (self.full_name !== self.getFullName()) {
                 var method = self.isDir ? '$renameDir' : '$renameFile';
@@ -131,7 +132,7 @@
                     'old': self.full_name,
                     'new': self.getFullName()
                 }, function (response) {
-                    ng.extend(self, extendItem(response, key));
+                    ng.extend(self, extendItem(response, key), {menu: menu});
                 })
             }
         }

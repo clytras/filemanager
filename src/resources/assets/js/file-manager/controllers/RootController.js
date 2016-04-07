@@ -5,10 +5,10 @@
         .controller('RootController', RootController);
 
     RootController.$inject = [
-        '$scope', 'CripManagerLocation', 'CripManagerContent', 'CripManagerTrans'
+        '$scope', '$mdMenu', 'CripManagerLocation', 'CripManagerContent', 'CripManagerTrans'
     ];
 
-    function RootController($scope, Location, Content, Trans) {
+    function RootController($scope, $mdMenu, Location, Content, Trans) {
 
         activate();
 
@@ -22,6 +22,7 @@
 
         function deselect() {
             Content.deselect();
+            $mdMenu.hide();
         }
     }
 })(angular, window.crip || (window.crip = {}));

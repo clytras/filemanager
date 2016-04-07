@@ -5,11 +5,11 @@
         .controller('ActionsController', ActionsController);
 
     ActionsController.$inject = [
-        '$scope', '$mdDialog', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation',
+        '$scope', '$mdMenu', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation',
         'CripManagerUploader', 'CripPropertiesModal'
     ];
 
-    function ActionsController($scope, $mdDialog, focus, Actions, Content, Location,
+    function ActionsController($scope, $mdMenu, focus, Actions, Content, Location,
                                Uploader, PropertiesModal) {
         activate();
 
@@ -92,6 +92,9 @@
          * @param $event
          */
         function enableRenameSelected($event) {
+            // close menu if is open when enabling rename function
+            $mdMenu.hide();
+
             var item = Content.getSelectedItem();
 
             // if event is presented, stop it propagation

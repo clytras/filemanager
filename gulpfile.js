@@ -14,7 +14,7 @@ crip.scripts([
     '/angular-loading-bar/build/loading-bar.js',
     '/ng-file-upload-shim/ng-file-upload-shim.min.js',
     '/ng-file-upload/ng-file-upload.js',
-    '/angular-material/angular-material.min.js',
+    '/crip-angular-material/dist/angular-material.js',
     '/crip-angular-core/build/crip-core.js',
     '/crip-transparent-progressbar/build/transparent-progressbar.js'
 ], 'vendor', 'scripts-core', 'bower_components', './src/public/js');

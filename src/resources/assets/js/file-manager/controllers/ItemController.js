@@ -5,11 +5,12 @@
         .controller('ItemController', ItemController);
 
     ItemController.$inject = [
-        '$log', '$scope', 'focus', 'CripManagerContent', 'CripManagerLocation', 'CripManagerActions',
-        'CripPropertiesModal'
+        '$log', '$scope', '$mdMenu', 'focus', 'CripManagerContent', 'CripManagerLocation',
+        'CripManagerActions', 'CripPropertiesModal'
     ];
 
-    function ItemController($log, $scope, focus, Content, Location, Actions, PropertiesModal) {
+    function ItemController($log, $scope, $mdMenu, focus, Content, Location,
+                            Actions, PropertiesModal) {
         activate();
 
         function activate() {
@@ -21,6 +22,7 @@
             $scope.deleteItem = deleteItem;
             $scope.hasProperties = hasProperties;
             $scope.openProperties = openProperties;
+            $scope.openMenu = openMenu;
         }
 
         /**
@@ -35,6 +37,7 @@
             Content.updateSelected();
             Content.deselect();
             Content.selectSingle(item);
+            $mdMenu.hide();
         }
 
         /**
@@ -69,6 +72,7 @@
          */
         function enableRename($event) {
             $event.stopPropagation();
+            $mdMenu.hide();
             var item = Content.getSelectedItem();
             Actions.enableRename(item);
             focus('#{identifier} input[name="name"]'.supplant(item));
@@ -93,6 +97,12 @@
 
         function openProperties(item) {
             PropertiesModal.open(item);
+        }
+
+        function openMenu(item, $event) {
+             $mdMenu.hide().then(function () {
+                item.menu.$mdOpenMenu($event);
+             });
         }
     }
 })(angular, window.crip || (window.crip = {}));
