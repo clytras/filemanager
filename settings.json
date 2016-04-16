@@ -1,0 +1,21 @@
+{
+  "log": true,
+  "copy": {
+    "base": "src/public"
+  },
+  "css": {
+    "sass": {
+      "base": "src/resources/assets/sass"
+    }
+  },
+  "js": {
+    "base": "",
+    "output": "./src/public/js",
+    "uglify": {
+      "enabled": true
+    },
+    "sourcemaps": {
+      "enabled": true
+    }
+  }
+}

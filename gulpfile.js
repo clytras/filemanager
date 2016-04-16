@@ -1,70 +1,51 @@
 // dependencies
 var gulp = require('gulp'),
-    crip = require('cripweb');
+    cripweb = require('cripweb')(gulp, 'settings.json');
 
-// Concat, uglify and sourcemap vendor packages
-crip.scripts([
-    '/jquery/dist/jquery.js',
-    '/angular/angular.js',
-    '/angular-resource/angular-resource.js',
-    '/angular-sanitize/angular-sanitize.js',
-    '/angular-cookies/angular-cookies.js',
-    '/angular-animate/angular-animate.js',
-    '/angular-aria/angular-aria.min.js',
-    '/angular-loading-bar/build/loading-bar.js',
-    '/ng-file-upload-shim/ng-file-upload-shim.min.js',
-    '/ng-file-upload/ng-file-upload.js',
-    '/crip-angular-material/dist/angular-material.js',
-    '/crip-angular-core/build/crip-core.js',
-    '/crip-transparent-progressbar/build/transparent-progressbar.js'
-], 'vendor', 'scripts-core', 'bower_components', './src/public/js');
+cripweb(function (crip) {
+    // Concat, uglify and sourcemap vendor packages
+    crip.scripts('vendor', [
+        '/jquery/dist/jquery.js',
+        '/angular/angular.js',
+        '/angular-resource/angular-resource.js',
+        '/angular-sanitize/angular-sanitize.js',
+        '/angular-cookies/angular-cookies.js',
+        '/angular-animate/angular-animate.js',
+        '/angular-aria/angular-aria.min.js',
+        '/angular-loading-bar/build/loading-bar.js',
+        '/ng-file-upload-shim/ng-file-upload-shim.min.js',
+        '/ng-file-upload/ng-file-upload.js',
+        '/crip-angular-material/dist/angular-material.js',
+        '/crip-angular-core/build/crip-core.js',
+        '/crip-transparent-progressbar/build/transparent-progressbar.js'
+    ], true, 'bower_components');
 
-// Concat, uglify and sourcemap application code
-crip.scripts([
-    '**/*module.js',
-    '**/*.js'
-], 'file-manager', 'scripts-app', 'src/resources/assets/js/file-manager', './src/public/js');
+    // Concat, uglify and sourcemap application code
+    crip.scripts('file-manager', ['**/*module.js', '**/*.js'], true, 'src/resources/assets/js/file-manager');
 
-// Copy and minify scripts, whitch cant be concated
-crip.scripts(
-    ['tinymce/plugin.js'], null,
-    'scripts-copy-plugin',
-    'src/resources/assets/js',
-    './src/public/js');
-crip.scripts(
-    ['tinymce/plugins/**/*.js'], null,
-    'scripts-copy-tinymce',
-    'src/resources/assets/js',
-    './src/public/js/tinymce/plugins');
+    // Copy and minify scripts, whitch cant be concated
+    crip.scripts('plugin', 'src/resources/assets/js/tinymce/plugin.js', false)
+        .scripts('tinymce', 'src/resources/assets/js/tinymce/plugins/**/*.js',
+        crip.config.get('js.output') + '/tinymce/plugins', false);
 
-// Compile sass in to css
-crip.sass(
-    'src/resources/assets/sass/app.scss',
-    'src/resources/assets/sass/**/*.scss',
-    'compile-sass',
-    'file-manager',
-    'src/public/css');
+    // Compile sass in to css
+    crip.sass('compile',
+        'app.scss',
+        './src/public/css',
+        'file-manager',
+        'src/resources/assets/sass/**/*.scss');
 
-crip.copy(
-    'bower_components/bootstrap-sass/assets/fonts/**/*.*',
-    'src/public/fonts', 'fonts');
-crip.copy(
-    'src/resources/assets/images/*',
-    'src/public/images', 'images');
-crip.copy(
-    'src/resources/templates/*',
-    'src/public/templates', 'templates');
+    var publishOutput = function (dir) {
+        return '../../public/vendor/crip/cripfilemanager/' + (dir)
+    };
 
-crip.copy(
-    'bower_components/bootstrap-sass/assets/fonts/**/*.*',
-    '../../public/vendor/crip/cripfilemanager/fonts', 'publish-fonts');
-crip.copy('src/public/js/**/*.js', '../../public/vendor/crip/cripfilemanager/js', 'publish-js');
-crip.copy('src/public/css/**/*.css', '../../public/vendor/crip/cripfilemanager/css', 'publish-css');
-crip.copy('src/public/images/*', '../../public/vendor/crip/cripfilemanager/images', 'publish-images');
-crip.copy('src/public/templates/*', '../../public/vendor/crip/cripfilemanager/templates', 'publish-templates');
-crip.copy('src/resources/views/**/*.php', '../../resources/views/vendor/cripfilemanager', 'publish-views');
-
-gulp.task('default', function () {
-    crip.gulp.start('crip-default');
-    crip.watch();
+    crip.copy('fonts', 'assets/fonts/**/*.*', 'src/public/fonts', 'bower_components/bootstrap-sass')
+        .copy('images', 'assets/images/*', 'src/public/images', 'src/resources')
+        .copy('templates', 'templates/*', 'src/public/templates', 'src/resources')
+        .copy('publish-fonts', 'fonts/**/*.*', publishOutput('fonts'))
+        .copy('publish-scripts', 'js/**/*.js', publishOutput('js'))
+        .copy('publish-css', 'css/**/*.css', publishOutput('css'))
+        .copy('publish-images', 'images/*', publishOutput('images'))
+        .copy('publish-templates', 'templates/*', publishOutput('templates'))
+        .copy('publish-views', 'views/**/*.php', '../../resources/views/vendor/cripfilemanager', 'src/resources/');
 });
