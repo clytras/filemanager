@@ -33,7 +33,7 @@ cripweb(function (crip) {
         'app.scss',
         './src/public/css',
         'file-manager',
-        'src/resources/assets/sass/**/*.scss');
+        '**/*.scss');
 
     var publishOutput = function (dir) {
         return '../../public/vendor/crip/cripfilemanager/' + (dir)

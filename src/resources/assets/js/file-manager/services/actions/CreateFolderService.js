@@ -45,7 +45,7 @@
                 var item = Content.add(r);
                 Content.selectSingle(item);
 
-                if (ng.isDefined(callback) && ng.isFunction(callback)) {
+                if (ng.isFunction(callback)) {
                     callback(item);
                 }
             });

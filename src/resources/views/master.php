@@ -157,6 +157,7 @@
 
                 <div id="{{item.identifier}}"
                      title="{{item.full_name}}"
+                     tabindex="{{$index + 51}}"
                      class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center manager-item-wrapper"
                      ng-click="click($event, item)"
                      ng-dblclick="dblclick($event, item)"
