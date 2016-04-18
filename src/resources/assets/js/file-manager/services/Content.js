@@ -39,7 +39,8 @@
         /**
          * Add item to content
          *
-         * @param item
+         * @param {Object} item
+         * @returns {Object}
          */
         function add(item) {
             if (!ng.isDefined(item.is_extended)) {
@@ -51,6 +52,8 @@
             }
 
             content.items.push(item);
+
+            return item;
         }
 
         /**

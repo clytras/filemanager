@@ -42,10 +42,11 @@
                 create._createInProgress = false;
 
                 // Notify controllers to handle UI changes
-                Content.add(r);
-                Content.selectSingle(r);
+                var item = Content.add(r);
+                Content.selectSingle(item);
+
                 if (ng.isDefined(callback) && ng.isFunction(callback)) {
-                    callback(r);
+                    callback(item);
                 }
             });
         }
