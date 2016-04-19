@@ -3,6 +3,7 @@
 @import "../../../../bower_components/crip-transparent-progressbar/resources/sass/styles";
 @import "../../../../bower_components/angular-material/angular-material.scss";
 @import "mixins";
+@import "responsive";
 @import "components/contextmenu";
 @import "components/loadingbar";
 @import "components/notification";
@@ -11,7 +12,6 @@
 @import "components/uploader";
 @import "components/actions";
 @import "components/modal";
-@import "dropdown-submenu";
 @import "btn";
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {

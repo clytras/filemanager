@@ -1,11 +1,17 @@
 .manager-item-wrapper {
+  padding: 5px 15px 5px 1px;
+  border-bottom: 1px solid $manager-border-color;
 
-  height: 154px;
-  padding: 10px 10px 5px 10px;
+  .img-wrapper {
+    height: 32px;
+    float: left;
+    width: 32px;
+  }
 
   &.active {
     background-color: transparentize($link-color, .9);
     outline: 1px solid transparentize($link-color, .5);
+    border-bottom-color: transparent;
   }
 
   &:hover {
@@ -13,9 +19,8 @@
   }
 
   .img-wrapper {
-    height: 100px;
     overflow: hidden;
-    width: 100%;
+    display: inline-block;
 
     .manager-img {
       margin: 0 auto;
@@ -23,10 +28,7 @@
   }
 
   .item-footer {
-    height: 39px;
-    padding: 10px 30px 0 0;
-    position: relative;
-    width: 100%;
+    margin: 7px 24px 0 40px;
 
     &.error {
       color: $brand-danger;
@@ -34,19 +36,25 @@
 
     .text {
       white-space: nowrap;
+      text-align: left;
       text-overflow: ellipsis;
       overflow: hidden;
     }
 
-    .rename input {
-      width: 100%;
+    .rename {
+      position: relative;
+      input {
+        position: relative;
+        top: -2px;
+        width: 100%;
+      }
     }
 
-
     .md-menu {
+      padding: 1px 0;
       position: absolute;
-      right: -10px;
-      bottom: -9px;
+      right: 0;
+      bottom: 0;
 
       .md-icon-button.md-button {
         padding: 5px;
@@ -57,6 +65,35 @@
           width: 30px;
         }
       }
+    }
+  }
+
+  @media (min-width: $screen-sm-min) {
+    height: 154px;
+    padding: 10px 10px 5px 10px;
+    border: none;
+
+    .img-wrapper {
+      height: 100px;
+      float: none;
+      width: 100%;
+    }
+
+    .item-footer {
+      margin: 0;
+      height: 39px;
+      padding-top: 10px;
+      position: relative;
+      width: 100%;
+
+      .text {
+        text-align: center;
+      }
+    }
+
+    .md-menu {
+      opacity: 0;
+      z-index: -1;
     }
   }
 }
