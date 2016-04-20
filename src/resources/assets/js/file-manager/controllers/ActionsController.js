@@ -33,6 +33,7 @@
             $scope.hasUploads = hasUploads;
             $scope.addFiles = addFiles;
             $scope.upload = upload;
+            $scope.cancelUpload = cancelUpload;
         }
 
         /**
@@ -182,6 +183,10 @@
          */
         function upload() {
             Uploader.start();
+        }
+
+        function cancelUpload() {
+            Uploader.clean();
         }
     }
 })(angular, jQuery, window.crip || (window.crip = {}));

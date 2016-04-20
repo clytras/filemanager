@@ -62,6 +62,17 @@
                             <span
                                 class="action-text"><?php echo trans('cripfilemanager::app.actions_upload_all_text') ?></span>
                         </a>
+                        <a href
+                           class="action-horizontal"
+                           title="<?php echo trans('cripfilemanager::app.actions_cancel_upload_all') ?>"
+                           ng-class="{'disabled': !hasUploads()}"
+                           ng-click="cancelUpload()">
+                            <img class="action-small"
+                                 src="<?php echo icon('cancel') ?>"
+                                 alt="<?php echo trans('cripfilemanager::app.actions_cancel_upload_all') ?>">
+                            <span
+                                class="action-text"><?php echo trans('cripfilemanager::app.actions_cancel_upload_all_text') ?></span>
+                        </a>
                     </div>
                 </li>
                 <li>
@@ -175,6 +186,7 @@
                             </div>
                             <div class="item-footer">
                                 <div class="text"
+                                     tabindex="-1"
                                      ng-if="!item.rename"
                                      ng-bind="item.full_name"
                                      ng-dblclick="enableRename($event)"></div>

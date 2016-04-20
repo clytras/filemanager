@@ -13,6 +13,7 @@
             add: addFile,
             hasFiles: hasFiles,
             start: start,
+            clean: clean,
             settings: {
                 status: 200,
                 error: '',
@@ -83,6 +84,12 @@
             });
         }
 
+        /**
+         * Remove all files from uploads
+         */
+        function clean() {
+            uploader.files = [];
+        }
     }
 
 })(angular, window.crip);

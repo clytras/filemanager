@@ -22,6 +22,7 @@ return [
     // master
     'title' => 'Crip File Manager',
     'item_title_open_dir' => 'Atvērt direktoriju',
+    //Actions
     'actions_new_dir' => 'Jauna direktorija',
     'actions_rename' => 'Pārsaukt',
     'actions_delete' => 'Dzēst',
@@ -30,6 +31,9 @@ return [
     'actions_upload' => 'Augšuplādēt',
     'actions_upload_all' => 'Augšuplādēt visu',
     'actions_upload_all_text' => 'Sākt',
+    'actions_cancel_upload_all' => 'Atcelt visu failu augšuplādi',
+    'actions_cancel_upload_all_text' => 'Atcelt',
+    // Breadcrumb
     'breadcrumb_root' => 'Galvenā',
     'breadcrumb_go_to_root' => 'Pāriet uz galveno direktoriju',
     // Item properties modal details
