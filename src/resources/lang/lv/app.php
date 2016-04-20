@@ -56,9 +56,13 @@ return [
     // item context
     'item_actions_title_img' => 'Darbības',
     'item_actions_properties' => 'Detaļas',
-    'item_actions_properties_img' => 'Detaļas',
-    'item_actions_delete' => 'Dzēst failu',
-    'item_actions_delete_img' => 'Dzēst failu',
+    'item_actions_properties_img' => 'Skatīt detaļas',
+    'item_actions_delete' => 'Dzēst',
+    'item_actions_delete_img' => 'Dzēst failu/direktoriju',
+    'item_actions_open' => 'Atvērt',
+    'item_actions_open_img' => 'Atvērt direktoriju',
+    'item_actions_rename' => 'Pārsaukt',
+    'item_actions_rename_img' => 'Pārsaukt elementu',
     '' => '',
 
     /*'context_delete' => 'Dzēst ierakstu',

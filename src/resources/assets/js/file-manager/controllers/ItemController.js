@@ -23,6 +23,9 @@
             $scope.hasProperties = hasProperties;
             $scope.openProperties = openProperties;
             $scope.openMenu = openMenu;
+            $scope.canOpen = canOpen;
+            $scope.openDir = openDir;
+            $scope.canRename = canRename;
         }
 
         /**
@@ -71,9 +74,18 @@
          * @param $event
          */
         function enableRename($event) {
-            $event.stopPropagation();
+            if ($event.stopPropagation)
+                $event.stopPropagation();
+
             $mdMenu.hide();
-            var item = Content.getSelectedItem();
+            var item;
+
+            if($event.is_extended) {
+                item = $event;
+                Content.selectSingle(item);
+            } else
+                item = Content.getSelectedItem();
+
             Actions.enableRename(item);
             focus('#{identifier} input[name="name"]'.supplant(item));
         }
@@ -100,9 +112,24 @@
         }
 
         function openMenu(item, $event) {
-             $mdMenu.hide().then(function () {
+            $mdMenu.hide().then(function () {
                 item.menu.$mdOpenMenu($event);
-             });
+            });
+        }
+
+        function canOpen(item) {
+            return item.isDir;
+        }
+
+        function openDir(dir) {
+            if (!canOpen(dir))
+                return;
+
+            Location.change(dir);
+        }
+
+        function canRename(item) {
+            return !item.isDirUp;
         }
     }
 })(angular, window.crip || (window.crip = {}));

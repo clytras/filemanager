@@ -156,16 +156,17 @@
                 </div>
                 <div class="col-xs-8 col-md-9 col-lg-10" ng-controller="DirContentController">
                     <div class="row crip-content-wrapper">
-                        <div id="{{item.identifier}}"
-                             title="{{item.full_name}}"
-                             tabindex="{{$index + 51}}"
-                             class="col-xs-12 col-sm-6 col-md-3 col-lg-2 text-center manager-item-wrapper"
-                             ng-click="click($event, item)"
-                             ng-dblclick="dblclick($event, item)"
-                             ng-controller="ItemController"
-                             ng-class="{'active': isSelected(item)}"
-                             ng-repeat="item in getContent()|filter:folderFilter|orderBy:order.by:order.isReverse"
-                             crip-contextmenu="openMenu(item, $event)">
+                        <a href
+                           id="{{item.identifier}}"
+                           title="{{item.full_name}}"
+                           tabindex="{{$index * 2 + 50}}"
+                           class="col-xs-12 col-sm-6 col-md-3 col-lg-2 text-center manager-item-wrapper"
+                           ng-click="click($event, item)"
+                           ng-dblclick="dblclick($event, item)"
+                           ng-controller="ItemController"
+                           ng-class="{'active': isSelected(item)}"
+                           ng-repeat="item in getContent()|filter:folderFilter|orderBy:order.by:order.isReverse"
+                           crip-contextmenu="openMenu(item, $event)">
                             <div class="img-wrapper">
                                 <img src
                                      ng-src="{{item.thumb}}"
@@ -180,6 +181,7 @@
                                 <div class="rename" ng-if="item.rename">
                                     <input type="text"
                                            name="name"
+                                           tabindex="-1"
                                            onfocus="this.select();"
                                            crip-enter="item.saveNewName()"
                                            ng-click="$event.stopPropagation()"
@@ -188,18 +190,27 @@
                                 <md-menu ng-init="item.menu = this" use-backdrop="false">
                                     <md-button class="md-icon-button"
                                                aria-label="---"
-                                               ng-click="openMenu(item, $event)">
+                                               ng-click="openMenu(item, $event)"
+                                               tabindex="{{$index * 2 + 50}}">
                                         <img class="crip-menu-icon"
                                              src="<?php echo icon('menu') ?>"
                                              alt="<?php echo trans('cripfilemanager::app.item_actions_title_img') ?>">
                                     </md-button>
                                     <md-menu-content width="4">
-                                        <md-menu-item ng-if="canDelete(item)">
-                                            <md-button ng-click="deleteItem(item)">
+                                        <md-menu-item ng-if="canOpen(item)">
+                                            <md-button ng-click="openDir(item)">
                                                 <img class="crip-menu-item-icon"
-                                                     src="<?php echo icon('cancel') ?>"
-                                                     alt="<?php echo trans('cripfilemanager::app.item_actions_delete_img') ?>">
-                                                <?php echo trans('cripfilemanager::app.item_actions_delete') ?>
+                                                     src="<?php echo icon('open-folder') ?>"
+                                                     alt="<?php echo trans('cripfilemanager::app.item_actions_open_img') ?>">
+                                                <?php echo trans('cripfilemanager::app.item_actions_open') ?>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-if="canRename(item)">
+                                            <md-button ng-click="enableRename(item)">
+                                                <img class="crip-menu-item-icon"
+                                                     src="<?php echo icon('rename') ?>"
+                                                     alt="<?php echo trans('cripfilemanager::app.item_actions_rename_img') ?>">
+                                                <?php echo trans('cripfilemanager::app.item_actions_rename') ?>
                                             </md-button>
                                         </md-menu-item>
                                         <md-menu-item ng-if="hasProperties(item)">
@@ -210,10 +221,18 @@
                                                 <?php echo trans('cripfilemanager::app.item_actions_properties') ?>
                                             </md-button>
                                         </md-menu-item>
+                                        <md-menu-item ng-if="canDelete(item)">
+                                            <md-button ng-click="deleteItem(item)">
+                                                <img class="crip-menu-item-icon"
+                                                     src="<?php echo icon('cancel') ?>"
+                                                     alt="<?php echo trans('cripfilemanager::app.item_actions_delete_img') ?>">
+                                                <?php echo trans('cripfilemanager::app.item_actions_delete') ?>
+                                            </md-button>
+                                        </md-menu-item>
                                     </md-menu-content>
                                 </md-menu>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>

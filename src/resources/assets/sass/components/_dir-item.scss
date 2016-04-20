@@ -1,12 +1,8 @@
 .manager-item-wrapper {
   padding: 5px 15px 5px 1px;
   border-bottom: 1px solid $manager-border-color;
-
-  .img-wrapper {
-    height: 32px;
-    float: left;
-    width: 32px;
-  }
+  display: block;
+  color: $text-color;
 
   &.active {
     background-color: transparentize($link-color, .9);
@@ -16,6 +12,13 @@
 
   &:hover {
     background-color: transparentize($link-color, .9);
+    color: $text-color;
+  }
+
+  .img-wrapper {
+    height: 32px;
+    float: left;
+    width: 32px;
   }
 
   .img-wrapper {
