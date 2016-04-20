@@ -126,7 +126,7 @@
             </ul>
         </div>
     </div>
-    <div class="row">
+    <div class="row breadcrumb-row">
         <ol class="breadcrumb" ng-controller="BreadcrumbController">
             <li>
                 <a href
@@ -143,6 +143,14 @@
                    ng-bind="bdItem.name"></a>
             </li>
         </ol>
+        <span class="refresh-btn">
+            <a href
+               title="<?php echo trans('cripfilemanager::app.breadcrumb_refresh') ?>"
+               ng-click="refreshContent()">
+                <img src="<?php echo icon('refresh') ?>"
+                     alt="<?php echo trans('cripfilemanager::app.breadcrumb_refresh_img') ?>">
+            </a>
+        </span>
     </div>
 
     <div ng-controller="FileUploadController" ng-show="hasUploads()">

@@ -5,10 +5,10 @@
         .controller('RootController', RootController);
 
     RootController.$inject = [
-        '$scope', '$mdMenu', 'CripManagerLocation', 'CripManagerContent', 'CripManagerTrans'
+        '$scope', '$mdMenu', 'CripManagerLocation', 'CripManagerContent', 'CripManagerTrans', 'CripManagerBreadcrumb'
     ];
 
-    function RootController($scope, $mdMenu, Location, Content, Trans) {
+    function RootController($scope, $mdMenu, Location, Content, Trans, Breadcrumb) {
 
         activate();
 
@@ -18,11 +18,16 @@
             Location.init();
 
             $scope.deselect = deselect;
+            $scope.refreshContent = refreshContent;
         }
 
         function deselect() {
             Content.deselect();
             $mdMenu.hide();
+        }
+
+        function refreshContent() {
+            Location.change(Breadcrumb.current());
         }
     }
 })(angular, window.crip || (window.crip = {}));

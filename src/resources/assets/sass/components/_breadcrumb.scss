@@ -1,0 +1,35 @@
+.breadcrumb-row {
+  position: relative;
+
+  .breadcrumb {
+    border-bottom: 1px solid $manager-border-color;
+    margin-bottom: 0;
+    padding-right: 44px;
+  }
+
+  .refresh-btn {
+    height: 100%;
+    padding: 3px 6px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 42px;
+
+    a {
+      display: block;
+      margin-top: -15px;
+      position: absolute;
+      top: 50%;
+
+      &:hover {
+        outline: 1px solid transparentize($link-color, .5);
+        background-color: transparentize($link-color, .9);
+      }
+    }
+
+    img {
+      height: 30px;
+      width: 30px;
+    }
+  }
+}

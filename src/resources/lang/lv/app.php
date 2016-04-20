@@ -36,6 +36,8 @@ return [
     // Breadcrumb
     'breadcrumb_root' => 'Galvenā',
     'breadcrumb_go_to_root' => 'Pāriet uz galveno direktoriju',
+    'breadcrumb_refresh' => 'Pārlādēt saturu',
+    'breadcrumb_refresh_img' => 'Pārlādēt saturu',
     // Item properties modal details
     'item_properties_modal_title' => 'Detaļas',
     'item_properties_modal_name' => 'Nosaukums',
