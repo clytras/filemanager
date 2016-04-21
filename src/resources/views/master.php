@@ -123,6 +123,31 @@
                         </a>
                     </div>
                 </li>
+                <li>
+                    <div class="actions-horizontal alone">
+                        <a href
+                           class="action-horizontal"
+                           ng-class="{'active': order.isBy('full_name')}"
+                           title="<?php echo trans('cripfilemanager::app.actions_sort_by_name') ?>"
+                           ng-click="order.set('full_name')">
+                            <span class="action-text"><?php echo trans('cripfilemanager::app.actions_sort_by_name_text') ?></span>
+                        </a>
+                        <a href
+                           class="action-horizontal"
+                           ng-class="{'active': order.isBy('bytes')}"
+                           title="<?php echo trans('cripfilemanager::app.actions_sort_by_size') ?>"
+                           ng-click="order.set('bytes')">
+                            <span class="action-text"><?php echo trans('cripfilemanager::app.actions_sort_by_size_text') ?></span>
+                        </a>
+                        <a href
+                           class="action-horizontal"
+                           ng-class="{'active': order.isBy('updated_at')}"
+                           title="<?php echo trans('cripfilemanager::app.actions_sort_by_date') ?>"
+                           ng-click="order.set('updated_at')">
+                            <span class="action-text"><?php echo trans('cripfilemanager::app.actions_sort_by_date_text') ?></span>
+                        </a>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>

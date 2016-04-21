@@ -23,7 +23,7 @@
     margin: 5px;
     padding: 5px;
 
-    &:hover {
+    &:hover, &.active {
       outline: 1px solid transparentize($link-color, .5);
       background-color: transparentize($link-color, .9);
     }
@@ -43,6 +43,15 @@
   .actions-horizontal {
     display: inline-block;
     vertical-align: top;
+
+    &.alone {
+      vertical-align: baseline;
+
+      .action-horizontal {
+        margin: 6px 3px;
+        padding: 0 5px;
+      }
+    }
 
     .action-horizontal {
       display: block;

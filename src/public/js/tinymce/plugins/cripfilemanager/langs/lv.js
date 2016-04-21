@@ -1,4 +1,3 @@
 tinymce.addI18n('lv', {
     "Insert file": "Pievienot failu"
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJjcmlwZmlsZW1hbmFnZXIvbGFuZ3MvbHYuanMiXSwic291cmNlc0NvbnRlbnQiOlsidGlueW1jZS5hZGRJMThuKCdsdicsIHtcclxuICAgIFwiSW5zZXJ0IGZpbGVcIjogXCJQaWV2aWVub3QgZmFpbHVcIlxyXG59KTsiXSwiZmlsZSI6ImNyaXBmaWxlbWFuYWdlci9sYW5ncy9sdi5qcyIsInNvdXJjZVJvb3QiOiIvc291cmNlLyJ9

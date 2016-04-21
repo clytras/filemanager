@@ -33,6 +33,12 @@ return [
     'actions_upload_all_text' => 'Sākt',
     'actions_cancel_upload_all' => 'Atcelt visu failu augšuplādi',
     'actions_cancel_upload_all_text' => 'Atcelt',
+    'actions_sort_by_name' => 'Kārtot sature pēc nosaukuma',
+    'actions_sort_by_name_text' => 'Pēc nosaukuma',
+    'actions_sort_by_size' => 'Kārtot sature pēc izmēra',
+    'actions_sort_by_size_text' => 'Pēc izmēra',
+    'actions_sort_by_date' => 'Kārtot sature pēc datuma',
+    'actions_sort_by_date_text' => 'Pēc datuma',
     // Breadcrumb
     'breadcrumb_root' => 'Galvenā',
     'breadcrumb_go_to_root' => 'Pāriet uz galveno direktoriju',

@@ -5,23 +5,15 @@
         .controller('DirContentController', DirContentController);
 
     DirContentController.$inject = [
-        '$log', '$scope', 'CripManagerContent'
+        '$log', '$scope', 'CripManagerContent', 'CripManagerContentOrder'
     ];
 
-    function DirContentController($log, $scope, Content) {
+    function DirContentController($log, $scope, Content, ContentOrder) {
         activate();
 
         function activate() {
             $scope.folderFilter = folderFilter;
-            $scope.order = {
-                by: orderBy,
-                field: 'full_name',
-                isReverse: false,
-
-                full_name: true,
-                size: false,
-                date: false
-            };
+            $scope.order = ContentOrder;
             $scope.filters = {
                 image: true,
                 media: true,
@@ -32,19 +24,6 @@
             $scope.getContent = function() {
                 return Content.get();
             }
-        }
-
-        function orderBy(item) {
-            var text = 'z {field}';
-            if (item.isDir) {
-                // dir up should be on first place
-                if (item.isDirUp)
-                    return -1;
-                text = '0 {field}';
-            }
-
-            //$log.info($scope.order.field, text.supplant({field: item[$scope.order.field]}), item);
-            return text.supplant({field: item[$scope.order.field]});
         }
 
         function folderFilter(value, index, array) {

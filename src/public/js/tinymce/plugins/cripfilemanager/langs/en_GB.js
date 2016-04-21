@@ -1,4 +1,3 @@
 tinymce.addI18n('en_GB', {
     "Insert file": "Insert file"
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJjcmlwZmlsZW1hbmFnZXIvbGFuZ3MvZW5fR0IuanMiXSwic291cmNlc0NvbnRlbnQiOlsidGlueW1jZS5hZGRJMThuKCdlbl9HQicsIHtcclxuICAgIFwiSW5zZXJ0IGZpbGVcIjogXCJJbnNlcnQgZmlsZVwiXHJcbn0pOyJdLCJmaWxlIjoiY3JpcGZpbGVtYW5hZ2VyL2xhbmdzL2VuX0dCLmpzIiwic291cmNlUm9vdCI6Ii9zb3VyY2UvIn0=
