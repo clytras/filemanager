@@ -36,7 +36,9 @@
                         <img class="action-large"
                              src="<?php echo icon('add-folder') ?>"
                              alt="<?php echo trans('cripfilemanager::app.actions_new_dir') ?>">
-                        <span class="action-text"><?php echo trans('cripfilemanager::app.actions_new_dir') ?></span>
+                        <span class="action-text">
+                            <?php echo trans('cripfilemanager::app.actions_new_dir') ?>
+                        </span>
                     </a>
                     <a href
                        class="action-vertical"
@@ -47,7 +49,9 @@
                         <img class="action-large"
                              src="<?php echo icon('upload') ?>"
                              alt="<?php echo trans('cripfilemanager::app.actions_upload') ?>">
-                        <span class="action-text"><?php echo trans('cripfilemanager::app.actions_upload') ?></span>
+                        <span class="action-text">
+                            <?php echo trans('cripfilemanager::app.actions_upload') ?>
+                        </span>
                     </a>
 
                     <div class="actions-horizontal">
@@ -59,8 +63,9 @@
                             <img class="action-small"
                                  src="<?php echo icon('upload') ?>"
                                  alt="<?php echo trans('cripfilemanager::app.actions_upload_all') ?>">
-                            <span
-                                class="action-text"><?php echo trans('cripfilemanager::app.actions_upload_all_text') ?></span>
+                            <span class="action-text">
+                                <?php echo trans('cripfilemanager::app.actions_upload_all_text') ?>
+                            </span>
                         </a>
                         <a href
                            class="action-horizontal"
@@ -70,8 +75,9 @@
                             <img class="action-small"
                                  src="<?php echo icon('cancel') ?>"
                                  alt="<?php echo trans('cripfilemanager::app.actions_cancel_upload_all') ?>">
-                            <span
-                                class="action-text"><?php echo trans('cripfilemanager::app.actions_cancel_upload_all_text') ?></span>
+                            <span class="action-text">
+                                <?php echo trans('cripfilemanager::app.actions_cancel_upload_all_text') ?>
+                            </span>
                         </a>
                     </div>
                 </li>
@@ -84,7 +90,9 @@
                         <img class="action-large"
                              src="<?php echo icon('cancel') ?>"
                              alt="<?php echo trans('cripfilemanager::app.actions_delete') ?>">
-                        <span class="action-text"><?php echo trans('cripfilemanager::app.actions_delete') ?></span>
+                        <span class="action-text">
+                            <?php echo trans('cripfilemanager::app.actions_delete') ?>
+                        </span>
                     </a>
                     <a href
                        class="action-vertical"
@@ -94,7 +102,9 @@
                         <img class="action-large"
                              src="<?php echo icon('rename') ?>"
                              alt="<?php echo trans('cripfilemanager::app.actions_rename') ?>">
-                        <span class="action-text"><?php echo trans('cripfilemanager::app.actions_rename') ?></span>
+                        <span class="action-text">
+                            <?php echo trans('cripfilemanager::app.actions_rename') ?>
+                        </span>
                     </a>
                 </li>
                 <li>
@@ -107,7 +117,9 @@
                         <img class="action-large"
                              src="<?php echo icon('view-details') ?>"
                              alt="<?php echo trans('cripfilemanager::app.actions_properties') ?>">
-                        <span class="action-text"><?php echo trans('cripfilemanager::app.actions_properties') ?></span>
+                        <span class="action-text">
+                            <?php echo trans('cripfilemanager::app.actions_properties') ?>
+                        </span>
                     </a>
 
                     <div class="actions-horizontal">
@@ -119,7 +131,9 @@
                             <img class="action-small"
                                  src="<?php echo icon('open-folder') ?>"
                                  alt="<?php echo trans('cripfilemanager::app.actions_open') ?>">
-                            <span class="action-text"><?php echo trans('cripfilemanager::app.actions_open') ?></span>
+                            <span class="action-text">
+                                <?php echo trans('cripfilemanager::app.actions_open') ?>
+                            </span>
                         </a>
                     </div>
                 </li>
@@ -130,21 +144,58 @@
                            ng-class="{'active': order.isBy('full_name')}"
                            title="<?php echo trans('cripfilemanager::app.actions_sort_by_name') ?>"
                            ng-click="order.set('full_name')">
-                            <span class="action-text"><?php echo trans('cripfilemanager::app.actions_sort_by_name_text') ?></span>
+                            <span class="action-text">
+                                <?php echo trans('cripfilemanager::app.actions_sort_by_name_text') ?>
+                            </span>
                         </a>
                         <a href
                            class="action-horizontal"
                            ng-class="{'active': order.isBy('bytes')}"
                            title="<?php echo trans('cripfilemanager::app.actions_sort_by_size') ?>"
                            ng-click="order.set('bytes')">
-                            <span class="action-text"><?php echo trans('cripfilemanager::app.actions_sort_by_size_text') ?></span>
+                            <span class="action-text">
+                                <?php echo trans('cripfilemanager::app.actions_sort_by_size_text') ?>
+                            </span>
                         </a>
                         <a href
                            class="action-horizontal"
                            ng-class="{'active': order.isBy('updated_at')}"
                            title="<?php echo trans('cripfilemanager::app.actions_sort_by_date') ?>"
                            ng-click="order.set('updated_at')">
-                            <span class="action-text"><?php echo trans('cripfilemanager::app.actions_sort_by_date_text') ?></span>
+                            <span class="action-text">
+                                <?php echo trans('cripfilemanager::app.actions_sort_by_date_text') ?>
+                            </span>
+                        </a>
+                    </div>
+                </li>
+                <li ng-if="fileType() === 'file'">
+                    <div class="actions-horizontal alone">
+                        <a href
+                           class="action-horizontal"
+                           ng-class="{'active': filters.image}"
+                           title="<?php echo trans('cripfilemanager::app.actions_images_enabled') ?>"
+                           ng-click="filters.toggle('image')">
+                            <span class="action-text">
+                                <?php echo trans('cripfilemanager::app.actions_images_enabled_text') ?>
+                            </span>
+                        </a>
+                        <a href
+                           class="action-horizontal"
+                           ng-class="{'active': filters.media}"
+                           title="<?php echo trans('cripfilemanager::app.actions_media_enabled') ?>"
+                           ng-click="filters.toggle('media')">
+                            <span class="action-text">
+                                <?php echo trans('cripfilemanager::app.actions_media_enabled_text') ?>
+                            </span>
+                        </a>
+                        <a href
+                           class="action-horizontal"
+                           ng-class="{'active': filters.document}"
+                           title="<?php echo trans('cripfilemanager::app.actions_document_enabled') ?>"
+                           ng-click="filters.toggle('document')">
+                            <span class="action-text">
+                                <?php echo trans('cripfilemanager::app.actions_document_enabled_text') ?>
+                            </span>
                         </a>
                     </div>
                 </li>
@@ -209,7 +260,7 @@
                            ng-dblclick="dblclick($event, item)"
                            ng-controller="ItemController"
                            ng-class="{'active': isSelected(item)}"
-                           ng-repeat="item in getContent()|filter:folderFilter|orderBy:order.by:order.isReverse"
+                           ng-repeat="item in getContent()|filter:filter.dir|orderBy:order.by:order.isReverse"
                            crip-contextmenu="openMenu(item, $event)">
                             <div class="img-wrapper">
                                 <img src

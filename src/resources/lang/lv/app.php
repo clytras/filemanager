@@ -39,6 +39,12 @@ return [
     'actions_sort_by_size_text' => 'Pēc izmēra',
     'actions_sort_by_date' => 'Kārtot sature pēc datuma',
     'actions_sort_by_date_text' => 'Pēc datuma',
+    'actions_images_enabled_text' => 'Rādīt attēlus',
+    'actions_images_enabled' => 'Ieslēgt/atslēgt attēlu filtru',
+    'actions_media_enabled_text' => 'Rādīt mēdiju',
+    'actions_media_enabled' => 'Ieslēgt/atslēgt mēdiju filtru',
+    'actions_document_enabled_text' => 'Rādīt dokumentus',
+    'actions_document_enabled' => 'Ieslēgt/atslēgt dokumentu filtru',
     // Breadcrumb
     'breadcrumb_root' => 'Galvenā',
     'breadcrumb_go_to_root' => 'Pāriet uz galveno direktoriju',

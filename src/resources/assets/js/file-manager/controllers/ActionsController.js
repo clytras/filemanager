@@ -6,11 +6,11 @@
 
     ActionsController.$inject = [
         '$scope', '$mdMenu', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation',
-        'CripManagerUploader', 'CripPropertiesModal', 'CripManagerContentOrder'
+        'CripManagerUploader', 'CripPropertiesModal', 'CripManagerContentOrder', 'CripManagerContentFilter'
     ];
 
     function ActionsController($scope, $mdMenu, focus, Actions, Content, Location,
-                               Uploader, PropertiesModal, ContentOrder) {
+                               Uploader, PropertiesModal, ContentOrder, ContentFilter) {
         activate();
 
         function activate() {
@@ -36,6 +36,7 @@
             $scope.cancelUpload = cancelUpload;
 
             $scope.order = ContentOrder;
+            $scope.filters = ContentFilter;
         }
 
         /**

@@ -12,13 +12,20 @@
         var $settings = $('#settings'),
             base_url = $settings.data('base-url'),
             public_url = $settings.data('public-url'),
-            img_sizes = JSON.parse($settings.data('sizes').replaceAll("'", '"'));
+            img_sizes = JSON.parse($settings.data('sizes').replaceAll("'", '"')),
+            params = $settings.data('params');
+
+        if (params.length > 0)
+            params = JSON.parse($settings.data('params').replaceAll("'", '"'));
+
+        var allowed_file_types = ['image', 'media', 'document'];
 
         $rootScope.fireBroadcast = broadcast;
         $rootScope.baseUrl = baseUrl;
         $rootScope.publicUrl = publicUrl;
         $rootScope.imgSizes = imgSizes;
         $rootScope.templatePath = templatePath;
+        $rootScope.fileType = fileType;
 
         /**
          * Get plugin dir action url
@@ -107,6 +114,18 @@
             };
 
             return '{url}/templates/{name}.{ext}'.supplant(tmp);
+        }
+
+        /**
+         * Get allowed media type
+         *
+         * @returns {string}
+         */
+        function fileType() {
+            if (allowed_file_types.indexOf(params['type']) === -1)
+                return 'file';
+
+            return params['type'];
         }
     }
 })(angular, jQuery, window.crip || (window.crip = {}));
