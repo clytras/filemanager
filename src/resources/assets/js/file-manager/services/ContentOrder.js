@@ -26,19 +26,50 @@
         /**
          *
          * @param item
-         * @returns {string}
+         * @returns {string|number}
          */
         function orderBy(item) {
-            var text = 'z {field}';
-            if (item.isDir) {
-                // dir up should be on first place
-                if (item.isDirUp)
-                    return -1;
-                text = '0 {field}';
+            var result = -Number.MAX_VALUE / 2;
+            if (typeof item[order.field] === 'number') {
+                if (item.isDir) {
+                    if (!item.isDirUp)
+                        result += item[order.field] + 1;
+
+                    // for reverse sort, dirs should not change position
+                    if (order.isReverse) {
+                        result *= -1;
+                        if (item.isDirUp)
+                            result += Number.MAX_VALUE / 2;
+                    }
+
+                } else
+                    result = item[order.field];
+            } else {
+                if (order.isReverse)
+                    result = '1 {field}';
+                else
+                    result = 'z {field}';
+
+                if (item.isDir) {
+                    // dir up should be on first place
+                    if (item.isDirUp) {
+                        if (order.isReverse)
+                            result = 'zzz';
+                        else
+                            result = '0 0';
+                    }
+                    else {
+                        if (order.isReverse)
+                            result = 'z {field}';
+                        else
+                            result = '1 {field}';
+                    }
+                }
+                result = result.supplant({field: item[order.field]});
             }
 
-            //$log.info($scope.order.field, text.supplant({field: item[$scope.order.field]}), item);
-            return text.supplant({field: item[order.field]});
+            //$log.info(result);
+            return result;
         }
 
         /**
