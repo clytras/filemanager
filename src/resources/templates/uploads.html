@@ -1,0 +1,12 @@
+<div ng-repeat="file in files()"
+     class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center manager-item-wrapper"
+     crip-progressbar="file.progress">
+    <div class="img-wrapper">
+        <div ng-show="file.isHtml5"
+             class="img-responsive manager-img"
+             crip-thumb="{file: file, height: 100}"></div>
+    </div>
+    <div class="item-footer" ng-class="{'error': file.error}">
+        <div class="text" ng-bind="file.name"></div>
+    </div>
+</div>

@@ -1,0 +1,144 @@
+<li>
+    <a href
+       class="action-vertical"
+       crip-trans-title="actions_new_dir"
+       ng-class="{'disabled': !canCreateFolder()}"
+       ng-click="createFolder()">
+    <img class="action-large"
+         crip-trans-alt="actions_new_dir"
+         ng-src="{{icon('add-folder')}}">
+    <span class="action-text" crip-trans="actions_new_dir"></span>
+    </a>
+    <a href
+       class="action-vertical"
+       crip-trans-title="actions_upload"
+       ng-class="{'disabled': !canUpload()}"
+       ngf-multiple="true"
+       ngf-select="addFiles($files, $invalidFiles)">
+        <img class="action-large"
+             crip-trans-alt="actions_upload"
+             ng-src="{{icon('upload')}}">
+        <span class="action-text" crip-trans="actions_upload"></span>
+    </a>
+
+    <div class="actions-horizontal">
+        <a href
+           class="action-horizontal"
+           title="<?php echo trans('cripfilemanager::app.actions_upload_all') ?>"
+           ng-class="{'disabled': !hasUploads()}"
+           ng-click="upload()">
+            <img class="action-small"
+                 ng-src="{{icon('upload')}}"
+                 crip-trans-alt="actions_upload_all">
+            <span class="action-text" crip-trans="actions_upload_all_text"></span>
+        </a>
+        <a href
+           class="action-horizontal"
+           crip-trans-title="actions_cancel_upload_all"
+           ng-class="{'disabled': !hasUploads()}"
+           ng-click="cancelUpload()">
+            <img class="action-small"
+                 ng-src="{{icon('cancel')}}"
+                 crip-trans-alt="actions_cancel_upload_all">
+            <span class="action-text" crip-trans="actions_cancel_upload_all_text"></span>
+        </a>
+    </div>
+</li>
+<li>
+    <a href
+       class="action-vertical"
+       crip-trans-title="actions_delete"
+       ng-class="{'disabled': !canDeleteSelected()}"
+       ng-click="deleteSelected($event)">
+        <img class="action-large"
+             ng-src="{{icon('cancel')}}"
+             crip-trans-alt="actions_delete">
+        <span class="action-text" crip-trans="actions_delete"></span>
+    </a>
+    <a href
+       class="action-vertical"
+       crip-trans-title="actions_rename"
+       ng-class="{'disabled': !canRenameSelected()}"
+       ng-click="enableRenameSelected($event)">
+        <img class="action-large"
+             ng-src="{{icon('rename')}}"
+             crip-trans-alt="actions_rename">
+        <span class="action-text" crip-trans="actions_rename"></span>
+    </a>
+</li>
+<li>
+    <a href
+       id="action-properties"
+       class="action-vertical"
+       crip-trans-title="actions_properties"
+       ng-class="{'disabled': !hasProperties()}"
+       ng-click="openProperties($event)">
+        <img class="action-large"
+             ng-src="{{icon('view-details')}}"
+             crip-trans-alt="actions_properties">
+        <span class="action-text" crip-trans="actions_properties"></span>
+    </a>
+
+    <div class="actions-horizontal">
+        <a href
+           class="action-horizontal"
+           crip-trans-title="actions_open"
+           ng-class="{'disabled': !canOpenSelected()}"
+           ng-click="openSelected()">
+            <img class="action-small"
+                 ng-src="{{icon('open-folder')}}"
+                 crip-trans-alt="actions_open">
+            <span class="action-text" crip-trans="actions_open"></span>
+        </a>
+    </div>
+</li>
+<li>
+    <div class="actions-horizontal alone">
+        <a href
+           class="action-horizontal"
+           ng-class="{'active': order.isBy('full_name')}"
+           crip-trans-title="actions_sort_by_name"
+           ng-click="order.set('full_name')">
+            <span class="action-text" crip-trans="actions_sort_by_name_text"></span>
+        </a>
+        <a href
+           class="action-horizontal"
+           ng-class="{'active': order.isBy('bytes')}"
+           crip-trans-title="actions_sort_by_size"
+           ng-click="order.set('bytes')">
+            <span class="action-text" crip-trans="actions_sort_by_size_text"></span>
+        </a>
+        <a href
+           class="action-horizontal"
+           ng-class="{'active': order.isBy('updated_at')}"
+           crip-trans-title="actions_sort_by_date"
+           ng-click="order.set('updated_at')">
+            <span class="action-text" crip-trans="actions_sort_by_date_text"></span>
+        </a>
+    </div>
+</li>
+<li ng-if="allMediaAllowed()">
+    <div class="actions-horizontal alone">
+        <a href
+           class="action-horizontal"
+           ng-class="{'active': filters.image}"
+           crip-trans-title="actions_images_enabled"
+           ng-click="filters.toggle('image')">
+            <span class="action-text" crip-trans="actions_images_enabled_text"></span>
+        </a>
+        <a href
+           class="action-horizontal"
+           ng-class="{'active': filters.media}"
+           crip-trans-title="actions_media_enabled"
+           ng-click="filters.toggle('media')">
+            <span class="action-text" crip-trans="actions_media_enabled_text"></span>
+        </a>
+        <a href
+           class="action-horizontal"
+           ng-class="{'active': filters.document}"
+           crip-trans-title="actions_document_enabled"
+           ng-click="filters.toggle('document')">
+            <span class="action-text" crip-trans="actions_document_enabled_text"></span>
+        </a>
+    </div>
+</li>

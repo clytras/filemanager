@@ -19,6 +19,7 @@
             $scope.deselect = deselect;
             $scope.refreshContent = refreshContent;
             $scope.icon = Settings.icon;
+            $scope.templatePath = Settings.templatePath;
         }
 
         function deselect() {

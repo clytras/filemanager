@@ -1,0 +1,80 @@
+<div class="row crip-content-wrapper">
+    <a href
+       id="{{item.identifier}}"
+       title="{{item.full_name}}"
+       tabindex="{{$index * 2 + 50}}"
+       class="col-xs-12 col-sm-6 col-md-3 col-lg-2 text-center manager-item-wrapper"
+       ng-click="click($event, item)"
+       ng-dblclick="dblclick($event, item)"
+       ng-controller="ItemController"
+       ng-class="{'active': isSelected(item)}"
+       ng-repeat="item in getContent()|filter:filter.dir|orderBy:order.by:order.isReverse"
+       crip-contextmenu="openMenu(item, $event)">
+        <div class="img-wrapper">
+            <img src
+                 ng-src="{{item.thumb}}"
+                 alt="{{item.full_name}}"
+                 class="img-responsive manager-img">
+        </div>
+        <div class="item-footer">
+            <div class="text"
+                 tabindex="-1"
+                 ng-if="!item.rename"
+                 ng-bind="item.full_name"
+                 ng-dblclick="enableRename($event)"></div>
+            <div class="rename" ng-if="item.rename">
+                <input type="text"
+                       name="name"
+                       tabindex="-1"
+                       onfocus="this.select();"
+                       crip-enter="item.saveNewName()"
+                       ng-click="$event.stopPropagation()"
+                       ng-model="item.name">
+            </div>
+            <md-menu ng-init="item.menu = this" use-backdrop="false">
+                <md-button class="md-icon-button"
+                           aria-label="---"
+                           ng-click="openMenu(item, $event)"
+                           tabindex="{{$index * 2 + 50}}">
+                    <img class="crip-menu-icon"
+                         ng-src="{{icon('menu')}}"
+                         crip-trans-alt="item_actions_title_img">
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item ng-if="canOpen(item)">
+                        <md-button ng-click="openDir(item)" aria-label="-">
+                            <img class="crip-menu-item-icon"
+                                 ng-src="{{icon('open-folder')}}"
+                                 crip-trans-alt="item_actions_open_img">
+                            <span crip-trans="item_actions_open"></span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="canRename(item)">
+                        <md-button ng-click="enableRename(item)" aria-label="-">
+                            <img class="crip-menu-item-icon"
+                                 ng-src="{{icon('rename')}}"
+                                 crip-trans-alt="item_actions_rename_img">
+                            <span crip-trans="item_actions_rename"></span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="hasProperties(item)">
+                        <md-button ng-click="openProperties(item)" aria-label="-">
+                            <img class="crip-menu-item-icon"
+                                 ng-src="{{icon('view-details')}}"
+                                 crip-trans-alt="item_actions_properties_img">
+                            <span crip-trans="item_actions_properties"></span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="canDelete(item)">
+                        <md-button ng-click="deleteItem(item)" aria-label="-">
+                            <img class="crip-menu-item-icon"
+                                 ng-src="{{icon('cancel')}}"
+                                 crip-trans-alt="item_actions_delete_img">
+                            <span crip-trans="item_actions_delete"></span>
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
+    </a>
+</div>

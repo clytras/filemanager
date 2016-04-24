@@ -1,0 +1,25 @@
+<ol class="breadcrumb" ng-controller="BreadcrumbController">
+    <li>
+        <a href
+           crip-trans-title="breadcrumb_go_to_root"
+           crip-trans="breadcrumb_root"
+           ng-click="goToRoot()"></a>
+    </li>
+    <li ng-if="!breadcrumbHasItems()"></li>
+    <li ng-repeat="bdItem in getBreadcrumbItems()" ng-class="{'active': bdItem.isActive}">
+        <span ng-if="bdItem.isActive"
+              ng-bind="bdItem.name"></span>
+
+        <a href ng-if="!bdItem.isActive"
+           ng-click="goTo(bdItem)"
+           ng-bind="bdItem.name"></a>
+    </li>
+</ol>
+<span class="refresh-btn">
+    <a href
+       crip-trans-title="breadcrumb_refresh"
+       ng-click="refreshContent()">
+        <img ng-src="{{icon('refresh')}}"
+             crip-trans-alt="breadcrumb_refresh_img">
+    </a>
+</span>
