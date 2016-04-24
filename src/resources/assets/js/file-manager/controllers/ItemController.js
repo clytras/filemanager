@@ -112,6 +112,7 @@
         }
 
         function openMenu(item, $event) {
+            Content.selectSingle(item);
             $mdMenu.hide().then(function () {
                 item.menu.$mdOpenMenu($event);
             });
