@@ -5,23 +5,18 @@
         .service('CripManagerTrans', Trans);
 
     Trans.$inject = [
-        'CripManagerTranslations'
+        '$log', '$q', 'CripManagerTranslations'
     ];
 
-    function Trans(Translations) {
-        var translations = {};
+    function Trans($log, $q, Translations) {
+        var $deferred = $q.defer(),
+            trans = Translations.get();
 
-        return function (key) {
-            if (key) {
-                return translations[key];
-            }
+        trans.$promise.then(function (values) {
+            $deferred.resolve(values);
+        });
 
-            return {
-                init: function () {
-                    translations = Translations.get();
-                }
-            }
-        };
+        return $deferred.promise;
     }
 
 })(angular, window.crip);

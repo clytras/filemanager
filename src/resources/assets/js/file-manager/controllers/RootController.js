@@ -5,16 +5,15 @@
         .controller('RootController', RootController);
 
     RootController.$inject = [
-        '$scope', '$mdMenu', 'CripManagerLocation', 'CripManagerContent', 'CripManagerTrans', 'CripManagerBreadcrumb'
+        '$scope', '$mdMenu', 'CripManagerLocation', 'CripManagerContent', 'CripManagerBreadcrumb'
     ];
 
-    function RootController($scope, $mdMenu, Location, Content, Trans, Breadcrumb) {
+    function RootController($scope, $mdMenu, Location, Content, Breadcrumb) {
 
         activate();
 
         function activate() {
-            // initialise file manager initial location and load translations
-            Trans().init();
+            // initialise file manager initial location
             Location.init();
 
             $scope.deselect = deselect;

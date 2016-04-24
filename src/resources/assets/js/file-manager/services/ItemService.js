@@ -5,10 +5,10 @@
         .service('ItemService', ItemService);
 
     ItemService.$inject = [
-        '$log', '$rootScope', 'CripManagerTrans'
+        '$log'
     ];
 
-    function ItemService($log, $rootScope, Trans) {
+    function ItemService($log) {
         return {
             'extend': extend,
             'extendItem': extendItem

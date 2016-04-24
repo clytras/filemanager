@@ -30,28 +30,24 @@
                 <li>
                     <a href
                        class="action-vertical"
-                       title="<?php echo trans('cripfilemanager::app.actions_new_dir') ?>"
+                       crip-trans-title="actions_new_dir"
                        ng-class="{'disabled': !canCreateFolder()}"
                        ng-click="createFolder('<?php echo trans("cripfilemanager::app.actions_new_dir") ?>')">
                         <img class="action-large"
-                             src="<?php echo icon('add-folder') ?>"
-                             alt="<?php echo trans('cripfilemanager::app.actions_new_dir') ?>">
-                        <span class="action-text">
-                            <?php echo trans('cripfilemanager::app.actions_new_dir') ?>
-                        </span>
+                             crip-trans-alt="actions_new_dir"
+                             src="<?php echo icon('add-folder') ?>">
+                        <span class="action-text" crip-trans="actions_new_dir"></span>
                     </a>
                     <a href
                        class="action-vertical"
-                       title="<?php echo trans('cripfilemanager::app.actions_upload') ?>"
+                       crip-trans-title="actions_upload"
                        ng-class="{'disabled': !canUpload()}"
                        ngf-multiple="true"
                        ngf-select="addFiles($files, $invalidFiles)">
                         <img class="action-large"
-                             src="<?php echo icon('upload') ?>"
-                             alt="<?php echo trans('cripfilemanager::app.actions_upload') ?>">
-                        <span class="action-text">
-                            <?php echo trans('cripfilemanager::app.actions_upload') ?>
-                        </span>
+                             crip-trans-alt="actions_upload"
+                             src="<?php echo icon('upload') ?>">
+                        <span class="action-text" crip-trans="actions_upload"></span>
                     </a>
 
                     <div class="actions-horizontal">
@@ -62,78 +58,66 @@
                            ng-click="upload()">
                             <img class="action-small"
                                  src="<?php echo icon('upload') ?>"
-                                 alt="<?php echo trans('cripfilemanager::app.actions_upload_all') ?>">
-                            <span class="action-text">
-                                <?php echo trans('cripfilemanager::app.actions_upload_all_text') ?>
-                            </span>
+                                 crip-trans-alt="actions_upload_all">
+                            <span class="action-text" crip-trans="actions_upload_all_text"></span>
                         </a>
                         <a href
                            class="action-horizontal"
-                           title="<?php echo trans('cripfilemanager::app.actions_cancel_upload_all') ?>"
+                           crip-trans-title="actions_cancel_upload_all"
                            ng-class="{'disabled': !hasUploads()}"
                            ng-click="cancelUpload()">
                             <img class="action-small"
                                  src="<?php echo icon('cancel') ?>"
-                                 alt="<?php echo trans('cripfilemanager::app.actions_cancel_upload_all') ?>">
-                            <span class="action-text">
-                                <?php echo trans('cripfilemanager::app.actions_cancel_upload_all_text') ?>
-                            </span>
+                                 crip-trans-alt="actions_cancel_upload_all">
+                            <span class="action-text" crip-trans="actions_cancel_upload_all_text"></span>
                         </a>
                     </div>
                 </li>
                 <li>
                     <a href
                        class="action-vertical"
-                       title="<?php echo trans('cripfilemanager::app.actions_delete') ?>"
+                       crip-trans-title="actions_delete"
                        ng-class="{'disabled': !canDeleteSelected()}"
                        ng-click="deleteSelected($event)">
                         <img class="action-large"
                              src="<?php echo icon('cancel') ?>"
-                             alt="<?php echo trans('cripfilemanager::app.actions_delete') ?>">
-                        <span class="action-text">
-                            <?php echo trans('cripfilemanager::app.actions_delete') ?>
-                        </span>
+                             crip-trans-alt="actions_delete">
+                        <span class="action-text" crip-trans="actions_delete"></span>
                     </a>
                     <a href
                        class="action-vertical"
-                       title="<?php echo trans('cripfilemanager::app.actions_rename') ?>"
+                       crip-trans-title="actions_rename"
                        ng-class="{'disabled': !canRenameSelected()}"
                        ng-click="enableRenameSelected($event)">
                         <img class="action-large"
                              src="<?php echo icon('rename') ?>"
-                             alt="<?php echo trans('cripfilemanager::app.actions_rename') ?>">
-                        <span class="action-text">
-                            <?php echo trans('cripfilemanager::app.actions_rename') ?>
-                        </span>
+                             crip-trans-alt="actions_rename">
+                        <span class="action-text" crip-trans="actions_rename"></span>
                     </a>
                 </li>
                 <li>
                     <a href
                        id="action-properties"
                        class="action-vertical"
-                       title="<?php echo trans('cripfilemanager::app.actions_properties') ?>"
+                       crip-trans-title="actions_properties"
                        ng-class="{'disabled': !hasProperties()}"
                        ng-click="openProperties($event)">
                         <img class="action-large"
                              src="<?php echo icon('view-details') ?>"
-                             alt="<?php echo trans('cripfilemanager::app.actions_properties') ?>">
-                        <span class="action-text">
-                            <?php echo trans('cripfilemanager::app.actions_properties') ?>
-                        </span>
+                             crip-trans-alt="actions_properties">
+                        <span class="action-text" crip-trans="actions_properties"></span>
                     </a>
 
                     <div class="actions-horizontal">
                         <a href
                            class="action-horizontal"
-                           title="<?php echo trans('cripfilemanager::app.actions_open') ?>"
+                           crip-trans-title="actions_open"
                            ng-class="{'disabled': !canOpenSelected()}"
                            ng-click="openSelected()">
                             <img class="action-small"
                                  src="<?php echo icon('open-folder') ?>"
-                                 alt="<?php echo trans('cripfilemanager::app.actions_open') ?>">
-                            <span class="action-text">
-                                <?php echo trans('cripfilemanager::app.actions_open') ?>
-                            </span>
+                                 crip-trans-alt="actions_open">
+                            <span class="action-text" crip-trans="actions_open"></span>
                         </a>
                     </div>
                 </li>
@@ -142,29 +126,23 @@
                         <a href
                            class="action-horizontal"
                            ng-class="{'active': order.isBy('full_name')}"
-                           title="<?php echo trans('cripfilemanager::app.actions_sort_by_name') ?>"
+                           crip-trans-title="actions_sort_by_name"
                            ng-click="order.set('full_name')">
-                            <span class="action-text">
-                                <?php echo trans('cripfilemanager::app.actions_sort_by_name_text') ?>
-                            </span>
+                            <span class="action-text" crip-trans="actions_sort_by_name_text"></span>
                         </a>
                         <a href
                            class="action-horizontal"
                            ng-class="{'active': order.isBy('bytes')}"
-                           title="<?php echo trans('cripfilemanager::app.actions_sort_by_size') ?>"
+                           crip-trans-title="actions_sort_by_size"
                            ng-click="order.set('bytes')">
-                            <span class="action-text">
-                                <?php echo trans('cripfilemanager::app.actions_sort_by_size_text') ?>
-                            </span>
+                            <span class="action-text" crip-trans="actions_sort_by_size_text"></span>
                         </a>
                         <a href
                            class="action-horizontal"
                            ng-class="{'active': order.isBy('updated_at')}"
-                           title="<?php echo trans('cripfilemanager::app.actions_sort_by_date') ?>"
+                           crip-trans-title="actions_sort_by_date"
                            ng-click="order.set('updated_at')">
-                            <span class="action-text">
-                                <?php echo trans('cripfilemanager::app.actions_sort_by_date_text') ?>
-                            </span>
+                            <span class="action-text" crip-trans="actions_sort_by_date_text"></span>
                         </a>
                     </div>
                 </li>
@@ -173,29 +151,23 @@
                         <a href
                            class="action-horizontal"
                            ng-class="{'active': filters.image}"
-                           title="<?php echo trans('cripfilemanager::app.actions_images_enabled') ?>"
+                           crip-trans-title="actions_images_enabled"
                            ng-click="filters.toggle('image')">
-                            <span class="action-text">
-                                <?php echo trans('cripfilemanager::app.actions_images_enabled_text') ?>
-                            </span>
+                            <span class="action-text" crip-trans="actions_images_enabled_text"></span>
                         </a>
                         <a href
                            class="action-horizontal"
                            ng-class="{'active': filters.media}"
-                           title="<?php echo trans('cripfilemanager::app.actions_media_enabled') ?>"
+                           crip-trans-title="actions_media_enabled"
                            ng-click="filters.toggle('media')">
-                            <span class="action-text">
-                                <?php echo trans('cripfilemanager::app.actions_media_enabled_text') ?>
-                            </span>
+                            <span class="action-text" crip-trans="actions_media_enabled_text"></span>
                         </a>
                         <a href
                            class="action-horizontal"
                            ng-class="{'active': filters.document}"
-                           title="<?php echo trans('cripfilemanager::app.actions_document_enabled') ?>"
+                           crip-trans-title="actions_document_enabled"
                            ng-click="filters.toggle('document')">
-                            <span class="action-text">
-                                <?php echo trans('cripfilemanager::app.actions_document_enabled_text') ?>
-                            </span>
+                            <span class="action-text" crip-trans="actions_document_enabled_text"></span>
                         </a>
                     </div>
                 </li>
@@ -206,8 +178,9 @@
         <ol class="breadcrumb" ng-controller="BreadcrumbController">
             <li>
                 <a href
-                   title="<?php echo trans('cripfilemanager::app.breadcrumb_go_to_root') ?>"
-                   ng-click="goToRoot()"><?php echo trans('cripfilemanager::app.breadcrumb_root') ?></a>
+                   crip-trans-title="breadcrumb_go_to_root"
+                   crip-trans="breadcrumb_root"
+                   ng-click="goToRoot()"></a>
             </li>
             <li ng-if="!breadcrumbHasItems()"></li>
             <li ng-repeat="bdItem in getBreadcrumbItems()" ng-class="{'active': bdItem.isActive}">
@@ -221,10 +194,10 @@
         </ol>
         <span class="refresh-btn">
             <a href
-               title="<?php echo trans('cripfilemanager::app.breadcrumb_refresh') ?>"
+               crip-trans-title="breadcrumb_refresh"
                ng-click="refreshContent()">
                 <img src="<?php echo icon('refresh') ?>"
-                     alt="<?php echo trans('cripfilemanager::app.breadcrumb_refresh_img') ?>">
+                     crip-trans-alt="breadcrumb_refresh_img">
             </a>
         </span>
     </div>
@@ -290,39 +263,39 @@
                                                tabindex="{{$index * 2 + 50}}">
                                         <img class="crip-menu-icon"
                                              src="<?php echo icon('menu') ?>"
-                                             alt="<?php echo trans('cripfilemanager::app.item_actions_title_img') ?>">
+                                             crip-trans-alt="item_actions_title_img">
                                     </md-button>
                                     <md-menu-content width="4">
                                         <md-menu-item ng-if="canOpen(item)">
-                                            <md-button ng-click="openDir(item)">
+                                            <md-button ng-click="openDir(item)" aria-label="-">
                                                 <img class="crip-menu-item-icon"
                                                      src="<?php echo icon('open-folder') ?>"
-                                                     alt="<?php echo trans('cripfilemanager::app.item_actions_open_img') ?>">
-                                                <?php echo trans('cripfilemanager::app.item_actions_open') ?>
+                                                     crip-trans-alt="item_actions_open_img">
+                                                <span crip-trans="item_actions_open"></span>
                                             </md-button>
                                         </md-menu-item>
                                         <md-menu-item ng-if="canRename(item)">
-                                            <md-button ng-click="enableRename(item)">
+                                            <md-button ng-click="enableRename(item)" aria-label="-">
                                                 <img class="crip-menu-item-icon"
                                                      src="<?php echo icon('rename') ?>"
-                                                     alt="<?php echo trans('cripfilemanager::app.item_actions_rename_img') ?>">
-                                                <?php echo trans('cripfilemanager::app.item_actions_rename') ?>
+                                                     crip-trans-alt="item_actions_rename_img">
+                                                <span crip-trans="item_actions_rename"></span>
                                             </md-button>
                                         </md-menu-item>
                                         <md-menu-item ng-if="hasProperties(item)">
-                                            <md-button ng-click="openProperties(item)">
+                                            <md-button ng-click="openProperties(item)" aria-label="-">
                                                 <img class="crip-menu-item-icon"
                                                      src="<?php echo icon('view-details') ?>"
-                                                     alt="<?php echo trans('cripfilemanager::app.item_actions_properties_img') ?>">
-                                                <?php echo trans('cripfilemanager::app.item_actions_properties') ?>
+                                                     crip-trans-alt="item_actions_properties_img">
+                                                <span crip-trans="item_actions_properties"></span>
                                             </md-button>
                                         </md-menu-item>
                                         <md-menu-item ng-if="canDelete(item)">
-                                            <md-button ng-click="deleteItem(item)">
+                                            <md-button ng-click="deleteItem(item)" aria-label="-">
                                                 <img class="crip-menu-item-icon"
                                                      src="<?php echo icon('cancel') ?>"
-                                                     alt="<?php echo trans('cripfilemanager::app.item_actions_delete_img') ?>">
-                                                <?php echo trans('cripfilemanager::app.item_actions_delete') ?>
+                                                     crip-trans-alt="item_actions_delete_img">
+                                                <span crip-trans="item_actions_delete"></span>
                                             </md-button>
                                         </md-menu-item>
                                     </md-menu-content>
