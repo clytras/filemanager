@@ -6,11 +6,13 @@
 
     ActionsController.$inject = [
         '$scope', '$mdMenu', 'focus', 'CripManagerActions', 'CripManagerContent', 'CripManagerLocation',
-        'CripManagerUploader', 'CripPropertiesModal', 'CripManagerContentOrder', 'CripManagerContentFilter'
+        'CripManagerUploader', 'CripPropertiesModal', 'CripManagerContentOrder', 'CripManagerContentFilter',
+        'CripManagerSettings'
     ];
 
     function ActionsController($scope, $mdMenu, focus, Actions, Content, Location,
-                               Uploader, PropertiesModal, ContentOrder, ContentFilter) {
+                               Uploader, PropertiesModal, ContentOrder, ContentFilter,
+                               Settings) {
         activate();
 
         function activate() {
@@ -34,6 +36,7 @@
             $scope.addFiles = addFiles;
             $scope.upload = upload;
             $scope.cancelUpload = cancelUpload;
+            $scope.allMediaAllowed = allMediaAllowed;
 
             $scope.order = ContentOrder;
             $scope.filters = ContentFilter;
@@ -190,6 +193,10 @@
 
         function cancelUpload() {
             Uploader.clean();
+        }
+
+        function allMediaAllowed() {
+            return Settings.isAllMediaAllowed();
         }
     }
 })(angular, jQuery, window.crip || (window.crip = {}));

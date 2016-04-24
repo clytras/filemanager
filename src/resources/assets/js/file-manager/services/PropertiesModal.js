@@ -4,9 +4,9 @@
     crip.filemanager
         .service('CripPropertiesModal', PropertiesModal);
 
-    PropertiesModal.$inject = ['$mdDialog', '$rootScope', 'CripManagerContent'];
+    PropertiesModal.$inject = ['$mdDialog', 'CripManagerSettings', 'CripManagerContent'];
 
-    function PropertiesModal($mdDialog, $rootScope, Content) {
+    function PropertiesModal($mdDialog, Settings, Content) {
         return {
             open: open
         };
@@ -27,7 +27,7 @@
                 clickOutsideToClose: true,
                 openFrom: '#' + item.identifier,
                 closeTo: '#' + item.identifier,
-                templateUrl: $rootScope.templatePath('item-properties-modal'),
+                templateUrl: Settings.templatePath('item-properties-modal'),
                 controller: 'ItemPropertiesController',
                 locals: {
                     item: item

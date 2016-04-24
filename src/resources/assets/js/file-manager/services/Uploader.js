@@ -4,9 +4,9 @@
     crip.filemanager
         .service('CripManagerUploader', Uploader);
 
-    Uploader.$inject = ['$rootScope', 'CripManagerBreadcrumb', 'CripManagerContent', 'Upload'];
+    Uploader.$inject = ['CripManagerSettings', 'CripManagerBreadcrumb', 'CripManagerContent', 'Upload'];
 
-    function Uploader($rootScope, Breadcrumb, Content, Upload) {
+    function Uploader(Settings, Breadcrumb, Content, Upload) {
 
         var uploader = {
             files: [],
@@ -18,7 +18,7 @@
                 status: 200,
                 error: '',
                 url: {
-                    root: $rootScope.fileUrl('upload'),
+                    root: Settings.fileUrl('upload'),
                     dir: ''
                 }
             }

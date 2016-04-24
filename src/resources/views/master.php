@@ -168,7 +168,7 @@
                         </a>
                     </div>
                 </li>
-                <li ng-if="fileType() === 'file'">
+                <li ng-if="allMediaAllowed()">
                     <div class="actions-horizontal alone">
                         <a href
                            class="action-horizontal"

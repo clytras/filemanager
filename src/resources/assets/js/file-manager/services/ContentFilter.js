@@ -4,9 +4,9 @@
     crip.filemanager
         .service('CripManagerContentFilter', ContentFilter);
 
-    ContentFilter.$inject = ['$log', '$rootScope'];
+    ContentFilter.$inject = ['$log', 'CripManagerSettings'];
 
-    function ContentFilter($log, $rootScope) {
+    function ContentFilter($log, Settings) {
         var filters = {
             dir: dir,
             toggle: toggle,
@@ -22,12 +22,12 @@
             if (value.isDir)
                 return true;
 
-            // if any of type is allowed
-            if ($rootScope.fileType() === 'file')
+            // if any type is allowed
+            if (Settings.isAllMediaAllowed())
                 return filters[value.type];
 
             // if filter enable property is disabled, compare with allowed type
-            return $rootScope.fileType() == value.type;
+            return Settings.allowedMediaType() == value.type;
         }
 
         function toggle(field) {
