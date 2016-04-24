@@ -5,12 +5,12 @@
         .controller('ItemController', ItemController);
 
     ItemController.$inject = [
-        '$log', '$scope', '$mdMenu', 'focus', 'CripManagerContent', 'CripManagerLocation',
-        'CripManagerActions', 'CripPropertiesModal'
+        '$log', '$scope', '$mdMenu', 'focus', 'CripManagerContent', 'CripManagerLocation', 'CripManagerActions',
+        'CripPropertiesModal', 'CripManagerReturnFile'
     ];
 
-    function ItemController($log, $scope, $mdMenu, focus, Content, Location,
-                            Actions, PropertiesModal) {
+    function ItemController($log, $scope, $mdMenu, focus, Content, Location, Actions,
+                            PropertiesModal, ReturnFile) {
         activate();
 
         function activate() {
@@ -55,7 +55,13 @@
 
             if (item.isDir) {
                 Location.change(item);
+            } else {
+                select(item);
             }
+        }
+
+        function select(item, img_size) {
+            ReturnFile(item, img_size);
         }
 
         /**
@@ -80,7 +86,7 @@
             $mdMenu.hide();
             var item;
 
-            if($event.is_extended) {
+            if ($event.is_extended) {
                 item = $event;
                 Content.selectSingle(item);
             } else

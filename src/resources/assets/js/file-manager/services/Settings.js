@@ -19,7 +19,8 @@
                 baseUrl: appendBase,
                 templatePath: templatePath,
                 allowedMediaType: allowedMediaType,
-                isAllMediaAllowed: isAllMediaAllowed
+                isAllMediaAllowed: isAllMediaAllowed,
+                isTarget: isTarget
             };
 
         return settings;
@@ -116,6 +117,15 @@
 
         function isAllMediaAllowed() {
             return allowedMediaType() === 'file';
+        }
+
+        /**
+         * Determine target to call on file selected
+         *
+         * @param {String} target
+         */
+        function isTarget(target) {
+            return settings.params.target.toLowerCase() === target.toLowerCase();
         }
     }
 })(angular, window.crip, jQuery);
