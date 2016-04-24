@@ -35,7 +35,7 @@
                        ng-click="createFolder('<?php echo trans("cripfilemanager::app.actions_new_dir") ?>')">
                         <img class="action-large"
                              crip-trans-alt="actions_new_dir"
-                             src="<?php echo icon('add-folder') ?>">
+                             ng-src="{{icon('add-folder')}}">
                         <span class="action-text" crip-trans="actions_new_dir"></span>
                     </a>
                     <a href
@@ -46,7 +46,7 @@
                        ngf-select="addFiles($files, $invalidFiles)">
                         <img class="action-large"
                              crip-trans-alt="actions_upload"
-                             src="<?php echo icon('upload') ?>">
+                             ng-src="{{icon('upload')}}">
                         <span class="action-text" crip-trans="actions_upload"></span>
                     </a>
 
@@ -57,7 +57,7 @@
                            ng-class="{'disabled': !hasUploads()}"
                            ng-click="upload()">
                             <img class="action-small"
-                                 src="<?php echo icon('upload') ?>"
+                                 ng-src="{{icon('upload')}}"
                                  crip-trans-alt="actions_upload_all">
                             <span class="action-text" crip-trans="actions_upload_all_text"></span>
                         </a>
@@ -67,7 +67,7 @@
                            ng-class="{'disabled': !hasUploads()}"
                            ng-click="cancelUpload()">
                             <img class="action-small"
-                                 src="<?php echo icon('cancel') ?>"
+                                 ng-src="{{icon('cancel')}}"
                                  crip-trans-alt="actions_cancel_upload_all">
                             <span class="action-text" crip-trans="actions_cancel_upload_all_text"></span>
                         </a>
@@ -80,7 +80,7 @@
                        ng-class="{'disabled': !canDeleteSelected()}"
                        ng-click="deleteSelected($event)">
                         <img class="action-large"
-                             src="<?php echo icon('cancel') ?>"
+                             ng-src="{{icon('cancel')}}"
                              crip-trans-alt="actions_delete">
                         <span class="action-text" crip-trans="actions_delete"></span>
                     </a>
@@ -90,7 +90,7 @@
                        ng-class="{'disabled': !canRenameSelected()}"
                        ng-click="enableRenameSelected($event)">
                         <img class="action-large"
-                             src="<?php echo icon('rename') ?>"
+                             ng-src="{{icon('rename')}}"
                              crip-trans-alt="actions_rename">
                         <span class="action-text" crip-trans="actions_rename"></span>
                     </a>
@@ -103,7 +103,7 @@
                        ng-class="{'disabled': !hasProperties()}"
                        ng-click="openProperties($event)">
                         <img class="action-large"
-                             src="<?php echo icon('view-details') ?>"
+                             ng-src="{{icon('view-details')}}"
                              crip-trans-alt="actions_properties">
                         <span class="action-text" crip-trans="actions_properties"></span>
                     </a>
@@ -115,7 +115,7 @@
                            ng-class="{'disabled': !canOpenSelected()}"
                            ng-click="openSelected()">
                             <img class="action-small"
-                                 src="<?php echo icon('open-folder') ?>"
+                                 ng-src="{{icon('open-folder')}}"
                                  crip-trans-alt="actions_open">
                             <span class="action-text" crip-trans="actions_open"></span>
                         </a>
@@ -196,7 +196,7 @@
             <a href
                crip-trans-title="breadcrumb_refresh"
                ng-click="refreshContent()">
-                <img src="<?php echo icon('refresh') ?>"
+                <img ng-src="{{icon('refresh')}}"
                      crip-trans-alt="breadcrumb_refresh_img">
             </a>
         </span>
@@ -262,14 +262,14 @@
                                                ng-click="openMenu(item, $event)"
                                                tabindex="{{$index * 2 + 50}}">
                                         <img class="crip-menu-icon"
-                                             src="<?php echo icon('menu') ?>"
+                                             ng-src="{{icon('menu')}}"
                                              crip-trans-alt="item_actions_title_img">
                                     </md-button>
                                     <md-menu-content width="4">
                                         <md-menu-item ng-if="canOpen(item)">
                                             <md-button ng-click="openDir(item)" aria-label="-">
                                                 <img class="crip-menu-item-icon"
-                                                     src="<?php echo icon('open-folder') ?>"
+                                                     ng-src="{{icon('open-folder')}}"
                                                      crip-trans-alt="item_actions_open_img">
                                                 <span crip-trans="item_actions_open"></span>
                                             </md-button>
@@ -277,7 +277,7 @@
                                         <md-menu-item ng-if="canRename(item)">
                                             <md-button ng-click="enableRename(item)" aria-label="-">
                                                 <img class="crip-menu-item-icon"
-                                                     src="<?php echo icon('rename') ?>"
+                                                     ng-src="{{icon('rename')}}"
                                                      crip-trans-alt="item_actions_rename_img">
                                                 <span crip-trans="item_actions_rename"></span>
                                             </md-button>
@@ -285,7 +285,7 @@
                                         <md-menu-item ng-if="hasProperties(item)">
                                             <md-button ng-click="openProperties(item)" aria-label="-">
                                                 <img class="crip-menu-item-icon"
-                                                     src="<?php echo icon('view-details') ?>"
+                                                     ng-src="{{icon('view-details')}}"
                                                      crip-trans-alt="item_actions_properties_img">
                                                 <span crip-trans="item_actions_properties"></span>
                                             </md-button>
@@ -293,7 +293,7 @@
                                         <md-menu-item ng-if="canDelete(item)">
                                             <md-button ng-click="deleteItem(item)" aria-label="-">
                                                 <img class="crip-menu-item-icon"
-                                                     src="<?php echo icon('cancel') ?>"
+                                                     ng-src="{{icon('cancel')}}"
                                                      crip-trans-alt="item_actions_delete_img">
                                                 <span crip-trans="item_actions_delete"></span>
                                             </md-button>

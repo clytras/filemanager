@@ -20,7 +20,8 @@
                 templatePath: templatePath,
                 allowedMediaType: allowedMediaType,
                 isAllMediaAllowed: isAllMediaAllowed,
-                isTarget: isTarget
+                isTarget: isTarget,
+                icon: icon
             };
 
         return settings;
@@ -95,7 +96,7 @@
          */
         function templatePath(template_name, extension) {
             var tmp = {
-                url: publicUrl(),
+                url: settings.public_url,
                 name: template_name,
                 ext: extension || 'html'
             };
@@ -126,6 +127,17 @@
          */
         function isTarget(target) {
             return settings.params.target.toLowerCase() === target.toLowerCase();
+        }
+
+        /**
+         * Get icon src by its name
+         *
+         * @param name
+         * @returns {*|string}
+         */
+        function icon(name) {
+            return '{root}/images/{name}.png'
+                .supplant({root: settings.public_url, name: name});
         }
     }
 })(angular, window.crip, jQuery);

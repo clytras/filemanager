@@ -5,10 +5,10 @@
         .controller('RootController', RootController);
 
     RootController.$inject = [
-        '$scope', '$mdMenu', 'CripManagerLocation', 'CripManagerContent', 'CripManagerBreadcrumb'
+        '$scope', '$mdMenu', 'CripManagerLocation', 'CripManagerContent', 'CripManagerBreadcrumb', 'CripManagerSettings'
     ];
 
-    function RootController($scope, $mdMenu, Location, Content, Breadcrumb) {
+    function RootController($scope, $mdMenu, Location, Content, Breadcrumb, Settings) {
 
         activate();
 
@@ -18,6 +18,7 @@
 
             $scope.deselect = deselect;
             $scope.refreshContent = refreshContent;
+            $scope.icon = Settings.icon;
         }
 
         function deselect() {
