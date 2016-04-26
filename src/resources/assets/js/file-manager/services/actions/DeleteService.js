@@ -4,7 +4,9 @@
     crip.filemanager
         .service('DeleteService', DeleteService);
 
-    function DeleteService() {
+    DeleteService.$inject = ['SelectService'];
+
+    function DeleteService(SelectService) {
         return {
             canDelete: canDelete,
             delete: deleteItem
@@ -34,6 +36,8 @@
         function deleteItem(item) {
             if (!canDelete(item))
                 return false;
+
+            SelectService.deselect();
 
             return item.delete();
         }
