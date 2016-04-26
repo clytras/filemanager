@@ -15,6 +15,7 @@ return [
     'err_folder_not_found' => 'Direktorija netika atrasta.',
     'err_folder_cant_rename' => 'Direktorijas pārsaukšana neizdevās.',
     'err_folder_this_name_cant_be_used' => 'Direktorijai nedrīkst izmantot tādu vārdu.',
+    'err_folder_delete_perm' => 'Jums nav pietiekoši daudz tiesību lai idzēstu šo mapi.',
     /**
      * UI translations
      */

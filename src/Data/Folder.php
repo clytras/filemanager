@@ -7,7 +7,7 @@ use Illuminate\Contracts\Support\Arrayable;
  * Class Folder
  * @package Crip\FileManager\Data
  */
-class Folder implements ICripObject, Arrayable
+class Folder extends FileSystemObject implements ICripObject, Arrayable
 {
     public $name = '';
     public $dir = '';
@@ -17,14 +17,4 @@ class Folder implements ICripObject, Arrayable
     public $updated_at = '';
     public $url = '';
     public $thumb = '';
-
-    /**
-     * Get the instance as an array.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        return (array)$this;
-    }
 }

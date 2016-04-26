@@ -7,7 +7,7 @@ use Illuminate\Contracts\Support\Arrayable;
  * Class File
  * @package Crip\FileManager\Data
  */
-class File implements ICripObject, Arrayable
+class File extends FileSystemObject implements ICripObject, Arrayable
 {
     public $name = '';
     public $extension = '';
@@ -23,13 +23,4 @@ class File implements ICripObject, Arrayable
     public $size = [];
     public $thumbs = [];
 
-    /**
-     * Get the instance as an array.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        return (array)$this;
-    }
 }

@@ -181,6 +181,10 @@ class FileSystemManager implements ICripObject, IUsePathService
             throw new FileManagerException($this, 'err_folder_not_found');
         }
 
+        if(!Perms::canDelete($path)) {
+            throw new FileManagerException($this, 'err_folder_delete_perm');
+        }
+
         return FileSystem::deleteDirectory($path);
     }
 
