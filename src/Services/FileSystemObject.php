@@ -1,7 +1,6 @@
-<?php namespace Crip\FileManager\Data;
+<?php namespace Crip\FileManager\Services;
 
 use Crip\Core\Contracts\ICripObject;
-use Crip\FileManager\Services\Perms;
 use Illuminate\Contracts\Support\Arrayable;
 
 /**
@@ -25,7 +24,7 @@ class FileSystemObject implements ICripObject, Arrayable
         'any_can_delete' => false,
     ];
 
-    public function updatePerms($path)
+    public function readPermsFromPath($path)
     {
         $this->perms = Perms::getFilePerms($path);
     }

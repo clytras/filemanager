@@ -100,6 +100,10 @@ class FileSystemManager implements ICripObject, IUsePathService
             throw new FileManagerException($this, 'err_file_not_found');
         }
 
+        if(!Perms::canDelete($path)) {
+            throw new FileManagerException($this, 'err_file_delete_perm');
+        }
+
         if (FileSystem::delete($path)) {
             if ($file->isImage()) {
                 $this->thumb->delete($file);

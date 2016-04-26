@@ -196,6 +196,8 @@ class File implements ICripObject, IUsePathService
      */
     public function details()
     {
+        $this->file->readPermsFromPath($this->fullPath());
+
         return $this->file;
     }
 

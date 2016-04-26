@@ -115,6 +115,8 @@ class Folder implements ICripObject, IUsePathService
      */
     public function details()
     {
+        $this->folder->readPermsFromPath($this->fullPath());
+
         return $this->folder;
     }
 

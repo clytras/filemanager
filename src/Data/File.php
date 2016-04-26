@@ -1,6 +1,7 @@
 <?php namespace Crip\FileManager\Data;
 
 use Crip\Core\Contracts\ICripObject;
+use Crip\FileManager\Services\FileSystemObject;
 use Illuminate\Contracts\Support\Arrayable;
 
 /**

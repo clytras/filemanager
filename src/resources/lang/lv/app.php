@@ -11,6 +11,7 @@ return [
     'err_file_cant_rename' => 'Faila pārsaukšana neizdevās.',
     'err_file_ext_cant_be_changed' => 'Faila paplašinājums nevar mainīties.',
     'err_file_info_read' => 'Fails netika atrasts.',
+    'err_file_delete_perm' => 'Jums nav pietiekoši daudz tiesību lai idzēstu šo failu.',
     // Dir errors
     'err_folder_not_found' => 'Direktorija netika atrasta.',
     'err_folder_cant_rename' => 'Direktorijas pārsaukšana neizdevās.',
